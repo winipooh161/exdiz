@@ -24,19 +24,4 @@ public_html
 /public/storage
 /public/mix-manifest.json
 
-# build артефакты (при использовании Laravel Mix или аналогов)
-npm-debug.log
-yarn-error.log
-yarn-debug.log
-yarn.lock
-package-lock.json
-*.log
 
-# Дополнительно для IDE (например, PhpStorm, VSCode)
-/.idea/
-*.iml
-.vscode/
-
-# Другие вспомогательные файлы/директории
-.DS_Store
-Thumbs.db
