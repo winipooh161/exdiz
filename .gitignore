@@ -13,15 +13,8 @@ public_html
 # Ключи
 /storage/*.key
 
-# Кэш, логи и прочие временные файлы
-/storage/*.log
-/storage/logs/*
-/storage/framework/cache/*
-/storage/framework/sessions/*
-/storage/framework/views/*
-/bootstrap/cache/*
-/public/hot
+
 /public/storage
-/public/mix-manifest.json
+
 
 
