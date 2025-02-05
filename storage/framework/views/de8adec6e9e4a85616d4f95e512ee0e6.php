@@ -1,18 +1,28 @@
 <div class="deals-list">
-    <h1><?php echo e($title_site); ?></h1>
+    <h1 class=" flex" >
+        Ваша  <span class="Jikharev">сделка</span>  
+      
+    </h1>
     <?php if($userDeals->isNotEmpty()): ?>
         <?php $__currentLoopData = $userDeals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="deal" id="deal-<?php echo e($deal->id); ?>">
                 <div class="deal__body">
                     <!-- Информация о сделке -->
                     <div class="deal__info">
-                        <div class="deal__avatar">
-                            <img src="<?php echo e(asset('' . $deal->avatar_path)); ?>" alt="Avatar">
+                        <div class="deal__info__profile">
+                            <div class="deal__avatar">
+                                <img src="<?php echo e(asset('' . $deal->avatar_path)); ?>" alt="Avatar">
+                            </div>
+                            <div class="deal__info__title">
+                                <h3><?php echo e($deal->name); ?></h3>
+                                <p> <?php echo e($deal->description ?? 'Описание отсутствует'); ?></p>
+                               
+                            </div>
                         </div>
-                        <div class="deal__info__title">
-                            <h2>Сделка: <?php echo e($deal->name); ?></h2>
-                            <p>Описание сделки: <?php echo e($deal->description ?? 'Описание отсутствует'); ?></p>
-                            <p>Итоговая сумма сделки: <br> <?php echo e($deal->total_sum ?? 'Отсутствует'); ?></p>
+                        
+                        <div class="faq_question__deal__status">
+                            <p><?php echo e($deal->status); ?></p>
+                            <h3><br> <?php echo e($deal->total_sum ?? 'Отсутствует'); ?></h3>
                             <?php if($deal->link): ?>
                                 <p>Привязанный бриф <br>
                                     <a href="<?php echo e($deal->link); ?>">
@@ -23,9 +33,6 @@
                             <?php else: ?>
                                 <p>Бриф не прикреплен</p>
                             <?php endif; ?>
-                        </div>
-                        <div class="faq_question__deal__status">
-                            <p>Статус: <?php echo e($deal->status); ?></p>
                         </div>
                     </div>
                     <div class="deal__container">
@@ -49,7 +56,7 @@
                         <!-- Секция ответственных за сделку -->
                         <div class="deal__responsible">
                             <ul>
-                                <h2>Ответственные за сделку:</h2>
+                                <h4>Ответственные за сделку:</h4>
                                 <?php if($deal->users->isNotEmpty()): ?>
                                     <?php $__currentLoopData = $deal->users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <li class="deal__responsible__user">
@@ -58,7 +65,7 @@
                                                     alt="Аватар <?php echo e($user->name); ?>">
                                             </div>
                                             <div class="deal__responsible__info">
-                                                <h3><?php echo e($user->name); ?></h3>
+                                                <h5><?php echo e($user->name); ?></h5>
                                                 <p><?php echo e($user->status); ?></p>
                                             </div>
                                         </li>

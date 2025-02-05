@@ -1,0 +1,72 @@
+{
+  "public/css/animate.css": {
+    "file": "assets/animate-64af4c2d.css",
+    "isEntry": true,
+    "src": "public/css/animate.css"
+  },
+  "public/js/jquery-3.6.0.min.js": {
+    "file": "assets/jquery-3.6.0.min-f90c37dd.js",
+    "isEntry": true,
+    "src": "public/js/jquery-3.6.0.min.js"
+  },
+  "public/js/wow.js": {
+    "file": "assets/wow-55048a74.js",
+    "isEntry": true,
+    "src": "public/js/wow.js"
+  },
+  "resources/css/animation.css": {
+    "file": "assets/animation-0ea221ea.css",
+    "isEntry": true,
+    "src": "resources/css/animation.css"
+  },
+  "resources/css/element.css": {
+    "file": "assets/element-9ab2dbf9.css",
+    "isEntry": true,
+    "src": "resources/css/element.css"
+  },
+  "resources/css/font.css": {
+    "file": "assets/font-59f5d538.css",
+    "isEntry": true,
+    "src": "resources/css/font.css"
+  },
+  "resources/css/mobile.css": {
+    "file": "assets/mobile-c83dcc8a.css",
+    "isEntry": true,
+    "src": "resources/css/mobile.css"
+  },
+  "resources/css/style.css": {
+    "file": "assets/style-cd41030b.css",
+    "isEntry": true,
+    "src": "resources/css/style.css"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-245b7341.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/chat.js": {
+    "file": "assets/chat-0ad92769.js",
+    "isEntry": true,
+    "src": "resources/js/chat.js"
+  },
+  "resources/js/login.js": {
+    "file": "assets/login-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/js/login.js"
+  },
+  "resources/js/mask.js": {
+    "file": "assets/mask-468eb3c9.js",
+    "isEntry": true,
+    "src": "resources/js/mask.js"
+  },
+  "resources/js/modal.js": {
+    "file": "assets/modal-c4c3e7d7.js",
+    "isEntry": true,
+    "src": "resources/js/modal.js"
+  },
+  "resources/js/success.js": {
+    "file": "assets/success-429ede1f.js",
+    "isEntry": true,
+    "src": "resources/js/success.js"
+  }
+}

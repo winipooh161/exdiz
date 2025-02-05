@@ -7,7 +7,7 @@
             'id'   => auth()->id(), 'name' => auth()->user()->name ?? 'Anon', ]) ?>,
     };
 </script>
-
+ 
 
 
 
@@ -689,138 +689,6 @@
 
 
 <style>
-    .emoji-button {
-        margin-left: 8px;
-        cursor: pointer;
-        border: none;
-        background: none;
-        font-size: 20px;
-    }
-    .emoji-picker {
-        position: absolute;
-        bottom: 50px;
-        left: 0;
-        background: #fff;
-        border: 1px solid #ddd;
-        width: 200px;
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 5px;
-    }
-    .emoji-picker .emoji-item {
-        display: inline-block;
-        font-size: 20px;
-        cursor: pointer;
-        margin: 3px;
-    }
-
-    /* Остальные стили, как в предыдущем примере */
-    .chat-container {
-        display: flex;
-        gap: 20px;
-        max-width: 100%;
-    }
-    .user-list {
-        width: 250px;
-        border: 1px solid #ddd;
-        padding: 10px;
-    }
-    .user-list__avatar img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    .chat-box {
-        flex: 1;
-        border: 1px solid #ddd;
-        padding: 10px;
-        position: relative;
-        border-radius: 4px;
-    }
-    .chat-header {
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-    .chat-messages {
-        max-height: 400px;
-        overflow-y: auto;
-        margin-bottom: 10px;
-        border: 1px solid #eee;
-        padding: 10px;
-    }
-    .chat-messages ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-    .my-message {
-        text-align: right;
-        background-color: #e7f7ff;
-        padding: 5px;
-        border-radius: 5px;
-        margin-bottom: 8px;
-    }
-    .other-message {
-        text-align: left;
-        background-color: #f1f1f1;
-        padding: 5px;
-        border-radius: 5px;
-        margin-bottom: 8px;
-    }
-    .message-time {
-        display: block;
-        font-size: 0.85em;
-        color: #999;
-        margin-top: 4px;
-    }
-    .chat-input {
-        display: flex;
-        gap: 10px;
-        position: relative;
-    }
-    .chat-input textarea {
-        flex: 1;
-        resize: none;
-    }
-    .notifications-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        z-index: 1000;
-    }
-    .notification {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        animation: fadein 0.5s, fadeout 0.5s 4.5s;
-    }
-    @keyframes fadein {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    @keyframes fadeout {
-        from { opacity: 1; }
-        to { opacity: 0; }
-    }
-    .unread-count {
-        background-color: red;
-        color: white;
-        border-radius: 12px;
-        padding: 2px 6px;
-        font-size: 0.8em;
-        margin-left: 8px;
-    }
-    .read-status {
-        font-size: 0.8em;
-        color: green;
-        margin-left: 5px;
-    }
-    .read-status.read {
-        font-weight: bold;
-    }
+    
 </style>
 <?php /**PATH C:\OSPanel\domains\dlk\resources\views\chats\index.blade.php ENDPATH**/ ?>

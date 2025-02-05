@@ -2,7 +2,7 @@
     <div class="container-auth">
         <div class="auth__body flex center">
             <div class="auth__form">
-                <h1>Зарегистрироваться</h1>
+                <h1>Регистрация</h1>
                 <form action="<?php echo e(route('register.post')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
                     <label for="name">

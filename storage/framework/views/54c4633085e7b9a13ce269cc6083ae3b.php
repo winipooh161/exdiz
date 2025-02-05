@@ -49,7 +49,9 @@
      <meta name="msapplication-square310x310logo" content="./mstile-310x150.png">
      <meta name="application-name" content="My Application">
      <meta name="msapplication-config" content="./browserconfig.xml">
- 
+     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
+
     <script>
         wow = new WOW({
             boxClass: 'wow', // default

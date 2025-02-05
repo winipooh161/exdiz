@@ -7,49 +7,50 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <div class="brifs" id="brifs">
-        <h1 class="flex">
-            <?php echo e($title_site ?? 'Сделки Кардинатора'); ?>
-
-            <img class="px20" src="/storage/icon/deal_classic.svg" alt="">
+        <h1 class=" flex" >
+            Ваши  <span class="Jikharev">сделки</span>  
+          
         </h1>
         
-        <!-- Кнопка «Создать сделку» -->
-        <div class="brifs__button__create flex">
-            <button onclick="window.location.href='<?php echo e(route('deals.create')); ?>'">
-                Создать сделку
-            </button>
-        </div>
-
+      
         <!-- Форма поиска/фильтра -->
         <div class="filter">
             <form method="GET" action="<?php echo e(route('deal.cardinator')); ?>">
                 <div class="search">
                     <input type="text" name="search" value="<?php echo e(request('search')); ?>"
                            placeholder="Поиск по имени или телефону">
-                    <button type="submit">
-                        <img src="/storage/icon/search.svg" alt="">
-                    </button>
+                  
 
                     <select name="status">
                         <option value="">Все статусы</option>
                         <option value="в работе" <?php echo e($status === 'в работе' ? 'selected' : ''); ?>>В работе</option>
                         <option value="Завершенный" <?php echo e($status === 'Завершенный' ? 'selected' : ''); ?>>Завершенный</option>
                     </select>
+                    <button type="submit">
+                        <img src="/storage/icon/search.svg" alt="">
+                    </button>
                 </div>
 
                 <!-- Переключение вида: таблица / блоки -->
                 <div class="variate__view">
                     <button type="submit" name="view_type" value="blocks"
                             class="<?php echo e($viewType === 'blocks' ? 'active-button' : ''); ?>">
-                        <img src="/storage/icon/table.svg" alt="">
+                        <img src="/storage/icon/blocks.svg" alt="">
                     </button>
                     <button type="submit" name="view_type" value="table"
                             class="<?php echo e($viewType === 'table' ? 'active-button' : ''); ?>">
-                        <img src="/storage/icon/list.svg" alt="">
+                        <img src="/storage/icon/burger.svg" alt="">
                     </button>
                 </div>
             </form>
         </div>
+          <!-- Кнопка «Создать сделку» -->
+          <div class="brifs__button__create flex">
+            <button onclick="window.location.href='<?php echo e(route('deals.create')); ?>'">
+                <img src="/storage/icon/add.svg" alt="">
+            </button>
+        </div>
+
     </div>
 
     <div class="deal" id="deal">
@@ -138,9 +139,9 @@
                         $completedDeals = $deals->filter(fn($deal) => $deal->status === 'Завершенный');
                     ?>
 
-                    <h2 class="flex">Активные сделки
+                    <h4 class="flex">Активные сделки
                         <img class="px20" src="/storage/icon/deal_active.svg" alt="">
-                    </h2>
+                    </h4>
                     <div class="faq__body__deal" id="active-deals-container">
                         <?php if($activeDeals->isEmpty()): ?>
                             <div class="faq_block__deal faq_block-blur" style="display: block;">
@@ -156,7 +157,7 @@
                                                     <img src="<?php echo e(asset($deal->avatar_path)); ?>" alt="Avatar">
                                                 </div>
                                                 <div class="deal__cardinator__info">
-                                                    <h2><?php echo e($deal->name); ?></h2>
+                                                    <h4><?php echo e($deal->name); ?></h4>
                                                     <p>
                                                         Телефон:
                                                         <a href="tel:<?php echo e($deal->client_phone); ?>">
@@ -164,19 +165,19 @@
 
                                                         </a>
                                                     </p>
-                                                    <p>Сумма сделки: <?php echo e($deal->total_sum ?? 'Отсутствует'); ?></p>
+                                                <p>Статус: <?php echo e($deal->status); ?></p>
                                                     <ul>
                                                         <li>
                                                             <a href="<?php echo e(url('/chats')); ?>">
                                                                 <div class="icon">
-                                                                    <img src="/storage/icon/write-chat.svg" alt="">
+                                                                  Чат
                                                                 </div>
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a href="<?php echo e($deal->link ? url($deal->link) : '#'); ?>">
                                                                 <div class="icon">
-                                                                    <img src="/storage/icon/write-brif.svg" alt="">
+                                                                   Бриф
                                                                 </div>
                                                             </a>
                                                         </li>
@@ -184,7 +185,7 @@
                                                             <a href="<?php echo e(route('register_by_deal', ['token' => $deal->registration_token])); ?>"
                                                                class="copy-link"
                                                                data-link="<?php echo e(route('register_by_deal', ['token' => $deal->registration_token])); ?>">
-                                                                <img src="/storage/icon/write-link.svg" alt="">
+                                                                Ссылка
                                                             </a>
                                                         </li>
                                                         <li>
@@ -217,15 +218,13 @@
                                                                 data-execution_comment="<?php echo e($deal->execution_comment); ?>"
                                                                 data-comment="<?php echo e($deal->comment); ?>"
                                                             >
-                                                                <img src="/storage/icon/create.svg" alt="Редактировать">
+                                                               ИЗМЕНИТЬ
                                                             </button>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="faq_question__deal__status">
-                                                <p>Статус: <?php echo e($deal->status); ?></p>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -234,9 +233,9 @@
                         <div class="pagination" id="active-deals-pagination"></div>
                     </div>
 
-                    <h2 class="flex">Завершенные сделки
+                    <h4 class="flex">Завершенные сделки
                         <img class="px20" src="/storage/icon/deal_inactive.svg" alt="">
-                    </h2>
+                    </h4>
                     <div class="faq__body__deal" id="completed-deals-container">
                         <?php if($completedDeals->isEmpty()): ?>
                             <div class="faq_block__deal faq_block-blur" style="display: block;">
@@ -248,20 +247,20 @@
                                     <div class="faq_item__deal">
                                         <div class="faq_question__deal flex between">
                                             <div class="faq_question__deal__info">
-                                                <h2><?php echo e($deal->name); ?></h2>
-                                                <p>Статус: <?php echo e($deal->status); ?></p>
+                                                <h4><?php echo e($deal->name); ?></h4>
+                                                
                                                 <ul>
                                                     <li>
                                                         <a href="<?php echo e(url('/chats')); ?>">
                                                             <div class="icon">
-                                                                <img src="/storage/icon/write-chat.svg" alt="">
+                                                               ЧАТ
                                                             </div>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="<?php echo e($deal->link ? url($deal->link) : '#'); ?>">
                                                             <div class="icon">
-                                                                <img src="/storage/icon/write-brif.svg" alt="">
+                                                               БРИФ
                                                             </div>
                                                         </a>
                                                     </li>
@@ -269,7 +268,7 @@
                                                         <a href="<?php echo e(route('register_by_deal', ['token' => $deal->registration_token])); ?>"
                                                            class="copy-link"
                                                            data-link="<?php echo e(route('register_by_deal', ['token' => $deal->registration_token])); ?>">
-                                                            <img src="/storage/icon/write-link.svg" alt="">
+                                                           ССЫЛКА
                                                         </a>
                                                     </li>
                                                     <li>
@@ -302,7 +301,7 @@
                                                             data-execution_comment="<?php echo e($deal->execution_comment); ?>"
                                                             data-comment="<?php echo e($deal->comment); ?>"
                                                         >
-                                                            <img src="/storage/icon/create.svg" alt="Редактировать">
+                                                           ИЗМЕНИТЬ
                                                         </button>
                                                     </li>
                                                 </ul>

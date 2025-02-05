@@ -2,7 +2,9 @@
 <div class="container-auth">
     <div class="auth__body flex center">
         <div class="auth__form">
-            <h1>Вход по паролю</h1>
+            <h1>Вход</h1>
+            <p class="auth__title_sub">Мы рады видеть вас! </br>
+                Войдите в свою учетную запись</p>
             <form action="<?php echo e(route('login.password.post')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <label for="phone">

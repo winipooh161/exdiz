@@ -1,10 +1,6 @@
 <header class="flex  between">
     <div class="header__body flex between">
-        <div class="header__nubmer">
-            <a href="tel:+7(000) 000-00-00"><img src="/storage/icon/phone.svg" alt=""><strong> +7(000) 000-00-00</strong></a>
-           
-          
-        </div>
+        
         <div class="header__user flex center">
             <?php if(auth()->guard()->guest()): ?>
                 <?php if(Route::has('auth.login-code')): ?>
@@ -18,12 +14,7 @@
                     </li>
                 <?php endif; ?>
             <?php else: ?>
-                <div class="header__user__logo">
-                    <a href="<?php echo e(url('/profile')); ?>">
-                        <img src="<?php echo e($user->avatar_url ? asset($user->avatar_url) : asset('user/avatar/default-avatar.png')); ?>"
-                            alt="Фото пользователя">
-                        </a>
-                </div>
+              
                 <div class="header__user__name flex exit">
                     <span><?php echo e(Auth::user()->name); ?></span>
                     <a class="dropdown-item" href="<?php echo e(route('logout')); ?>" 
@@ -31,6 +22,12 @@
                      <img src="/storage/icon/exit.svg" alt="">
                  </a>
                  
+                </div>
+                <div class="header__user__logo">
+                    <a href="<?php echo e(url('/profile')); ?>">
+                        <img src="<?php echo e($user->avatar_url ? asset($user->avatar_url) : asset('user/avatar/default-avatar.png')); ?>"
+                            alt="Фото пользователя">
+                        </a>
                 </div>
                 <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
                     <?php echo csrf_field(); ?>

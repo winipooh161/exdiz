@@ -1,12 +1,14 @@
     <div class="support wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s">
-        <h1>Поддержка</h1>
+        <h1 class="flex">
+            Ваша  <span class="Jikharev">техническая поддержка</span>
+        </h1>
         <div class="support__content">
             <div class="support__tickets">
              В разработке...
             </div>
         </div>
         <div class="faq__body">
-            <h2>Ответы на вопросы</h2>
+            <h2>Часто задаваемые вопросы</h2>
             <div class="faq_block">
                 <div class="faq_item">
                     <div class="faq_question" onclick="toggleFaq(this)">

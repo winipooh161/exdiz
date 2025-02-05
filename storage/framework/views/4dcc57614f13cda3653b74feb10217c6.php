@@ -3,6 +3,8 @@
         <div class="auth__body flex center">
             <div class="auth__form">
                 <h1>Войти</h1>
+                <p class="auth__title_sub">Мы рады видеть вас! </br>
+                    Войдите в свою учетную запись</p>
                 <form action="<?php echo e(route('login.post')); ?>" method="POST" id="login-form">
                     <?php echo csrf_field(); ?>
                     <label for="phone" id="phone-label">

@@ -1,4 +1,4 @@
-<form action="<?php echo e(route('commercial.saveAnswers', $page)); ?>" method="POST" id="zone-form" enctype="multipart/form-data">
+<form action="<?php echo e(route('commercial.saveAnswers', ['id' => $brif->id, 'page' => $page])); ?>" method="POST" id="zone-form" enctype="multipart/form-data">
     <?php echo csrf_field(); ?>
     <div class="form__title">
         <?php if(!empty($title_site)): ?>
@@ -97,16 +97,13 @@
         <button type="button" class="btn btn-secondary" id="prevPageButton">На прошлый вопрос</button>
 
         <script>
-            document.getElementById('prevPageButton').addEventListener('click', function() {
-                // Calculate the previous page number
-                const prevPage = <?php echo e($page); ?> - 1;
-                
-                // Make sure the page number is valid (>= 1)
-                if (prevPage >= 1) {
-                    // Navigate to the previous page using the correct URL with the page number
-                    window.location.href = '<?php echo e(url("commercial/questions/")); ?>/' + prevPage;
-                }
-            });
+          document.getElementById('prevPageButton').addEventListener('click', function() {
+    const prevPage = <?php echo e($page); ?> - 1;
+    if (prevPage >= 1) {
+        window.location.href = '<?php echo e(url("commercial/questions/".$brif->id)); ?>/' + prevPage;
+    }
+});
+
         </script>
         
         <?php endif; ?>

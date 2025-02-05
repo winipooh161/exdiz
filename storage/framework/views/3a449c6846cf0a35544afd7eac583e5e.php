@@ -2,7 +2,9 @@
 <div class="container-auth">
     <div class="auth__body flex center">
         <div class="auth__form">
-            <h1 class="auth__form" style="text-align: center">Вход по коду</h1>
+            <h1 class="" style="text-align: center">Вход </h1>
+            <p class="auth__title_sub">Мы рады видеть вас! </br>
+                Войдите в свою учетную запись</p>
             <form id="auth-form" action="<?php echo e(route('login.code.post')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <div id="phone-section">
@@ -41,8 +43,8 @@
         gap: 5px;
     }
     .code-input {
-        width: 40px;
-        height: 40px;
+        width: 80px !IMPORTANT;
+        height: 100px !important;
         text-align: center;
         font-size: 1.5rem;
     }

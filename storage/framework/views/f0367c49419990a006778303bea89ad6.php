@@ -60,7 +60,7 @@
         })
         wow.init();
     </script>
-<body>
+<body class="auth__fon">
     <div id="loading-screen" class="wow fadeInleft" data-wow-duration="1s" data-wow-delay="1s"">
         <img src="/storage/icon/fool_logo.svg" alt="Loading">
     </div>
