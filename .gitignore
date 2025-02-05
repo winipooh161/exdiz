@@ -2,6 +2,7 @@
 /vendor/
 composer.lock
 /node_modules/
+public_html
 
 # Файлы окружения и конфигурации
 .env
