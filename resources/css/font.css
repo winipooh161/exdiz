@@ -1,0 +1,86 @@
+/* Arial Regular (400) */
+@font-face {
+    font-family: 'Jikharev';
+    src: url('resources/fonts/ofont.ru_Jikharev.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Arial Regular (400) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIAL.TTF') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Arial Bold (700) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALBD.TTF') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Arial Italic (400 italic) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALI.TTF') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Arial Bold Italic (700 italic) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALBI.TTF') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* Arial Black (900) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIBLK.TTF') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Arial Black Italic (900 italic) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALBLACKITALIC.TTF') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+/* Arial Light (300) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALLGT.TTF') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Arial Light Italic (300 italic) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ARIALLGTITL.TTF') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Arial Medium (500) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ArialMdm.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Arial Medium Italic (500 italic) */
+@font-face {
+    font-family: 'Arial';
+    src: url('resources/fonts/ArialMdmItl.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
