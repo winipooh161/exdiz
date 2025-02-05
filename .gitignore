@@ -1,1 +1,41 @@
-node_modules
+# ОСНОВНОЕ
+/vendor/
+composer.lock
+/node_modules/
+
+# Файлы окружения и конфигурации
+.env
+.env.*
+.env.local
+.env.testing
+
+# Ключи
+/storage/*.key
+
+# Кэш, логи и прочие временные файлы
+/storage/*.log
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+/public/hot
+/public/storage
+/public/mix-manifest.json
+
+# build артефакты (при использовании Laravel Mix или аналогов)
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+yarn.lock
+package-lock.json
+*.log
+
+# Дополнительно для IDE (например, PhpStorm, VSCode)
+/.idea/
+*.iml
+.vscode/
+
+# Другие вспомогательные файлы/директории
+.DS_Store
+Thumbs.db
