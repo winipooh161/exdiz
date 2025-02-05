@@ -153,3 +153,7 @@ Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('r
 Route::post('register', [AuthController::class, 'register'])->name('register.post');
 // Выход
 Route::match(['GET', 'POST'], '/logout', [AuthController::class, 'logout'])->name('logout');
+// Агрессивная переадресация на HTTPS
+if (app()->environment('production')) {
+    URL::forceScheme('https');
+}

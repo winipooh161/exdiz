@@ -47,7 +47,7 @@ class ProfileController extends Controller
                          . substr($rawPhone, 9);
 
         $verificationCode = rand(1000, 9999);
-        $apiKey = 'ВАШ_API_КЛЮЧ_SMS_RU'; // Пример
+        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B'; // Пример
 
         // Отправка кода через SMS.RU (пример)
         $response = Http::get("https://sms.ru/sms/send", [
