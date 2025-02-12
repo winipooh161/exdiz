@@ -14,7 +14,7 @@
                 <img src="/storage/icon/brif.svg" alt=""><span>Ваши брифы</span>
             </button>
         </li>
-        @if (Auth::user()->status == 'coordinator' || Auth::user()->status == 'admin')
+        @if (Auth::user()->status == 'coordinator' || Auth::user()->status == 'admin'|| Auth::user()->status == 'partner')
         <li>
             <button onclick="location.href='{{ route('deal.cardinator') }}'" id="step-5">
                 <img src="/storage/icon/deal.svg" alt=""> <span>Ваши сделки</span>

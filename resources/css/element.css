@@ -26,7 +26,7 @@ button {
     text-transform: uppercase;
     font-weight: 600;
     max-width: 350px;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/lk/resources/icon/cursor_point.png), auto !important;
+    cursor: url(/resources/icon/cursor_point.png), auto !important;
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
@@ -41,7 +41,7 @@ button {
 
 a {
     color: #01acff;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/lk/resources/icon/cursor_point.png), auto !important;
+    cursor: url(/resources/icon/cursor_point.png), auto !important;
     text-decoration: none;
 }
 

@@ -274,11 +274,13 @@ class CommonController extends Controller
         'questions' => $questions[$page],
         'page'      => $page,
         'user'      => $user,
-        'brif'      => $brif,
+        'brif'      => $brif, // Now correctly passed as $brif
         'title'     => $titles[$page]['title'] ?? '',
         'subtitle'  => $titles[$page]['subtitle'] ?? '',
         'title_site'=> $title_site
     ]);
+    
+    
     }
   /**
      * Сохранение ответов для указанного брифа на конкретной странице.
@@ -381,7 +383,7 @@ class CommonController extends Controller
         $nextPage = $page + 1;
         if (!isset($questions[$nextPage])) {
             // Если страниц больше нет, значит завершаем бриф
-            $brif->status = 'inactive';
+            $brif->status = 'Завершенный';
             $brif->save();
 
             // Ищем (или создаём) сделку, привязываем к ней бриф
@@ -395,7 +397,7 @@ class CommonController extends Controller
                     'client_name' => auth()->user()->name,
                     'client_phone' => auth()->user()->phone ?? 'N/A',
                     'total_sum' => $brif->price ?? 0,
-                    'status' => 'Brif',
+                    'status' => 'Бриф прикриплен',
                     'link' => "/common/{$brif->id}",
                 ]);
 

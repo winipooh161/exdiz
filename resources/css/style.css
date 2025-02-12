@@ -42,22 +42,23 @@ img {
 }
 
 :root {
-    --g10: 10px;
-    --g20: 20px;
-    --g30: 30px;
-    --p10: 10px;
-    --p20: 20px;
-    --p30: 30px;
-    --m10: 10px;
-    --m20: 20px;
-    --m30: 30px;
-    --radius: 30px;
-    --radiusbtn: 20px;
-    --fff: #fff;
-    --blockbody: #F4F6FB;
-    --black: #1E1E1E;
-    --blue: linear-gradient(51deg, #01ACFF 0%, #0381BE 100%);
-    --red: red;
+
+        --g10: 10px;
+        --g20: 20px;
+        --g30: 30px;
+        --p10: 10px;
+        --p20: 20px;
+        --p30: 30px;
+        --m10: 10px;
+        --m20: 20px;
+        --m30: 30px;
+        --radius: 30px;
+        --radiusbtn: 20px;
+        --fff: #fff;
+        --blockbody: #F4F6FB;
+        --black: #1E1E1E;
+        --blue: linear-gradient(51deg, #01ACFF 0%, #0381BE 100%);
+        --red: red;
 }
 
 iframe {
@@ -652,6 +653,8 @@ li.logo_flex.flex {
 
 .auth__body {
     width: 100%;
+    right: 0;
+    display: flex;
     inset: 0px;
     position: fixed;
     background-image: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png");
@@ -659,14 +662,21 @@ li.logo_flex.flex {
     background-size: 100%;
     background-repeat: no-repeat;
     height: 100%;
+    justify-content: flex-end !important;;
 }
 
 .auth__form {
     width: 100%;
     max-width: 550px;
-    border-radius: var(--radius);
+    display: flex;
+    height: 100vh;
+    border-radius: 0;
     padding: 40px;
     background: var(--fff);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 .auth__form button {
@@ -2712,7 +2722,7 @@ td.link__deistv {
 
 .filter form .search {
     width: 100%;
-    max-width: 1000px;
+    /* max-width: 1000px; */
     gap: var(--g10);
     height: 100%;
     display: flex;
@@ -2871,7 +2881,7 @@ div#dealModal .modal-content div#modalBody form label {
 }
 
 .modal__deal label {
-    width: 48%;
+    /* width: 48%; */
 }
 
 .modal__deal .modal-content form {
@@ -3301,7 +3311,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     font-weight: 600;
     max-width: 350px;
     min-width: 350px;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/lk/resources/icon/cursor_point.png), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
@@ -3313,4 +3323,93 @@ table.dataTable tbody th, table.dataTable tbody td {
 .div__create_form .brifs__button__create button:hover {
     background: var(--blue) !important;
 
+}
+.class-form-deal-create {
+    width: 32%;
+}
+
+form.create__deal_id {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/** DEAL**/
+.module {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #fafafa;
+}
+.module legend {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ccc;
+}
+.form-group-deal {
+    margin-bottom: 15px;
+}
+.form-group-deal label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group-deal input[type="text"],
+.form-group-deal input[type="number"],
+.form-group-deal input[type="url"],
+.form-group-deal input[type="date"],
+.form-group-deal select,
+.form-group-deal textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1em;
+}
+.form-group-deal input[type="file"] {
+    padding: 5px;
+}
+.radio-group label {
+    margin-right: 15px;
+}
+.btn.btn-primary {
+    background: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+.btn.btn-primary:hover {
+    background: #0056b3;
+}
+.avatar-preview {
+    margin-top: 10px;
+}
+/* Стили для обязательных полей */
+.required {
+    color: red;
+}.auth__form form {
+    width: 100%;
+}.modal-fields {
+    width: 100%;
+}form#create-deal-form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+form#create-deal-form .module {
+    width: 49%;
+}
+.select2-container {
+    z-index: 999999 !important;
+}
+.select2-container--open .select2-dropdown--below {
+    z-index: 999999 !important;
 }

@@ -6,17 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
+    /**
+     * Применяем middleware для проверки аутентификации.
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    // =========================
-    // 1. Отображение профиля
-    // =========================
+    // ===================================
+    // 1. Отображение собственного профиля
+    // ===================================
     public function index()
     {
         $user = Auth::user();
@@ -24,9 +28,66 @@ class ProfileController extends Controller
         return view('profile', compact('user', 'title_site'));
     }
 
-    // =========================================
-    // 2. Отправка кода подтверждения на телефон
-    // =========================================
+    // ================================================================
+    // 2. Просмотр профиля другого пользователя (новый метод)
+    // ================================================================
+    public function viewProfile($id)
+    {
+        $viewer = Auth::user();
+        $target = User::findOrFail($id);
+
+        // Если запрашивается собственный профиль, перенаправляем на страницу профиля
+        if ($viewer->id === $target->id) {
+            return redirect()->route('profile');
+        }
+
+        // Проверяем, имеет ли текущий пользователь право просматривать профиль $target
+        if (!$this->canViewProfile($viewer, $target)) {
+            abort(403, 'Доступ запрещён.');
+        }
+
+        return view('profile_view', ['target' => $target]);
+    }
+
+    /**
+     * Проверка возможности просмотра профиля другого пользователя.
+     *
+     * @param  \App\Models\User  $viewer  Текущий (просматривающий) пользователь
+     * @param  \App\Models\User  $target  Просматриваемый профиль
+     * @return bool
+     */
+    protected function canViewProfile($viewer, $target)
+    {
+        // Всегда разрешаем просмотр своего профиля
+        if ($viewer->id === $target->id) {
+            return true;
+        }
+
+        // Приводим роль просматривающего к нижнему регистру для корректного сравнения
+        $viewerRole = strtolower($viewer->role);
+
+        // Координатор и администратор видят все профили
+        if (in_array($viewerRole, ['coordinator', 'admin'])) {
+            return true;
+        }
+
+        // Остальные правила в зависимости от роли просматривающего
+        switch ($viewerRole) {
+            case 'user':
+                return in_array(strtolower($target->role), ['partner', 'coordinator', 'architect', 'designer']);
+            case 'partner':
+                return in_array(strtolower($target->role), ['coordinator', 'architect', 'designer']);
+            case 'architect':
+            case 'designer':
+                return in_array(strtolower($target->role), ['client', 'coordinator']);
+            default:
+                return false;
+        }
+    }
+
+    // ===========================================
+    // 3. Отправка кода подтверждения на телефон
+    // ===========================================
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -38,7 +99,7 @@ class ProfileController extends Controller
         // Удаляем все нецифровые символы из номера телефона
         $rawPhone = preg_replace('/\D/', '', $request->input('phone'));
 
-        // Формируем +7 (...) формат (пример, адаптируйте под нужный формат)
+        // Формируем форматированный номер телефона: +7 (XXX) XXX-XX-XX
         $formattedPhone = '+7 (' . substr($rawPhone, 1, 3) . ') ' 
                          . substr($rawPhone, 4, 3) 
                          . '-' 
@@ -47,12 +108,12 @@ class ProfileController extends Controller
                          . substr($rawPhone, 9);
 
         $verificationCode = rand(1000, 9999);
-        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B'; // Пример
+        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B'; // Пример API-ключа
 
         // Отправка кода через SMS.RU (пример)
         $response = Http::get("https://sms.ru/sms/send", [
             'api_id' => $apiKey,
-            'to'     => $rawPhone, // исходный номер
+            'to'     => $rawPhone,
             'msg'    => "Ваш код: $verificationCode",
         ]);
 
@@ -63,7 +124,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        // Сохраняем код и время "протухания" кода
+        // Сохраняем код и время истечения срока действия
         $user->verification_code = $verificationCode;
         $user->verification_code_expires_at = now()->addMinutes(10);
 
@@ -77,9 +138,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    // ======================
-    // 3. Подтверждение кода
-    // ======================
+    // ================================================
+    // 4. Подтверждение кода подтверждения телефона
+    // ================================================
     public function verifyCode(Request $request)
     {
         $request->validate([
@@ -91,19 +152,15 @@ class ProfileController extends Controller
         $phone = preg_replace('/\D/', '', $request->input('phone'));
         $verificationCode = $request->input('verification_code');
 
-        // Проверяем код и время
-        if ($user->verification_code === $verificationCode 
+        if ($user->verification_code == $verificationCode 
             && now()->lessThanOrEqualTo($user->verification_code_expires_at)) 
         {
-            // Форматируем номер
             $formattedPhone = '+7 (' . substr($phone, 1, 3) . ') '
                             . substr($phone, 4, 3) . '-'
                             . substr($phone, 7, 2) . '-'
                             . substr($phone, 9, 2);
 
             $user->phone = $formattedPhone;
-
-            // Сбрасываем код
             $user->verification_code = null;
             $user->verification_code_expires_at = null;
             $user->save();
@@ -120,9 +177,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    // =======================
-    // 4. Обновление аватара
-    // =======================
+    // =======================================
+    // 5. Обновление аватара пользователя
+    // =======================================
     public function updateAvatar(Request $request)
     {
         $validated = $request->validate([
@@ -131,44 +188,38 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // Удаление старого аватара, если он есть
+        // Удаление старого аватара, если он существует
         if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
             unlink(public_path($user->avatar_url));
         }
 
         $avatar = $request->file('avatar');
-        $avatarPath = 'user/avatar/' . $user->id . '/' 
-                      . uniqid() . '.' . $avatar->getClientOriginalExtension();
+        $avatarPath = 'user/avatar/' . $user->id . '/' . uniqid() . '.' . $avatar->getClientOriginalExtension();
 
-        // Сохранение нового аватара в public/
         $destinationPath = public_path('user/avatar/' . $user->id);
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
 
         $avatar->move($destinationPath, basename($avatarPath));
-
-        // Обновление пути к аватару в базе
         $user->avatar_url = $avatarPath;
         $user->save();
 
         return redirect()->route('profile')->with('success', 'Аватар успешно обновлен');
     }
 
-    // =======================
-    // 5. Удаление аккаунта
-    // =======================
+    // =======================================
+    // 6. Удаление аккаунта пользователя
+    // =======================================
     public function deleteAccount()
     {
         try {
             $user = Auth::user();
 
-            // Удаляем аватар из public/, если есть
             if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
                 unlink(public_path($user->avatar_url));
             }
 
-            // Удаляем саму учетную запись
             $user->delete();
 
             return redirect('/')->with('success', 'Ваш аккаунт был успешно удален');
@@ -177,16 +228,16 @@ class ProfileController extends Controller
         }
     }
 
-    // =============================
-    // 6. Изменение пароля (старое)
-    // =============================
+    // ========================================
+    // 7. Изменение пароля (старый метод)
+    // ========================================
     public function changePassword(Request $request)
     {
         $request->validate([
             'new_password' => 'required|min:8|confirmed',
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
         $user->password = bcrypt($request->new_password);
         $user->save();
 
@@ -196,10 +247,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    // =========================
-    // 7. Обновление профиля
-    // (старый метод, если нужен)
-    // =========================
+    // ========================================
+    // 8. Обновление профиля (старый метод)
+    // ========================================
     public function updateProfile(Request $request)
     {
         $validatedData = $request->validate([
@@ -224,39 +274,33 @@ class ProfileController extends Controller
         ]);
     }
 
-    // ======================================================================
-    // 8. НОВЫЙ метод, который обновляет ИМЯ, ПОЧТУ и (опционально) ПАРОЛЬ
-    //    в одном запросе — для одной формы
-    // ======================================================================
+    // ================================================================
+    // 9. Новый метод: обновление имени, email и (опционально) пароля за один запрос
+    // ================================================================
     public function updateProfileAll(Request $request)
     {
-        // Валидация входных данных
+        $this->authorize('update', Auth::user());
+        
         $request->validate([
             'name'         => 'nullable|string|max:255',
             'email'        => 'nullable|email|unique:users,email,' . Auth::id(),
             'new_password' => 'nullable|min:8|confirmed',
         ]);
 
-        // Текущий пользователь
         $user = Auth::user();
 
-        // Обновляем имя
         if ($request->filled('name')) {
             $user->name = $request->name;
         }
-        // Обновляем email
         if ($request->filled('email')) {
             $user->email = $request->email;
         }
-        // Обновляем пароль, только если поле new_password не пустое
         if ($request->filled('new_password')) {
             $user->password = Hash::make($request->new_password);
         }
 
-        // Сохраняем изменения
         $user->save();
 
-        // Возвращаем JSON-ответ (можете сделать redirect, если нужно)
         return response()->json([
             'success' => true,
             'message' => 'Данные успешно обновлены!'

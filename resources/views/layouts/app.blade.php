@@ -71,6 +71,7 @@
         })
         wow.init();
     </script>
+      @include('layouts/style')
 </head>
 
 <body>

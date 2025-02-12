@@ -41,10 +41,10 @@ class BrifsController extends Controller
         ];
     
         // Получаем брифы пользователя
-        $activeCommon = Common::where('user_id', auth()->id())->where('status', 'active')->get();
-        $inactiveCommon = Common::where('user_id', auth()->id())->where('status', 'inactive')->get();
-        $activeCommercial = Commercial::where('user_id', auth()->id())->where('status', 'active')->get();
-        $inactiveCommercial = Commercial::where('user_id', auth()->id())->where('status', 'inactive')->get();
+        $activeCommon = Common::where('user_id', auth()->id())->where('status', 'Активный')->get();
+        $inactiveCommon = Common::where('user_id', auth()->id())->where('status', 'Завершенный')->get();
+        $activeCommercial = Commercial::where('user_id', auth()->id())->where('status', 'Активный')->get();
+        $inactiveCommercial = Commercial::where('user_id', auth()->id())->where('status', 'Завершенный')->get();
     
         // Объединяем активные брифы в один массив и сортируем по дате создания (новые сверху)
         $activeBrifs = $activeCommon->merge($activeCommercial)->sortByDesc('created_at');
@@ -72,7 +72,7 @@ class BrifsController extends Controller
         $brif = Common::create([
             'title' => 'Общий бриф',
             'description' => 'Бриф бла-бла-бла',
-            'status' => 'active',
+            'status' => 'Активный',
             'article' => Str::random(15), // Генерация случайной строки
             'user_id' => auth()->id(), // Привязка к текущему пользователю
         ]);
@@ -343,7 +343,7 @@ class BrifsController extends Controller
        
     
         // Если бриф активен, перенаправляем на страницу с вопросами
-        if ($brif->status === 'active') {
+        if ($brif->status === 'Активный') {
             return redirect()->route('common.questions', $brif->current_page);
         }
         // Получение документов и фотографий
@@ -354,7 +354,7 @@ class BrifsController extends Controller
         $photos = file_exists($photosPath) ? array_diff(scandir($photosPath), ['.', '..']) : [];
     
         return view('common.show', compact(
-            'brif', 'user', 'title_site', 'pageTitlesCommon', 'questions', 'documents', 'photos'
+            'Бриф прикриплен', 'user', 'title_site', 'pageTitlesCommon', 'questions', 'documents', 'photos'
         ));
     }
     
@@ -408,7 +408,7 @@ class BrifsController extends Controller
             }
         }
     
-        return view('commercial.show', compact('brif', 'user', 'title_site', 'zones', 'preferencesFormatted', 'documents'));
+        return view('commercial.show', compact('Бриф прикриплен', 'user', 'title_site', 'zones', 'preferencesFormatted', 'documents'));
     }
         
     public function commercial_store(Request $request)
@@ -416,7 +416,7 @@ class BrifsController extends Controller
         $brif = Commercial::create([
             'title' => 'Коммерческий бриф',
             'description' => 'Бриф бла-бла-бла',
-            'status' => 'active',
+            'status' => 'Активный',
             'article' => Str::random(15), // Генерация случайной строки
             'user_id' => auth()->id(), // Привязка к текущему пользователю
         ]);
@@ -441,7 +441,7 @@ class BrifsController extends Controller
             $brif = Common::create([
                 'title'       => 'Общий бриф',
                 'description' => 'Бриф бла-бла-бла',
-                'status'      => 'active',
+                'status'      => 'Активный',
                 'article'     => Str::random(15),
                 'user_id'     => auth()->id(),
             ]);
@@ -455,7 +455,7 @@ class BrifsController extends Controller
             $brif = Commercial::create([
                 'title'       => 'Коммерческий бриф',
                 'description' => 'Бриф бла-бла-бла',
-                'status'      => 'active',
+                'status'      => 'Активный',
                 'article'     => Str::random(15),
                 'user_id'     => auth()->id(),
             ]);

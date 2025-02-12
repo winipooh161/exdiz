@@ -2,7 +2,7 @@
     <!-- Список чатов -->
     <div class="chat-list">
         @foreach ($chats as $chat)
-            <div class="chat-item {{ $currentChatId === $chat['id'] ? 'active' : '' }}"
+            <div class="chat-item {{ $currentChatId === $chat['id'] ? 'Активный' : '' }}"
                  wire:click="$emit('selectChat', {{ $chat['id'] }})">
                 <img src="{{ $chat['avatar_url'] }}" alt="Avatar" class="avatar">
                 <div class="chat-info">

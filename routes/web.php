@@ -41,18 +41,30 @@ Route::middleware('auth')->group(function () {
         Route::post('/support/chat/{id}/reply', [SupportController::class, 'reply'])->name('support.chat.reply');  // Ответить на чат
     });
 
-    // Существующие маршруты из вашего кода
-    Route::post('/profile/change-password', [ProfileController::class, 'changePassword']);
-    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+   
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::post('/profile', [ProfileController::class, 'update']);
+    
+    // Просмотр профиля другого пользователя
+    Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
+    
+    // Обновление аватара
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
+    
+    // Отправка и подтверждение кода для смены телефона
     Route::post('/profile/send-code', [ProfileController::class, 'sendVerificationCode'])->name('profile.send-code');
     Route::post('/profile/verify-code', [ProfileController::class, 'verifyCode'])->name('profile.verify-code');
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
+    
+    // Удаление аккаунта
     Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete_account');
-
-    // Новый маршрут для изменения имени, почты и (опционально) пароля в одной форме
+    
+    // Обновление профиля (старый метод)
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    
+    // Обновление профиля (новый метод: имя, email, пароль)
     Route::post('/profile/update-all', [ProfileController::class, 'updateProfileAll'])->name('profile.update_all');
+    
+    // Изменение пароля (старый метод)
+    Route::post('/profile/change-password', [ProfileController::class, 'changePassword']);
     // Маршрут для брифов
     Route::get('/brifs', [BrifsController::class, 'index'])->name('brifs.index');
     // web.php
@@ -98,7 +110,7 @@ Route::middleware(['auth', 'status:partner'])->group(function () {
     Route::get('/estimate/copy/{id?}', [SmetsController::class, 'copyEstimate'])->name('estimate.copy');
     Route::get('/estimate/change-estimate/{id?}', [SmetsController::class, 'changeEstimate'])->name('estimate.changeEstimate');
 });
-Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
+Route::middleware(['auth', 'status:coordinator,admin,partner'])->group(function () {
     Route::get('/deal-cardinator', [DealsController::class, 'dealCardinator'])->name('deal.cardinator');
     Route::get('/deals/create', [DealsController::class, 'createDeal'])->name('deals.create');
     Route::post('/deal/store', [DealsController::class, 'storeDeal'])->name('deals.store');

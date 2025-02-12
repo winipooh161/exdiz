@@ -114,7 +114,7 @@ class AdminController extends Controller
         $preferences = $brif->preferences ? json_decode($brif->preferences, true) : [];
         $user = $brif->user;
 
-        return view('admin.brief_edit', compact('brif', 'title_site', 'zones', 'preferences', 'user'));
+        return view('admin.brief_edit', compact('Бриф прикриплен', 'title_site', 'zones', 'preferences', 'user'));
     }
 
     public function editCommonBrief($id)
@@ -137,7 +137,7 @@ class AdminController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric',
-            'status' => 'required|string|in:active,inactive,completed',  // Example status validation
+            'status' => 'required|string|in:Активный,Завершенный,completed',  // Example status validation
             'zones' => 'nullable|array',
             'preferences' => 'nullable|array',
         ]);
@@ -190,7 +190,7 @@ public function updateCommercialBrief(Request $request, $id)
         'title' => 'required|string|max:255',
         'description' => 'nullable|string',
         'price' => 'nullable|numeric',
-        'status' => 'required|string|in:active,inactive,completed',
+        'status' => 'required|string|in:Активный,Завершенный,completed',
         'questions' => 'nullable|array',  // Validate questions if they exist
     ]);
 

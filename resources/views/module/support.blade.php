@@ -103,11 +103,11 @@
                 // Убираем класс "active" у всех элементов
                 document.querySelectorAll('.faq_item').forEach(item => {
                     if (item !== faqItem) {
-                        item.classList.remove('active');
+                        item.classList.remove('Активный');
                     }
                 });
                 // Переключаем класс "active" для текущего элемента
-                faqItem.classList.toggle('active');
+                faqItem.classList.toggle('Активный');
             }
         </script>
         <div id="modal1" class="modal">

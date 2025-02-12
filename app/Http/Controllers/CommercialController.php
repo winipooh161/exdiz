@@ -67,7 +67,7 @@ class CommercialController extends Controller
         }
     
         // Если бриф уже завершён
-        if ($brif->status === 'inactive') {
+        if ($brif->status === 'Завершенный') {
             return redirect()->route('brifs.index')->with('info', 'Этот бриф уже завершён.');
         }
     
@@ -87,8 +87,9 @@ class CommercialController extends Controller
             'user'         => $user,
             'title_site'   => $title_site,
             'description'  => $description,
-            'brif'         => $brif,  // Чтобы передавать ID брифа во вьюху
+            'brif'         => $brif,  // Updated key to match the variable usage in the view
         ]);
+        
     }
    /**
  * Сохранение ответов для коммерческого брифа.
@@ -113,7 +114,7 @@ public function saveAnswers(Request $request, $id, $page)
     }
 
     // Если бриф уже завершен
-    if ($commercial->status === 'inactive') {
+    if ($commercial->status === 'Завершенный') {
         return redirect()
             ->route('brifs.index')
             ->with('info', 'This commercial brief is already completed.');
@@ -219,7 +220,7 @@ public function saveAnswers(Request $request, $id, $page)
             }
 
             // Завершаем бриф
-            $commercial->status = 'inactive';
+            $commercial->status = 'Завершенный';
             $commercial->save();
 
             // Привязываем бриф к сделке
@@ -230,7 +231,7 @@ public function saveAnswers(Request $request, $id, $page)
                     'client_name'  => auth()->user()->name,
                     'client_phone' => auth()->user()->phone ?? 'N/A',
                     'total_sum'    => $commercial->price ?? 0,
-                    'status'       => 'Brif',
+                    'status'       => 'Бриф прикриплен',
                     'link'         => $linkToBrief,
                     'commercial_id'=> $commercial->id,
                 ]);
@@ -277,7 +278,7 @@ public function saveAnswers(Request $request, $id, $page)
             // ...
 
             // Завершаем бриф
-            $commercial->status = 'inactive';
+            $commercial->status = 'Завершенный';
             $commercial->save();
 
             return redirect()

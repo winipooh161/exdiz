@@ -184,7 +184,7 @@ public function completeRegistrationByDeal(Request $request, $token)
 
     // Привязываем пользователя к сделке
     $deal->user_id = $user->id;
-    $deal->status = 'registered';
+    $deal->status = 'Регистрация';
     $deal->save();
 
     // Добавляем связь в deal_user

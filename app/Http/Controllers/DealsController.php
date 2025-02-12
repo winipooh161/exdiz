@@ -2,447 +2,432 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Common;
-use App\Models\Commercial;
-use App\Models\News;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Models\Deal;
 use App\Models\Chat;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Str;
 
 class DealsController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
-    /**
-     * Show the application home.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
+    // Отображение списка сделок
     public function dealCardinator(Request $request)
     {
         $title_site = "Сделки Кардинатора";
         $user = Auth::user();
 
-        // Если есть входящие данные (search/status/view_type),
-        // записываем их в сессию. 
-        // Можно задать более точную логику: «если нажата кнопка «Применить» или что-то ещё»
-        if ($request->hasAny(['search', 'status', 'view_type'])) {
-            // Сохраняем в сессии все параметры фильтра одним массивом
-            session([
-                'dealFilters' => [
-                    'search'   => $request->input('search'),
-                    'status'   => $request->input('status'),
-                    'viewType' => $request->input('view_type', 'blocks')
-                ]
-            ]);
-        }
+        // Получаем параметры из запроса:
+        // Глобальный поиск (объединяет все дополнительные фильтры)
+        $search = $request->input('search');
+        // Фильтр по статусу
+        $status = $request->input('status');
+        // Выбор вида отображения (по умолчанию "blocks")
+        $viewType = $request->input('view_type', 'blocks');
 
-        // Читаем данные фильтров из сессии, если там что-то есть
-        // Если в сессии ничего не лежит, задаём дефолты
-        $filters = session('dealFilters', [
-            'search'   => null,
-            'status'   => null,
-            'viewType' => 'blocks'
-        ]);
-
-        // Для наглядности
-        $search   = $filters['search'];
-        $status   = $filters['status'];
-        $viewType = $filters['viewType'];
-
-        // Формируем запрос с учётом фильтров
+        // Строим запрос, загружая связанные данные (например, пользователей)
         $query = Deal::with('users');
 
+        // Глобальный поиск по нескольким полям
         if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('client_phone', 'LIKE', "%{$search}%");
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('client_phone', 'LIKE', "%{$search}%")
+                  ->orWhere('client_email', 'LIKE', "%{$search}%")
+                  ->orWhere('project_number', 'LIKE', "%{$search}%")
+                  ->orWhere('package', 'LIKE', "%{$search}%")
+                  ->orWhere('deal_note', 'LIKE', "%{$search}%")
+                  ->orWhere('client_city', 'LIKE', "%{$search}%")
+                  ->orWhere('total_sum', 'LIKE', "%{$search}%");
+            });
         }
 
+        // Фильтрация по статусу, если значение передано
         if ($status) {
             $query->where('status', $status);
         }
 
         $deals = $query->get();
 
-        return view('cardinators', compact('title_site', 'user', 'deals', 'viewType', 'search', 'status'));
+        // Передаём все необходимые переменные в представление
+        return view('cardinators', compact('title_site', 'user', 'deals', 'status', 'viewType', 'search'));
     }
 
-
-    // App\Http\Controllers\DealsController.php
-
+    // Отображение страницы чата сделки
     public function dealUser()
     {
-        $title_site = "Чат вашей сделки";
         $user = Auth::user();
-
-        // Ваши сделки
+    
+        // Если роль партнёра, перенаправляем на страницу сделок кардинатора
+        if ($user->status === 'partner') {
+            return redirect()->route('deal.cardinator');
+        }
+    
+        $title_site = "Чат вашей сделки";
         $userDeals = Deal::with('coordinator', 'users', 'briefs')
             ->where('user_id', $user->id)
             ->get();
-
-        // Получаем список чатов для текущего пользователя
+    
         $chatController = app(\App\Http\Controllers\ChatController::class);
         $chats = $chatController->getUserChats($user->id);
-
+    
         return view('user', compact('title_site', 'user', 'userDeals', 'chats'));
     }
-
-
-
-
+    
+    // Форма создания сделки – доступна для координатора, администратора и партнёра
     public function createDeal()
     {
         $user = Auth::user();
+        if (!in_array($user->status, ['coordinator', 'admin'])) {
+            return redirect()->route('deal.cardinator')
+                ->with('error', 'Только кардинатор, администратор или партнер могут создавать сделку.');
+        }
         $title_site = "Создание сделки";
-        $users = User::where('status', 'coordinator')->get(); // Или другой статус
-        return view('create_deal', compact('title_site', 'users', 'user'));
-    }
 
-    public function storeDeal(Request $request)
-    {
-        $validated = $request->validate([
-            // ФИО клиента
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                // Пример паттерна: только буквы, пробелы, дефисы
-                'regex:/^[\pL\s\-]+$/u'
-            ],
-            // Телефон
-            'client_phone' => [
-                'required',
-                'string',
-                // Регулярка для +7 (XXX) XXX-XX-XX
-                'regex:/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/'
-            ],
-            'completion_responsible' => 'nullable|string|max:255',
-            'office_equipment'       => 'nullable|boolean',
-            'stage'                  => 'nullable|string|max:255',
-            'coordinator_score'      => 'nullable|numeric|min:0|max:10',
-            'client_city'            => 'nullable|string|max:100',
-
-            'total_sum'      => 'nullable|numeric|min:0',
-            'measuring_cost' => 'nullable|numeric|min:0',
-            'project_budget' => 'nullable|numeric|min:0',
-            'created_date'   => 'nullable|date',
-            'deal_end_date'  => 'nullable|date',
-            'client_info'    => 'nullable|string',
-            'payment_date'   => 'nullable|date',
-            'package'        => 'nullable|string|max:255',
-            'rooms_count'    => 'nullable|integer|min:1',
-            'execution_comment' => 'nullable|string',
-            'comment'           => 'nullable|string',
-
-            // Статус
-            'status' => 'required|in:в работе,Завершенный,На потом',
-
-            // Ответственные
-            'responsibles'   => 'nullable|array',
-            'responsibles.*' => 'exists:users,id',
-
-            // Аватар
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
-
-        // Ставим office_equipment = 1, если чекбокс есть, иначе 0
-        $office_equipment = $request->has('office_equipment') ? 1 : 0;
-
-        // Создание сделки
-        $deal = Deal::create([
-            'name'                   => $validated['name'],
-            'client_phone'           => $validated['client_phone'],
-            'status'                 => $validated['status'],
-
-            'completion_responsible' => $validated['completion_responsible'] ?? null,
-            'office_equipment'       => $office_equipment,
-            'stage'                  => $validated['stage'] ?? null,
-            'coordinator_score'      => $validated['coordinator_score'] ?? null,
-            'client_city'            => $validated['client_city'] ?? null,
-            'total_sum'              => $validated['total_sum'] ?? null,
-            'measuring_cost'         => $validated['measuring_cost'] ?? null,
-            'project_budget'         => $validated['project_budget'] ?? null,
-            'created_date'           => $validated['created_date'] ?? null,
-            'deal_end_date'          => $validated['deal_end_date'] ?? null,
-            'client_info'            => $validated['client_info'] ?? null,
-            'payment_date'           => $validated['payment_date'] ?? null,
-            'package'                => $validated['package'] ?? null,
-            'rooms_count'            => $validated['rooms_count'] ?? null,
-            'execution_comment'      => $validated['execution_comment'] ?? null,
-            'comment'                => $validated['comment'] ?? null,
-
-            // Обязательные
-            'user_id'                => auth()->id(),
-            'coordinator_id'         => auth()->id(),
-            'registration_token'     => Str::random(32),
-            'registration_token_expiry' => now()->addDays(7),
-        ]);
-
-        // Сохранение аватара
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            $avatarDir = "dels/{$deal->id}";
-            $avatarExt = $request->file('avatar')->getClientOriginalExtension();
-            $avatarPath = $request->file('avatar')->storeAs(
-                $avatarDir,
-                'avatar.' . $avatarExt,
-                'public'
-            );
-            $deal->update(['avatar_path' => "storage/{$avatarPath}"]);
+        $citiesFile = public_path('cities.json');
+        if (file_exists($citiesFile)) {
+            $citiesJson = file_get_contents($citiesFile);
+            $russianCities = json_decode($citiesJson, true);
+        } else {
+            $russianCities = [];
         }
 
-        // Привязка ответственных
-        $responsibles = $request->input('responsibles', []);
-        // Добавляем текущего пользователя (координатора)
-        $deal->users()->attach([auth()->id() => ['role' => 'coordinator']]);
-        foreach ($responsibles as $respId) {
-            if ($respId != auth()->id()) {
-                $deal->users()->attach([$respId => ['role' => 'responsible']]);
+        $responsibleUsers = User::whereIn('status', ['designer', 'coordinator'])->get();
+        $coordinators = User::where('status', 'coordinator')->get();
+        $partners = User::where('status', 'partner')->get();
+        $architects = User::where('status', 'architect')->get();
+        $designers   = User::where('status', 'designer')->get();
+        $visualizers = User::where('status', 'visualizer')->get();
+
+        return view('create_deal', compact(
+            'title_site',
+            'user',
+            'responsibleUsers',
+            'coordinators',
+            'partners',
+            'architects',
+            'designers',
+            'visualizers',
+            'russianCities'
+        ));
+    }
+
+    // Сохранение сделки
+    public function storeDeal(Request $request)
+    {
+        $user = Auth::user();
+        if (!in_array($user->status, ['coordinator', 'admin'])) {
+            return redirect()->route('deal.cardinator')
+                ->with('error', 'Только кардинатор или администратор могут создавать сделку.');
+        }
+
+        try {
+            $validated = $request->validate([
+                'name'         => 'required|string|max:255',
+                'client_phone' => ['required', 'regex:/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/'],
+                'status'       => 'required|in:Ждем ТЗ,Планировка,Коллажи,Визуализация,Рабочка/сбор ИП,Проект готов,Проект завершен,Проект на паузе,Возврат,В работе,Завершенный,На потом,Регистрация,Бриф прикриплен,Поддержка,Активный',
+                'priority'     => 'required|in:высокий,средний,низкий',
+                'package'      => 'required|string|max:255',
+                'project_number'        => 'nullable|string|max:21',
+                'price_service_option'  => 'required|string|max:255',
+                'rooms_count_pricing'   => 'nullable|integer|min:1',
+                'execution_order_comment' => 'nullable|string|max:1000',
+                'execution_order_file'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'client_timezone'       => 'nullable|string|max:100',
+                'office_partner_id'     => 'nullable|exists:users,id',
+                'coordinator_id'        => 'nullable|exists:users,id',
+                'total_sum'      => 'nullable|numeric',
+                'measuring_cost' => 'nullable|numeric',
+                'project_budget' => 'nullable|numeric',
+                'client_info'    => 'nullable|string',
+                'payment_date'   => 'nullable|date',
+                'execution_comment' => 'nullable|string',
+                'comment'        => 'nullable|string',
+                'office_equipment' => 'nullable|boolean',
+                'measurement_comments' => 'nullable|string|max:1000',
+                'measurements_file'    => 'nullable|file|mimes:pdf,jpg,jpeg,png,dwg|max:5120',
+                'start_date'           => 'nullable|date',
+                'project_duration'     => 'nullable|integer',
+                'project_end_date'     => 'nullable|date',
+                'architect_id'         => 'nullable|exists:users,id',
+                'final_floorplan'      => 'nullable|file|mimes:pdf|max:20480',
+                'designer_id'          => 'nullable|exists:users,id',
+                'final_collage'        => 'nullable|file|mimes:pdf|max:204800',
+                'visualizer_id'        => 'nullable|exists:users,id',
+                'visualization_link'   => 'nullable|url',
+                'final_project_file'   => 'nullable|file|mimes:pdf|max:204800',
+                'work_act'             => 'nullable|file|mimes:pdf|max:10240',
+                'client_project_rating'=> 'nullable|numeric',
+                'architect_rating_client'   => 'nullable|numeric',
+                'architect_rating_partner'  => 'nullable|numeric',
+                'architect_rating_coordinator' => 'nullable|numeric',
+                'designer_rating_client'    => 'nullable|numeric',
+                'designer_rating_partner'   => 'nullable|numeric',
+                'designer_rating_coordinator' => 'nullable|numeric',
+                'visualizer_rating_client'  => 'nullable|numeric',
+                'visualizer_rating_partner' => 'nullable|numeric',
+                'visualizer_rating_coordinator' => 'nullable|numeric',
+                'coordinator_rating_client'  => 'nullable|numeric',
+                'coordinator_rating_partner' => 'nullable|numeric',
+                'coordinator_comment'        => 'nullable|string',
+                'chat_screenshot'        => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+                'archicad_file'          => 'nullable|file|mimes:pln,dwg|max:307200',
+                'contract_number'   => 'required|string|max:100',
+                'contract_attachment' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5120',
+                'deal_note'         => 'nullable|string',
+                'avatar'            => 'required|image|mimes:jpg,jpeg,png,gif|max:5120',
+                'responsibles'      => 'nullable|array',
+                'responsibles.*'    => 'exists:users,id',
+            ]);
+
+            $office_equipment = $request->has('office_equipment') ? 1 : 0;
+            $coordinatorId = $validated['coordinator_id'] ?? auth()->id();
+
+            $deal = Deal::create([
+                'name'         => $validated['name'],
+                'client_phone' => $validated['client_phone'],
+                'status'       => $validated['status'],
+                'priority'     => $validated['priority'],
+                'package'      => $validated['package'],
+                'client_name'  => $validated['name'],
+                'project_number'        => $validated['project_number'] ?? null,
+                'price_service'         => $validated['price_service_option'],
+                'rooms_count_pricing'   => $validated['rooms_count_pricing'] ?? null,
+                'execution_order_comment' => $validated['execution_order_comment'] ?? null,
+                'client_timezone'       => $validated['client_timezone'] ?? null,
+                'office_partner_id'     => $validated['office_partner_id'] ?? null,
+                'coordinator_id'        => $coordinatorId,
+                'total_sum'      => $validated['total_sum'] ?? null,
+                'measuring_cost' => $validated['measuring_cost'] ?? null,
+                'project_budget' => $validated['project_budget'] ?? null,
+                'client_info'    => $validated['client_info'] ?? null,
+                'payment_date'   => $validated['payment_date'] ?? null,
+                'execution_comment' => $validated['execution_comment'] ?? null,
+                'comment'        => $validated['comment'] ?? null,
+                'office_equipment' => $office_equipment,
+                'measurement_comments' => $validated['measurement_comments'] ?? null,
+                'start_date'           => $validated['start_date'] ?? null,
+                'project_duration'     => $validated['project_duration'] ?? null,
+                'project_end_date'     => $validated['project_end_date'] ?? null,
+                'architect_id'         => $validated['architect_id'] ?? null,
+                'designer_id'          => $validated['designer_id'] ?? null,
+                'visualizer_id'        => $validated['visualizer_id'] ?? null,
+                'visualization_link'   => $validated['visualization_link'] ?? null,
+                'final_floorplan'      => null,
+                'final_collage'        => null,
+                'final_project_file'   => null,
+                'client_project_rating'      => $validated['client_project_rating'] ?? null,
+                'architect_rating_client'    => $validated['architect_rating_client'] ?? null,
+                'architect_rating_partner'   => $validated['architect_rating_partner'] ?? null,
+                'architect_rating_coordinator' => $validated['architect_rating_coordinator'] ?? null,
+                'designer_rating_client'     => $validated['designer_rating_client'] ?? null,
+                'designer_rating_partner'    => $validated['designer_rating_partner'] ?? null,
+                'designer_rating_coordinator' => $validated['designer_rating_coordinator'] ?? null,
+                'visualizer_rating_client'   => $validated['visualizer_rating_client'] ?? null,
+                'visualizer_rating_partner'  => $validated['visualizer_rating_partner'] ?? null,
+                'visualizer_rating_coordinator' => $validated['visualizer_rating_coordinator'] ?? null,
+                'coordinator_rating_client'  => $validated['coordinator_rating_client'] ?? null,
+                'coordinator_rating_partner' => $validated['coordinator_rating_partner'] ?? null,
+                'coordinator_comment'        => $validated['coordinator_comment'] ?? null,
+                'contract_number' => $validated['contract_number'],
+                'deal_note'       => $validated['deal_note'] ?? null,
+                'user_id' => auth()->id(),
+                'registration_token' => Str::random(32),
+                'registration_token_expiry' => now()->addDays(7),
+            ]);
+
+            $fileFields = [
+                'avatar',
+                'execution_order_file',
+                'measurements_file',
+                'final_floorplan',
+                'final_collage',
+                'final_project_file',
+                'work_act',
+                'chat_screenshot',
+                'archicad_file',
+                'contract_attachment',
+            ];
+
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field) && $request->file($field)->isValid()) {
+                    $dir = "dels/{$deal->id}";
+                    $extension = $request->file($field)->getClientOriginalExtension();
+                    $fileName = $field . '.' . $extension;
+                    $filePath = $request->file($field)->storeAs($dir, $fileName, 'public');
+                    if ($field === 'avatar') {
+                        $deal->update(['avatar_path' => $filePath]);
+                    } else {
+                        $deal->update([$field => $filePath]);
+                    }
+                }
+            }
+
+            $responsibles = $request->input('responsibles', []);
+            $deal->users()->attach([auth()->id() => ['role' => 'coordinator']]);
+            foreach ($responsibles as $respId) {
+                if ($respId != auth()->id()) {
+                    $deal->users()->attach([$respId => ['role' => 'responsible']]);
+                }
+            }
+
+            $this->createGroupChat($deal, array_merge([auth()->id()], $responsibles));
+            $this->sendSmsNotification($deal, $deal->registration_token);
+
+            return redirect()->route('deal.cardinator')->with('success', 'Сделка успешно создана.');
+        } catch (\Exception $e) {
+            Log::error("Ошибка при создании сделки: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Ошибка при создании сделки.');
+        }
+    }
+
+    // Редактирование сделки с учётом роли (координатор и партнер)
+    public function updateDeal(Request $request, $id)
+    {
+        $deal = Deal::findOrFail($id);
+        $userRole = Auth::user()->status;
+
+        if ($userRole == 'coordinator' && $userRole == 'admin') {
+            $rules = [
+                'project_number' => 'nullable|string|max:21',
+                'status'         => 'nullable|in:Ждем ТЗ,Планировка,Коллажи,Визуализация,Рабочка/сбор ИП,Проект готов,Проект завершен,Проект на паузе,Возврат,В работе,Завершенный,На потом,Регистрация,Бриф прикриплен,Поддержка,Активный',
+                'start_date'         => 'nullable|date',
+                'project_duration'   => 'nullable|integer',
+                'project_end_date'   => 'nullable|date',
+                'architect_id'       => 'nullable|exists:users,id',
+                'final_floorplan'    => 'nullable|file|mimes:pdf|max:20480',
+                'designer_id'        => 'nullable|exists:users,id',
+                'final_collage'      => 'nullable|file|mimes:pdf|max:204800',
+                'visualizer_id'      => 'nullable|exists:users,id',
+                'visualization_link' => 'nullable|url',
+                'final_project_file' => 'nullable|file|mimes:pdf|max:204800',
+                'work_act'             => 'nullable|file|mimes:pdf|max:10240',
+                'client_project_rating'=> 'nullable|numeric',
+                'architect_rating_client'   => 'nullable|numeric',
+                'architect_rating_partner'  => 'nullable|numeric',
+                'architect_rating_coordinator' => 'nullable|numeric',
+                'designer_rating_client'    => 'nullable|numeric',
+                'designer_rating_partner'   => 'nullable|numeric',
+                'designer_rating_coordinator' => 'nullable|numeric',
+                'visualizer_rating_client'  => 'nullable|numeric',
+                'visualizer_rating_partner' => 'nullable|numeric',
+                'visualizer_rating_coordinator' => 'nullable|numeric',
+                'coordinator_rating_client' => 'nullable|numeric',
+                'coordinator_rating_partner'=> 'nullable|numeric',
+                'coordinator_comment'     => 'nullable|string',
+                'chat_screenshot'         => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+                'archicad_file'           => 'nullable|file|mimes:pln,dwg|max:307200',
+                'avatar'                  => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120'
+            ];
+        } elseif ($userRole == 'partner') {
+            $rules = [
+                'price_service_option'   => 'nullable|string|max:255',
+                'rooms_count_pricing'    => 'nullable|integer|min:1',
+                'execution_order_comment'=> 'nullable|string|max:1000',
+                'package'                => 'nullable|string|max:255',
+                'name'                   => 'nullable|string|max:255',
+                'client_phone'           => ['nullable', 'regex:/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/'],
+                'client_timezone'        => 'nullable|string|max:100',
+                'office_partner_id'      => 'nullable|exists:users,id',
+                'completion_responsible' => 'nullable|string|max:255',
+                'measurement_comments'   => 'nullable|string|max:1000',
+                'measurements_file'      => 'nullable|file|mimes:pdf,dwg,jpeg,jpg,png|max:5120',
+                'contract_number'        => 'nullable|string|max:100',
+                'payment_date'           => 'nullable|date',
+                'total_sum'              => 'nullable|numeric',
+                'contract_attachment'    => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5120',
+                'deal_note'              => 'nullable|string',
+                'avatar'                 => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5120'
+            ];
+        } else {
+            return redirect()->back()->with('error', 'У вас нет прав для редактирования этой сделки.');
+        }
+
+        $validated = $request->validate($rules);
+        $dataToUpdate = $validated;
+
+        $fileFields = [];
+        if ($userRole == 'coordinator') {
+            $fileFields = ['final_floorplan', 'final_collage', 'final_project_file', 'work_act', 'chat_screenshot', 'archicad_file', 'avatar'];
+        } elseif ($userRole == 'partner') {
+            $fileFields = ['measurements_file', 'contract_attachment', 'avatar'];
+        }
+
+        foreach ($fileFields as $field) {
+            if ($request->hasFile($field) && $request->file($field)->isValid()) {
+                $dir = "dels/{$deal->id}";
+                $extension = $request->file($field)->getClientOriginalExtension();
+                $fileName = $field . '.' . $extension;
+                $filePath = $request->file($field)->storeAs($dir, $fileName, 'public');
+                $dataToUpdate[$field] = $filePath;
             }
         }
 
-        // Создание группового чата (если нужно)
-        $this->createGroupChat($deal, array_merge([auth()->id()], $responsibles));
+        $deal->update($dataToUpdate);
 
-        // Отправка SMS (при необходимости)
-        $this->sendSmsNotification($deal, $deal->registration_token);
-
-        return redirect()->route('deal.cardinator')
-            ->with('success', 'Сделка успешно создана.');
+        return redirect()->back()->with('success', 'Сделка успешно обновлена.');
     }
 
+    public function showDealChat($dealId)
+    {
+        $deal = Deal::findOrFail($dealId);
+        $groupChat = Chat::where('deal_id', $deal->id)
+            ->where('type', 'group')
+            ->first();
+        if (!$groupChat) {
+            return redirect()->back()->with('error', 'Групповой чат для сделки не найден.');
+        }
+        $title_site = "";
+        $user = Auth::user();
+        return view('deal_group_chat', compact('title_site', 'user', 'deal', 'groupChat'));
+    }
 
-
+    public function removeExpiredDeals()
+    {
+        $expiredDeals = Deal::where('registration_token_expiry', '<', now())->get();
+        foreach ($expiredDeals as $deal) {
+            $deal->delete();
+        }
+        return redirect()->route('deal.cardinator')->with('success', 'Просроченные сделки удалены.');
+    }
 
     private function createGroupChat($deal, $userIds)
     {
         $chat = Chat::create([
             'deal_id' => $deal->id,
-            'name' => "Групповой чат: {$deal->name}",
-            'type' => 'group',
+            'name'    => "Групповой чат: {$deal->name}",
+            'type'    => 'group',
         ]);
-
         foreach ($userIds as $userId) {
             $chat->users()->attach($userId);
         }
     }
 
-
-
-
-
-    /**
-     * Отправка SMS с регистрационной ссылкой.
-     *
-     * @param Deal $deal
-     * @param string $registrationLink
-     */
     private function sendSmsNotification($deal, $registrationToken)
     {
         if (!$registrationToken) {
+            Log::error("Отсутствует регистрационный токен для сделки ID: {$deal->id}");
             throw new \Exception('Отсутствует регистрационный токен для сделки.');
         }
-
         $rawPhone = preg_replace('/\D/', '', $deal->client_phone);
-
         $registrationLinkUrl = route('register_by_deal', ['token' => $registrationToken]);
-
         $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B';
-
         $response = Http::get("https://sms.ru/sms/send", [
-            'api_id' => $apiKey,
-            'to' => $rawPhone,
-            'msg' => "Здравствуйте! Для регистрации пройдите по следующей ссылке: $registrationLinkUrl",
-            'partner_id' => 1,
+            'api_id'    => $apiKey,
+            'to'        => $rawPhone,
+            'msg'       => "Здравствуйте! Для регистрации пройдите по ссылке: $registrationLinkUrl",
+            'partner_id'=> 1,
         ]);
-
         if ($response->failed()) {
+            Log::error("Ошибка при отправке SMS для сделки ID: {$deal->id}. Ответ сервера: " . $response->body());
             throw new \Exception('Ошибка при отправке SMS.');
         }
-    }
-
-
-
-
-    // Существующие методы
-
-    /**
-     * Удаление просроченных сделок.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function removeExpiredDeals()
-    {
-        // Получаем все сделки, у которых срок действия ссылки истек
-        $expiredDeals = Deal::where('registration_link_expiry', '<', now())->get();
-
-        // Удаляем каждую просроченную сделку
-        foreach ($expiredDeals as $deal) {
-            $deal->delete();  // Удаление сделки
-        }
-
-        return redirect()->route('deal.cardinator')->with('success', 'Просроченные сделки удалены.');
-    }
-
-
-    // -------------------------------------------
-    // РЕДАКТИРОВАНИЕ СДЕЛКИ
-    // -------------------------------------------
-    public function updateDeal(Request $request, $id)
-    {
-        // 1) Найти сделку
-        $deal = Deal::findOrFail($id);
-
-        // 2) Проверить права
-        if ($deal->coordinator_id !== Auth::id()) {
-            return redirect()->back()
-                ->with('error', 'У вас нет прав для редактирования этой сделки.');
-        }
-
-        // ------------------
-        // 3) Валидация
-        // ------------------
-        $validated = $request->validate([
-            // Поля могут быть не обязательны, но проверяем тип
-            'name' => [
-                'nullable',
-                'string',
-                'max:255',
-                'regex:/^[\pL\s\-]+$/u' // разрешаем буквы, пробелы, дефисы
-            ],
-            'client_phone' => [
-                'nullable',
-                'string',
-                'regex:/^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$/'
-            ],
-            'status' => 'nullable|in:в работе,Завершенный,На потом',
-
-            'completion_responsible' => 'nullable|string|max:255',
-            'office_equipment'       => 'nullable|boolean',
-            'stage'                  => 'nullable|string|max:255',
-            'coordinator_score'      => 'nullable|numeric|min:0|max:10',
-            'client_city'            => 'nullable|string|max:100',
-            'total_sum'              => 'nullable|numeric|min:0',
-            'measuring_cost'         => 'nullable|numeric|min:0',
-            'project_budget'         => 'nullable|numeric|min:0',
-            'created_date'           => 'nullable|date',
-            'deal_end_date'          => 'nullable|date',
-            'client_info'            => 'nullable|string',
-            'payment_date'           => 'nullable|date',
-            'package'                => 'nullable|string|max:255',
-            'rooms_count'            => 'nullable|integer|min:1',
-            'execution_comment'      => 'nullable|string',
-            'comment'                => 'nullable|string',
-
-            // Если хотим менять ответственных, можно так же:
-            'responsibles'   => 'nullable|array',
-            'responsibles.*' => 'exists:users,id',
-
-            // avatar (если хотим разрешать менять)
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
-
-        // 4) Обрабатываем office_equipment
-        $office_equipment = $request->has('office_equipment') ? 1 : 0;
-
-        // 5) Собираем данные для обновления
-        $dataToUpdate = [
-            'office_equipment' => $office_equipment,
-        ];
-
-        // Если поле есть в $validated — добавляем
-        // (Другой вариант — сразу $deal->update($validated), затем перезаписать office_equipment)
-        foreach (
-            [
-                'name',
-                'client_phone',
-                'status',
-                'completion_responsible',
-                'stage',
-                'coordinator_score',
-                'client_city',
-                'total_sum',
-                'measuring_cost',
-                'project_budget',
-                'created_date',
-                'deal_end_date',
-                'client_info',
-                'payment_date',
-                'package',
-                'rooms_count',
-                'execution_comment',
-                'comment'
-            ] as $field
-        ) {
-            if (array_key_exists($field, $validated)) {
-                $dataToUpdate[$field] = $validated[$field];
-            }
-        }
-
-        // 6) Если загружаем новый avatar
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            $avatarDir = "dels/{$deal->id}";
-            $avatarExt = $request->file('avatar')->getClientOriginalExtension();
-            $avatarPath = $request->file('avatar')->storeAs($avatarDir, 'avatar.' . $avatarExt, 'public');
-            $dataToUpdate['avatar_path'] = "storage/{$avatarPath}";
-        }
-
-        // 7) Обновляем сделку
-        $deal->update($dataToUpdate);
-
-        // 8) Если нужно обновлять ответственных
-        if (array_key_exists('responsibles', $validated)) {
-            // Перепривязка pivot (пример: сначала отвязать всех, потом заново)
-            $deal->users()->detach();
-
-            // Назначить текущего пользователя = координатор
-            $deal->users()->attach([Auth::id() => ['role' => 'coordinator']]);
-
-            foreach ($validated['responsibles'] as $respId) {
-                if ($respId != Auth::id()) {
-                    $deal->users()->attach([$respId => ['role' => 'responsible']]);
-                }
-            }
-        }
-
-        return redirect()->back()
-            ->with('success', 'Сделка успешно обновлена.');
-    }
-    public function showDealChat($dealId)
-    {
-        // 1. Найти сделку
-        $deal = Deal::findOrFail($dealId);
-
-        // 2. Найти групповой чат этой сделки
-        //    Предполагаем, что Chat имеет поле `deal_id` + `type = group`
-        //    и что он гарантированно существует (или нужно обработать ситуацию,
-        //    если чата ещё нет).
-        $groupChat = Chat::where('deal_id', $deal->id)
-            ->where('type', 'group')
-            ->first();
-
-        // Если чата нет — по ситуации:
-        // либо создать, либо вернуть ошибку/редирект
-        if (!$groupChat) {
-            return redirect()->back()->with('error', 'Групповой чат для сделки не найден.');
-        }
-
-        // 3. Передаём данные во вьюшку
-        $title_site = "";
-        $user = Auth::user();
-
-        return view('deal_group_chat', compact('title_site', 'user', 'deal', 'groupChat'));
     }
 }

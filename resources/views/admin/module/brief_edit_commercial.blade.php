@@ -24,8 +24,8 @@
             <td><label for="status">Статус:</label></td>
             <td>
                 <select name="status" required>
-                    <option value="active" {{ $brief->status == 'active' ? 'selected' : '' }}>Активный</option>
-                    <option value="inactive" {{ $brief->status == 'inactive' ? 'selected' : '' }}>Неактивный</option>
+                    <option value="active" {{ $brief->status == 'Активный' ? 'selected' : '' }}>Активный</option>
+                    <option value="inactive" {{ $brief->status == 'Завершенный' ? 'selected' : '' }}>Неактивный</option>
                     <option value="completed" {{ $brief->status == 'completed' ? 'selected' : '' }}>Завершен</option>
                 </select>
             </td>
