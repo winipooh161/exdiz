@@ -1,1 +1,0 @@
-<?php /**PATH C:\OSPanel\domains\dlk\resources\views/layouts/style.blade.php ENDPATH**/ ?>
