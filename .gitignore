@@ -2,7 +2,7 @@
 /vendor/
 composer.lock
 /node_modules/
-public_html
+/public_html
 
 # Файлы окружения и конфигурации
 .env
@@ -14,7 +14,6 @@ public_html
 /storage/*.key
 
 
-/public/storage
 
 
 
