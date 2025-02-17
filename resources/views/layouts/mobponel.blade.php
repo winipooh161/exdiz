@@ -4,13 +4,13 @@
       
        
         <li>
-            <button onclick="location.href='{{ url('/brifs') }}'" id="step-4">
+            <button onclick="location.href='{{ url('/brifs') }}'" id="step-mobile-4">
                 <img src="/storage/icon/brif.svg" alt="">
             </button>
         </li>
         @if (Auth::user()->status == 'coordinator' || Auth::user()->status == 'admin'|| Auth::user()->status == 'partner')
         <li>
-            <button onclick="location.href='{{ route('deal.cardinator') }}'" id="step-5">
+            <button onclick="location.href='{{ route('deal.cardinator') }}'" >
                 <img src="/storage/icon/deal.svg" alt=""> 
             </button>
         </li>
@@ -21,7 +21,7 @@
         </li>
     @else
         <li>
-            <button onclick="location.href='{{ route('deal.user') }}'"id="step-5">
+            <button onclick="location.href='{{ route('deal.user') }}'" id="step-mobile-5">
                 <img src="/storage/icon/deal.svg" alt=""> 
             </button>
         </li>
@@ -37,7 +37,7 @@
         @endif
   
         <li>
-            <button onclick="location.href='{{ url('/profile') }}'" id="step-7">
+            <button onclick="location.href='{{ url('/profile') }}'" id="step-mobile-6">
                 <img src="/storage/icon/profile.svg" alt="">
             </button>
         </li>
@@ -49,7 +49,7 @@
         </li>
     @endif
         <li>
-            <button onclick="location.href='{{ url('/support') }}'"  id="step-8">
+            <button onclick="location.href='{{ url('/support') }}'"  id="step-mobile-7">
                 <img src="/storage/icon/support.svg" alt="">
             </button>
         </li>

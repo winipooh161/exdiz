@@ -21,6 +21,14 @@ class User extends Authenticatable
         'cod',
         'verification_code',
         'verification_code_expires_at',
+        // Дополнительные поля:
+        'city',
+        'contract_number',
+        'comment',
+        'portfolio_link',
+        'experience',
+        'rating',
+        'active_projects_count',
     ];
 
     protected $hidden = [
@@ -32,9 +40,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Связь с таблицей сделок (через таблицу deal_user).
-     */
+    // Примеры связей (если необходимо)
     public function deals()
     {
         return $this->belongsToMany(Deal::class, 'deal_user', 'user_id', 'deal_id');
@@ -45,26 +51,17 @@ class User extends Authenticatable
         return $this->hasOne(Deal::class);
     }
     
-    /**
-     * Проверка — является ли пользователь координатором.
-     */
     public function isCoordinator()
     {
         return $this->status === 'coordinator';
     }
 
-    /**
-     * Чаты, в которых участвует пользователь.
-     */
     public function chats()
     {
         return $this->belongsToMany(Chat::class)
                     ->withPivot('last_read_at');
     }
 
-    /**
-     * Сделки, где пользователь выступает координатором.
-     */
     public function coordinatorDeals()
     {
         return $this->belongsToMany(Deal::class, 'deal_user')
@@ -72,9 +69,6 @@ class User extends Authenticatable
                     ->wherePivot('role', 'coordinator');
     }
 
-    /**
-     * Сделки, где пользователь выступает ответственным.
-     */
     public function responsibleDeals()
     {
         return $this->belongsToMany(Deal::class, 'deal_user')

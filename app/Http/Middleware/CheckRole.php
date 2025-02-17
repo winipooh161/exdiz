@@ -1,6 +1,5 @@
 <?php
 
-// Пример простого middleware для проверки роли
 namespace App\Http\Middleware;
 
 use Closure;

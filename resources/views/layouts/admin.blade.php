@@ -51,6 +51,7 @@
      <meta name="msapplication-config" content="./browserconfig.xml">
      <livewire:styles />
 
+     
     <script>
         wow = new WOW({
             boxClass: 'wow', // default

@@ -1,31 +1,162 @@
 @if ($activeBrifs->isEmpty() && $inactiveBrifs->isEmpty())
     {{-- Если пользователь не имеет никаких брифов --}}
 
-    <form action="{{ route('brifs.store') }}" method="POST" class="div__create_form">
+    <form action="{{ route('brifs.store') }}" method="POST" class="div__create_form" id="step-3" >
         @csrf
         <div class="div__create_block">
             <h1>
-                <span class="Jikharev">Уважаемый клиент,</span>
-                мы подготовили для Вас бриф
+                <span class="Jikharev">Добро пожаловать!</span>
             </h1>
-            <p>
-                Вам необходимо заполнить все поля. Чем больше мы получим информации,
-                тем более точный результат мы сможем гарантировать!
-            </p>
-            <div class=" flex gap3">
+            <p><strong>Дорогой клиент,</strong> для продолжения требуется пройти <strong>бриф-опросник</strong> </p>
+            <div class="button__create__brifs flex gap3" id="step-8">
             <!-- Две кнопки. Каждая «говорит» контроллеру, какой именно бриф нужно создать. -->
             <button type="submit" name="brif_type" value="common">Создать Общий бриф</button>
             <button type="submit" name="brif_type" value="commercial">Создать Коммерческий бриф</button>
         </div>
         </div>
     </form>
-
+    <script>
+        window.onload = function() {
+            console.log("Размер экрана:", window.innerWidth);
+    
+            if (window.innerWidth > 768) {
+                console.log("Проверка обучения для десктопа...");
+                if (!localStorage.getItem('tutorial_seen_desktop')) {
+                    console.log("Запуск обучения для десктопа...");
+                    const intro = introJs();
+                    intro.setOptions({
+                        steps: [{
+                                element: '#step-1',
+                                intro: 'Модульный контент - это основная часть интерфейса.',
+                                position: 'bottom'
+                            },
+                            {
+                                element: '#step-2',
+                                intro: 'Панель вкладок.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-3',
+                                intro: 'Главная страница.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-4',
+                                intro: 'Вкладка БРИФЫ.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-5',
+                                intro: 'Вкладка Сделка.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-6',
+                                intro: 'Вкладка Мой профиль.',
+                                position: 'top'
+                            },
+                            {
+                                element: '#step-7',
+                                intro: 'Вкладка Поддержка.',
+                                position: 'top'
+                            },
+                            {
+                                element: '#step-8',
+                                intro: 'Кнопки которые отвечают за зполнение бриф-опросника.',
+                                position: 'top'
+                            }
+                            
+                        ],
+                        showStepNumbers: true,
+                        exitOnOverlayClick: false,
+                        showButtons: true,
+                        nextLabel: 'Далее',
+                        prevLabel: 'Назад',
+                    });
+                    intro.start();
+                    localStorage.setItem('tutorial_seen_desktop', 'true');
+                }
+            } else {
+                console.log("Проверка обучения для мобильных устройств...");
+                if (!localStorage.getItem('tutorial_seen_mobile')) {
+                    console.log("Запуск обучения для мобильных устройств...");
+                    const intro = introJs();
+                    intro.setOptions({
+                        steps: [{
+                                element: '#step-mobile-1',
+                                intro: 'Это основная часть интерфейса.',
+                                position: 'bottom'
+                            },
+                            {
+                                element: '#step-mobile-2',
+                                intro: 'Панель навигации.',
+                                position: 'bottom'
+                            },
+                            {
+                                element: '#step-3',
+                                intro: 'Главная страница.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-mobile-4',
+                                intro: 'Вкладка БРИФЫ.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-mobile-5',
+                                intro: 'Вкладка Сделка.',
+                                position: 'right'
+                            },
+                            {
+                                element: '#step-mobile-6',
+                                intro: 'Вкладка Мой профиль.',
+                                position: 'top'
+                            },
+                            {
+                                element: '#step-mobile-7',
+                                intro: 'Вкладка Поддержка.',
+                                position: 'top'
+                            }
+                            ,
+                            {
+                                element: '#step-8',
+                                intro: 'Кнопки которые отвечают за зполнение бриф-опросника.',
+                                position: 'top'
+                            }
+                        ],
+                        showStepNumbers: true,
+                        exitOnOverlayClick: false,
+                        showButtons: true,
+                        nextLabel: 'Далее',
+                        prevLabel: 'Назад',
+                    });
+                    intro.start();
+                    localStorage.setItem('tutorial_seen_mobile', 'true');
+                }
+            }
+        };
+    
+        // Функция для сброса обучения
+        function clearTutorialData() {
+            console.log('Очистка данных обучения...');
+            localStorage.removeItem('tutorial_seen_desktop');
+            localStorage.removeItem('tutorial_seen_mobile');
+    
+            location.reload();
+        }
+    </script>
+    <!-- Кнопка сброса -->
+<div class="question_class-button">
+    <button onclick="clearTutorialData()">
+        <img src="/storage/icon/qustion.svg" alt="Сбросить обучение">
+    </button>
+</div>
 @else
     {{-- Если у пользователя есть хотя бы один бриф --}}
 
     <div class="brifs wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s" id="brifs">
         <h1 class="flex">
-            Ваши <span class="Jikharev">брифы</span>
+            Ваши брифы
         </h1>
 
         <div class="brifs__button__create flex">
@@ -59,7 +190,7 @@
                                 ]
                             ) }}'">
                             
-                            <h4><strong>{{ $brif->title }} #{{ $brif->id }}</strong></h4>
+                            <h4>{{ $brif->title }} #{{ $brif->id }}</h4>
                             <div class="brif__body flex">
                                 <ul>
                                     @foreach (
@@ -76,8 +207,8 @@
                             </div>
 
                             <div class="button__brifs flex">
-                                <button class="button__variate2">Заполнить</button>
-                                <button class="button__variate2">Удалить</button>
+                                <button class="button__variate2"><img src="/storage/icon/create__info.svg" alt=""> <span>Заполнить</span></button>
+                                <button class="button__variate2 icon"><img src="/storage/icon/close__info.svg" alt=""></button>
                             </div>
                             <p class="flex wd100 between">
                                 <span>{{ $brif->created_at->format('H:i') }}</span>
@@ -106,7 +237,7 @@
                                 $brif->id
                             ) }}'">
                             
-                            <h4><strong>{{ $brif->title }} #{{ $brif->id }}</strong></h4>
+                            <h4>{{ $brif->title }} #{{ $brif->id }}</h4>
                             <p class="flex wd100 between">
                                 <span>{{ $brif->created_at->format('H:i') }}</span>
                                 <span>{{ $brif->created_at->format('d.m.Y') }}</span>

@@ -96,6 +96,13 @@
 }
 
 @media only screen and (max-width: 980px) {
+    .button__create__brifs {
+        flex-wrap: wrap;
+        gap: vaR(--g10);
+    }
+    .brifs__button__create.flex {
+        flex-wrap: wrap;
+    }
     .faq_item__deal {
         width: 49%;
     }

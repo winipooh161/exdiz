@@ -18,12 +18,15 @@ use Chatify\ChatifyMessenger;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+
 // Главная страница
 Route::get('/', function () {
     return redirect('login/password');
 });
+
 // Стандартные маршруты аутентификации
 Auth::routes();
+
 // Группа маршрутов с префиксом и middleware для аутентификации
 Route::middleware('auth')->group(function () {
     // Маршрут для домашней страницы
@@ -32,57 +35,50 @@ Route::middleware('auth')->group(function () {
     // Маршрут для создания нового тикета
     Route::get('/support', [SupportController::class, 'index'])->name('support.index');
     Route::post('/support/reply/{ticket}', [SupportController::class, 'reply'])->name('support.reply');
-
     Route::post('/support/create', [SupportController::class, 'create'])->name('support.create');
 
     Route::middleware(['auth', 'status:support'])->group(function () {
-        Route::get('/support/chats', [SupportController::class, 'chats'])->name('support.chats');  // Список всех чатов
-        Route::get('/support/chat/{id}', [SupportController::class, 'chat'])->name('support.chat');  // Отдельный чат
-        Route::post('/support/chat/{id}/reply', [SupportController::class, 'reply'])->name('support.chat.reply');  // Ответить на чат
+        Route::get('/support/chats', [SupportController::class, 'chats'])->name('support.chats');
+        Route::get('/support/chat/{id}', [SupportController::class, 'chat'])->name('support.chat');
+        Route::post('/support/chat/{id}/reply', [SupportController::class, 'reply'])->name('support.chat.reply');
     });
 
-   
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    
     // Просмотр профиля другого пользователя
     Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
-    
+
     // Обновление аватара
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
-    
+
     // Отправка и подтверждение кода для смены телефона
     Route::post('/profile/send-code', [ProfileController::class, 'sendVerificationCode'])->name('profile.send-code');
     Route::post('/profile/verify-code', [ProfileController::class, 'verifyCode'])->name('profile.verify-code');
-    
+
     // Удаление аккаунта
     Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete_account');
-    
+
     // Обновление профиля (старый метод)
     Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-    
+
     // Обновление профиля (новый метод: имя, email, пароль)
     Route::post('/profile/update-all', [ProfileController::class, 'updateProfileAll'])->name('profile.update_all');
-    
+
     // Изменение пароля (старый метод)
     Route::post('/profile/change-password', [ProfileController::class, 'changePassword']);
+
     // Маршрут для брифов
     Route::get('/brifs', [BrifsController::class, 'index'])->name('brifs.index');
-    // web.php
-Route::post('/brifs/store', [BrifsController::class, 'store'])->name('brifs.store');
+    Route::post('/brifs/store', [BrifsController::class, 'store'])->name('brifs.store');
 
     // Маршрут для брифов ОБЩИЙ
-    // Маршруты для "Общего" брифа
     Route::get('/common/questions/{id}/{page}', [CommonController::class, 'questions'])
         ->name('common.questions');
-
     Route::post('/common/questions/{id}/{page}', [CommonController::class, 'saveAnswers'])
         ->name('common.saveAnswers');
 
-    // Дополнительно, если у вас есть отдельный контроллер BrifsController:
     Route::get('/common/create', [BrifsController::class, 'common_create'])->name('common.create');
     Route::post('/common', [BrifsController::class, 'common_store'])->name('common.store');
     Route::get('/common/{id}', [BrifsController::class, 'common_show'])->name('common.show');
-
 
     Route::get('/commercial/questions/{id}/{page}', [CommercialController::class, 'questions'])->name('commercial.questions');
     Route::post('/commercial/questions/{id}/{page}', [CommercialController::class, 'saveAnswers'])->name('commercial.saveAnswers');
@@ -90,10 +86,10 @@ Route::post('/brifs/store', [BrifsController::class, 'store'])->name('brifs.stor
     Route::get('/commercial/create', [BrifsController::class, 'commercial_create'])->name('commercial.create');
     Route::post('/commercial', [BrifsController::class, 'commercial_store'])->name('commercial.store');
     Route::get('/commercial/{id}', [BrifsController::class, 'commercial_show'])->name('commercial.show');
+
     // Сделка для пользователя
     Route::get('/deal-user', [DealsController::class, 'dealUser'])->name('deal.user');
 });
-
 
 Route::middleware(['auth', 'status:partner'])->group(function () {
     Route::get('/estimate', [SmetsController::class, 'estimate'])->name('estimate');
@@ -110,12 +106,26 @@ Route::middleware(['auth', 'status:partner'])->group(function () {
     Route::get('/estimate/copy/{id?}', [SmetsController::class, 'copyEstimate'])->name('estimate.copy');
     Route::get('/estimate/change-estimate/{id?}', [SmetsController::class, 'changeEstimate'])->name('estimate.changeEstimate');
 });
+
 Route::middleware(['auth', 'status:coordinator,admin,partner'])->group(function () {
     Route::get('/deal-cardinator', [DealsController::class, 'dealCardinator'])->name('deal.cardinator');
     Route::get('/deals/create', [DealsController::class, 'createDeal'])->name('deals.create');
     Route::post('/deal/store', [DealsController::class, 'storeDeal'])->name('deals.store');
+
     Route::put('/deal/update/{id}', [DealsController::class, 'updateDeal'])->name('deal.update');
+    // ...
+
+// ...
+
 });
+// ...
+Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
+    // Прочие маршруты админа/координатора...
+    Route::get('/deal/change-logs', [DealsController::class, 'changeLogs'])->name('deal.change_logs');
+    // Новый маршрут для логов конкретной сделки:
+    Route::get('/deal/{deal}/change-logs', [DealsController::class, 'changeLogsForDeal'])->name('deal.change_logs.deal');
+});
+// ...
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
@@ -140,32 +150,23 @@ Route::middleware(['auth', 'status:admin'])->group(function () {
     Route::get('/admin/users/{id}/briefs', [AdminController::class, 'userBriefs'])->name('user.briefs');
     Route::get('/admin/briefs/{id}', [AdminController::class, 'edit'])->name('admin.brief.edit');
     Route::put('/admin/briefs/{id}', [AdminController::class, 'update_brif'])->name('admin.brief.update_brif');
-    // Edit route for the common brief
     Route::get('/admin/brief/editCommon/{id}', [AdminController::class, 'editCommonBrief'])->name('admin.brief.editCommon');
-
-    // Update route for the common brief
     Route::post('/admin/brief/updateCommon/{id}', [AdminController::class, 'updateCommonBrief'])->name('admin.brief.updateCommon');
-    // In your routes/web.php
     Route::get('admin/brief/commercial/{id}/edit', [AdminController::class, 'editCommercialBrief'])->name('admin.brief.editCommercial');
     Route::put('admin/brief/commercial/{id}', [AdminController::class, 'updateCommercialBrief'])->name('admin.brief.updateCommercial');
 });
 
 Route::get('/register_by_deal/{token}', [AuthController::class, 'registerByDealLink'])->name('register_by_deal');
-
 Route::post('/complete-registration-by-deal/{token}', [AuthController::class, 'completeRegistrationByDeal'])->name('auth.complete_registration_by_deal');
-
-Route::get('login/password', [AuthController::class, 'showLoginFormByPassword'])->name('login.password');
+Route::get('', [AuthController::class, 'showLoginFormByPassword'])->name('login.password');
 Route::post('login/password', [AuthController::class, 'loginByPassword'])->name('login.password.post');
 Route::get('login/code', [AuthController::class, 'showLoginFormByCode'])->name('login.code');
 Route::post('login/code', [AuthController::class, 'loginByCode'])->name('login.code.post');
 Route::post('/send-code', [AuthController::class, 'sendCode'])->name('send.code');
-// Показать форму регистрации
 Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register');
-// Обработать регистрацию
 Route::post('register', [AuthController::class, 'register'])->name('register.post');
-// Выход
 Route::match(['GET', 'POST'], '/logout', [AuthController::class, 'logout'])->name('logout');
-// Агрессивная переадресация на HTTPS
+
 if (app()->environment('production')) {
     URL::forceScheme('https');
 }

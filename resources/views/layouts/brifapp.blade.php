@@ -48,6 +48,7 @@
      <meta name="application-name" content="My Application">
      <meta name="msapplication-config" content="./browserconfig.xml">
 
+     
     @vite([ 'resources/css/style.css', 'resources/css/font.css', 'resources/css/element.css', 'resources/css/animation.css', 'resources/css/mobile.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/login.js'])
 <body>
    

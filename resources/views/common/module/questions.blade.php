@@ -200,11 +200,11 @@
     const faqItem = questionElement.parentElement;       // div.faq_item
     const faqAnswer = faqItem.querySelector('.faq_answer'); 
     const inputElement = faqAnswer.querySelector('textarea, input'); 
-    const isActive = faqItem.classList.contains('Активный');
+    const isActive = faqItem.classList.contains('active');
 
     if (!isActive) {
         // --- Раскрываем FAQ ---
-        faqItem.classList.add('Активный');
+        faqItem.classList.add('active');
 
         // Подготовка для анимации: сначала ставим высоту 0 (если нужно)
         faqAnswer.style.height = '0px';
@@ -224,7 +224,7 @@
 
     } else {
         // --- Сворачиваем FAQ ---
-        faqItem.classList.remove('Активный');
+        faqItem.classList.remove('active');
 
         // Плавно уходим к 0
         const currentHeight = faqAnswer.scrollHeight;

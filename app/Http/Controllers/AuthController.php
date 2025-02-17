@@ -48,6 +48,7 @@ class AuthController extends Controller
     }
     public function loginByCode(Request $request)
     {
+       
         $request->validate([
             'phone' => 'required',
             'code' => 'required|string|size:4',
@@ -126,105 +127,115 @@ class AuthController extends Controller
     {
         Auth::logout();
         Session::flush(); // Уничтожить все данные сессии
-    Session::regenerateToken(); // И на всякий случай обновить CSRF-токен
+        Session::regenerateToken(); // И на всякий случай обновить CSRF-токен
         return redirect('/');
     }
     public function registerByDealLink($token)
-{
-    if (Auth::check()) {
-        return redirect()->route('home'); // Redirect if user is already logged in
-    }
-    $deal = Deal::where('registration_token', $token)
-        ->where('registration_token_expiry', '>', now())
-        ->first();
-
-    if (!$deal) {
-        return redirect()->route('login')->with('error', 'Ссылка на регистрацию устарела или неверна.');
-    }
-
-    $title_site = "Регистрация для сделки";
-
-    return view('auth.register_by_deal', compact('deal', 'title_site'));
-}
-
-    
-public function completeRegistrationByDeal(Request $request, $token)
-{
-    $deal = Deal::where('registration_token', $token)
-        ->where('registration_token_expiry', '>', now())
-        ->first();
-
-    if (!$deal) {
-        $phone = preg_replace('/\D/', '', $request->input('phone'));
-        $deal = Deal::where('client_phone', $phone)->first();
-    }
-
-    if (!$deal) {
-        return redirect()->route('login')->with('error', 'Ссылка на регистрацию устарела или неверна.');
-    }
-
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'phone' => 'required',
-        'password' => 'required|string|min:6|confirmed',
-    ]);
-
-    $existingUser = User::where('phone', $validated['phone'])->first();
-    if ($existingUser) {
-        return redirect()->back()->with('error', 'Пользователь с таким номером телефона уже существует.');
-    }
-
-    $user = User::create([
-        'name' => $validated['name'],
-        'phone' => $validated['phone'],
-        'avatar_url' => 'icon/profile.svg',
-        'status' => 'user', // Условный путь для аватарки
-        'password' => Hash::make($validated['password']),
-    ]);
-
-    // Привязываем пользователя к сделке
-    $deal->user_id = $user->id;
-    $deal->status = 'Регистрация';
-    $deal->save();
-
-    // Добавляем связь в deal_user
-    $deal->users()->attach($user->id, ['role' => 'user']);
-
-    // Создание связи с чатом сделки
-    $chat = Chat::firstOrCreate(
-        ['deal_id' => $deal->id], // Уникальное значение
-        ['name' => "Чат сделки {$deal->name}"] // Дополнительные параметры, если создаём новый чат
-    );
-
-    // Связываем пользователя с чатом
-    $chat->users()->attach($user->id);
-
-    // Уведомляем создателя сделки
-    $creator = $deal->creator;
-    if ($creator && $creator->phone) {
-        $rawPhone = preg_replace('/\D/', '', $creator->phone);
-        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B';
-
-        $response = Http::get("https://sms.ru/sms/send", [
-            'api_id' => $apiKey,
-            'to' => $rawPhone,
-            'msg' => "Здравствуйте! Клиент успешно зарегистрировался по сделке: {$deal->name}.",
-            'partner_id' => 1,
-        ]);
-
-        if ($response->failed()) {
-            \Log::error("Ошибка при отправке SMS", [
-                'response' => $response->body(),
-                'status' => $response->status(),
-                'phone' => $rawPhone,
-                'deal' => $deal->id,
-            ]);
+    {
+        if (Auth::check()) {
+            return redirect()->route('home'); // Redirect if user is already logged in
         }
+        $deal = Deal::where('registration_token', $token)
+            ->where('registration_token_expiry', '>', now())
+            ->first();
+
+        if (!$deal) {
+            return redirect()->route('login.password')->with('error', 'Ссылка на регистрацию устарела или неверна.');
+        }
+
+        $title_site = "Регистрация для сделки";
+
+        return view('auth.register_by_deal', compact('deal', 'title_site'));
     }
 
-    Auth::login($user);
 
-    return redirect()->route('home')->with('success', 'Вы успешно зарегистрированы и привязаны к сделке.');
+    public function completeRegistrationByDeal(Request $request, $token)
+    {
+        // Проверяем, есть ли активная сделка с таким токеном
+        $deal = Deal::where('registration_token', $token)
+            ->where('registration_token_expiry', '>', now())
+            ->first();
+    
+        if (!$deal) {
+            return redirect()->route('login.password')->with('error', 'Ссылка на регистрацию устарела или неверна.');
+        }
+    
+        // Очистка номера телефона от нечисловых символов
+        $phone = preg_replace('/\D/', '', $request->input('phone'));
+        $normalizedDealPhone = preg_replace('/\D/', '', $deal->client_phone);
+    
+        // Проверка, что регистрируется именно клиент сделки
+        if ($normalizedDealPhone !== $phone) {
+            return redirect()->route('login.password')->with('error', 'Регистрация возможна только для клиента сделки.');
+        }
+    
+        // Проверяем, существует ли уже пользователь с таким номером
+        if (User::where('phone', $phone)->exists()) {
+            return redirect()->route('login.password')->with('error', 'Пользователь с таким номером телефона уже зарегистрирован.');
+        }
+    
+        // Валидация данных
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+    
+        // Создание нового пользователя
+        $user = User::create([
+            'name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'avatar_url' => 'icon/profile.svg',
+            'status' => 'user',
+            'password' => Hash::make($validated['password']),
+        ]);
+    
+        // Привязываем пользователя к сделке
+        $deal->user_id = $user->id;
+        $deal->status = 'Регистрация';
+        $deal->registration_token = null; // Удаляем токен после регистрации
+        $deal->registration_token_expiry = null;
+        $deal->save();
+    
+        // Добавляем пользователя в связь deal_user
+        $deal->users()->attach($user->id, ['role' => 'client']);
+    
+        // Создаём связь с чатом сделки
+        $chat = Chat::firstOrCreate(
+            ['deal_id' => $deal->id],
+            ['name' => "Чат сделки {$deal->name}"]
+        );
+    
+        // Привязываем пользователя к чату
+        $chat->users()->attach($user->id);
+    
+        // Уведомляем создателя сделки
+        $creator = $deal->creator;
+        if ($creator && $creator->phone) {
+            $rawPhone = preg_replace('/\D/', '', $creator->phone);
+            $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B';
+    
+            $response = Http::get("https://sms.ru/sms/send", [
+                'api_id' => $apiKey,
+                'to' => $rawPhone,
+                'msg' => "Клиент {$user->name} успешно зарегистрировался по сделке: {$deal->name}.",
+                'partner_id' => 1,
+            ]);
+    
+            if ($response->failed()) {
+                \Log::error("Ошибка при отправке SMS создателю сделки", [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                    'phone' => $rawPhone,
+                    'deal' => $deal->id,
+                ]);
+            }
+        }
+    
+        // Авторизуем пользователя и перенаправляем
+        Auth::login($user);
+    
+        return redirect()->route('home')->with('success', 'Вы успешно зарегистрированы и привязаны к сделке.');
+    }
+    
 }
-
-}    

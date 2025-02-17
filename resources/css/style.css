@@ -1,3 +1,32 @@
+* {
+    box-sizing: border-box;
+    border: 0px;
+    transition: 0.5s;
+    margin: 0px;
+    padding: 0px;
+}
+:root {
+    --onest:"Onest", serif;
+    --g10: 10px;
+    --g20: 20px;
+    --g30: 30px;
+    --p10: 10px;
+    --p20: 20px;
+    --p30: 30px;
+    --m10: 10px;
+    --m20: 20px;
+    --m30: 30px;
+    --radius: 8px;
+    --radiusbtn: 9px;
+    --fff: #fff;
+    --blockbody: #F4F6FB;
+    --ser:#B3B3B3;
+    --bluetext:#01ACFF;
+    --black: #1E1E1E;
+    --blue:  linear-gradient(88.84deg, #0081FF 0%, #00ABFF 100%) ;
+    --red: red;
+
+}
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     border: 0px;
     font: inherit;
@@ -9,12 +38,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 body {
     line-height: 1;
-    font-family: Arial, sans-serif;
+    font-family: var(--onest);
     color: var(--black);
     overflow-x: hidden;
     margin: 0px;
     padding: 0px;
-    background: var(--fff);
+    background: var(--blockbody);
     overflow-y: scroll !important;
     cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor.png"), auto !important;
 }
@@ -27,13 +56,7 @@ body {
 .gap3 {
     gap: 30px;
 }
-* {
-    box-sizing: border-box;
-    border: 0px;
-    transition: 0.5s;
-    margin: 0px;
-    padding: 0px;
-}
+
 
 img {
     width: 100%;
@@ -41,26 +64,16 @@ img {
     object-fit: cover;
 }
 
-:root {
 
-        --g10: 10px;
-        --g20: 20px;
-        --g30: 30px;
-        --p10: 10px;
-        --p20: 20px;
-        --p30: 30px;
-        --m10: 10px;
-        --m20: 20px;
-        --m30: 30px;
-        --radius: 30px;
-        --radiusbtn: 20px;
-        --fff: #fff;
-        --blockbody: #F4F6FB;
-        --black: #1E1E1E;
-        --blue: linear-gradient(51deg, #01ACFF 0%, #0381BE 100%);
-        --red: red;
+li.else__auth {
+    color: var(--ser);
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: center;
 }
-
 iframe {
     width: 100%;
     min-height: 600px;
@@ -114,7 +127,7 @@ th, td {
 
 .collapsed li.logo_flex a img {
     width: 100%;
-    transition: 1s;
+    transition: 0.01s !IMPORTANT;
 }
 
 .main__flex {
@@ -126,12 +139,14 @@ th, td {
 
 li.logo_flex.flex a {
     gap: 5px;
+    max-height: 37px;
     flex-wrap: nowrap;
 }
 
 li.logo_flex.flex img {
     width: 40px;
     height: 100%;
+    max-height: 39px;
     object-fit: contain;
 }
 
@@ -142,21 +157,20 @@ li.logo_flex.flex span img {
 }
 
 .main__ponel {
-    max-width: 300px;
+    max-width: 335px;
     width: 100%;
     max-height: 100%;
     height: 100vh;
     min-height: 100%;
     border-radius: 0px;
     position: relative;
-    /* overflow: hidden; */
     transition: 0.5s;
-    padding: 20px var(--p20);
-    background: var(--blockbody);
+    padding: 34px var(--p20) 20px var(--p20);
+    background: var(--fff);
 }
 
 .main__ponel.collapsed {
-    max-width: 100px;
+    max-width: 92px;
     padding: var(--p10);
 }
 
@@ -168,8 +182,8 @@ li.logo_flex.flex span img {
 }
 
 .ponel__ul li button img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
@@ -180,6 +194,7 @@ li.logo_flex.flex span img {
     place-content: center;
     width: 100%;
     padding: 0px 0px 5px;
+    justify-content: flex-start;
 }
 
 .ponel__ul li button {
@@ -193,13 +208,14 @@ li.logo_flex.flex span img {
     -webkit-box-align: center;
     align-items: center;
     overflow: hidden;
-    transition: 0.3s;
     background: none;
-    padding: 10px;
+    padding: var(--p20);
+    justify-content: flex-start;
 }
 
 .main__ponel.collapsed .ponel__ul li button {
-    justify-content: center;
+    justify-content: left;
+    max-width: 72px;
 }
 
 .toggle-btn {
@@ -228,7 +244,10 @@ li.logo_flex.flex span img {
 
 .header__user__name.flex.exit {
     gap: 10px;
+    padding: 10px 16px;
+    background: var(--blockbody);
     display: flex;
+    border-radius: var(--radius);
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     flex-direction: row;
@@ -236,8 +255,9 @@ li.logo_flex.flex span img {
 
 .header__user__name.flex.exit a {
     display: flex;
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    object-fit: contain;
+    height: 24px;
     -webkit-box-align: center;
     align-items: center;
     place-content: center;
@@ -248,29 +268,34 @@ li.logo_flex.flex span img {
 }
 
 .header__body {
+    height: 100%;
     width: 100%;
     box-sizing: border-box;
-    border-radius: 0 0 var(--radius) var(--radius);
-    padding: var(--p20);
-    background: var(--blockbody);
+    border-radius: var(--radius);
     display: flex;
     justify-content: flex-end;
     flex-direction: row-reverse;
+    padding: var(--p10);
+    background: var(--fff);
 }
 
 header {
-    min-height: 85px;
+    min-height: 64px;
+    padding-top: 20px;
+    position: relative;
     display: flex;
     width: 100%;
     align-content: flex-start;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .header__user__logo {
     border-radius: 10px;
     overflow: hidden;
-    width: 47px;
-    height: 47px;
+    
+    
 }
 
 .news-item h2 {
@@ -291,7 +316,7 @@ header {
 
 .brif {
     width: 32.2%;
-    min-height: 344px;
+    min-height: 269px;
     display: flex;
     position: relative;
     transition: 0.5s;
@@ -649,6 +674,11 @@ li.logo_flex.flex {
     text-transform: none;
     font-size: 20px;
     white-space: nowrap;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22.95px;
+    letter-spacing: 0%;
 }
 
 .auth__body {
@@ -671,7 +701,7 @@ li.logo_flex.flex {
     display: flex;
     height: 100vh;
     border-radius: 0;
-    padding: 40px;
+    padding: 130px 85px;
     background: var(--fff);
     flex-direction: column;
     align-items: center;
@@ -687,7 +717,7 @@ li.logo_flex.flex {
 
 ul.auth__form__link {
     padding-top: var(--p20);
-    gap: var(--p20);
+    gap: var(--p10);
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -748,10 +778,13 @@ a#send-code-btn {
 
 .brif__body ul li {
     width: 49%;
-    font-size: 16px;
-    color: rgb(120, 120, 120);
     padding: 2px;
-    font-family: Jikharev;
+    font-family: var(--onest);
+    font-weight: 400;
+    color: var(--ser);
+    font-size: 11px;
+    line-height: 14.03px;
+    letter-spacing: 0%;
 }
 
 .form-group h2 {
@@ -854,9 +887,14 @@ span.remove-zone {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    max-width: 126px;
+    max-width: 226px;
     font-size: 20px;
     font-weight: 500;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22.95px;
+    letter-spacing: 0%;
     place-content: center;
 }
 
@@ -905,6 +943,7 @@ span.remove-zone {
 
 .div__create_block p {
     width: 37%;
+    text-align: left;
 }
 
 .div__create_block {
@@ -1740,14 +1779,14 @@ div#modal3 .modal-content {
 }
 
 input, textarea, select {
-    border: 1px solid rgb(161, 200, 255);
     resize: none;
+    border: none !important;
     min-height: 40px;
     font-size: 16px;
     width: 100%;
     border-radius: var(--radius);
     padding: var(--p10);
-    background: var(--fff);
+    background: var(--blockbody);
 }
 
 .ponel__body button {
@@ -1771,24 +1810,41 @@ h5 {
 }
 
 h4 {
-    font-size: 22px !important;
-    font-weight: 500;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22.95px;
+    letter-spacing: 0%;
 }
 
 h2, h3 {
-    font-size: 32px !important;
-    font-weight: 500;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 28.05px;
+    letter-spacing: 0%;
 }
 
 h1 {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     font-weight: bold;
-    font-size: 56px !important;
+    font-size: 56px;
+    font-family: var(--onest);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40.8px;
+    letter-spacing: 0%;
 }
 
 p {
     font-size: 20px !important;
     font-weight: 500;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21.6px;
+    letter-spacing: 0%;
+    text-align: center;
 }
 
 a {
@@ -2482,15 +2538,15 @@ a, button {
 .checkpoint {
     width: 31%;
     height: 55px;
-    /* border-radius: var(--radius); */
+    
     background: rgb(255, 255, 255);
 }
 
 .checkpoint:hover {
-    /* font-weight: 500; */
-    /* color: var(--fff); */
-    /* border-color: rgb(1, 172, 255); */
-    /* background: rgb(0, 172, 255); */
+    
+    
+    
+    
 }
 
 .checkpoint h2 {
@@ -2546,13 +2602,13 @@ a, button {
 
 button:hover img {
     transition: 0.5s;
-    filter: brightness(15);
+    
 }
 
 .main__ponel.collapsed .ponel__ul li button:hover {
     transition: 0.5s;
     color: rgb(255, 255, 255);
-    background: rgb(1, 172, 255) !important;
+    
 }
 
 .news-item:hover {
@@ -2722,7 +2778,7 @@ td.link__deistv {
 
 .filter form .search {
     width: 100%;
-    /* max-width: 1000px; */
+    
     gap: var(--g10);
     height: 100%;
     display: flex;
@@ -2881,7 +2937,7 @@ div#dealModal .modal-content div#modalBody form label {
 }
 
 .modal__deal label {
-    /* width: 48%; */
+    
 }
 
 .modal__deal .modal-content form {
@@ -3009,20 +3065,32 @@ div#brifs {
 
 .brifs__section {
     padding-top: 40px;
+    padding: var(--p20);
+    background: var(
+    --fff);
+    border-radius: 14px;
 }
 
 .brif p {
-    color: rgb(82, 82, 82);
-    font-size: 20px !important;
-    font-weight: 500 !important;
+    color: #444444;
+    font-family: var(--onest);
+    font-weight: 400;
+    font-size: 10px !IMPORTANT;
+    line-height: 12.75px;
+    letter-spacing: 0%;
 }
 
 .auth__form h1 {
     display: flex;
     justify-content: center;
-    color: rgb(2, 142, 209);
+    color: var(--bluetext);
     width: 100% !important;
     text-align: center !important;
+    font-family: var(--onest);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 41.6px;
+    letter-spacing: 0%;
 }
 
 label p {
@@ -3031,18 +3099,26 @@ label p {
 }
 
 ul.auth__form__link a {
-    font-weight: 600;
+    
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0%;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-offset: Auto;
+    text-decoration-thickness: Auto;
 }
 
 .auth__form input, textarea, select {
-    min-height: 60px;
+    min-height: 54px;
 }
 
 .auth__fon {
     background-image: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png");
-    background-position: center center;
+    background-position: left;
     height: 100%;
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
@@ -3052,7 +3128,7 @@ p.auth__title_sub {
 p.auth__title_sub {
     text-align: center;
     font-weight: 500;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
     font-size: 20px !important;
 }
 
@@ -3060,22 +3136,38 @@ p.auth__title_sub {
     padding-left: 16px;
     font-size: 70px;
     font-style: normal;
+    line-height: 77%;
     position: relative;
+    font-weight: initial;
     top: -8px;
     font-family: Jikharev !important;
     color: rgb(1, 170, 252) !important;
 }
 
 .button__variate2 {
-    min-height: 40px;
-    background: none;
-    color: rgb(0, 0, 0);
-    border: 1px solid rgb(0, 0, 0);
+    font-family: var(--onest);
+    font-weight: 400;
+    display: flex;
+    font-size: 12px;
+    line-height: 15.3px;
+    height: 35px;
+    padding: var(--p10);
+    min-height: 35px;
+    background: var(
+    --fff);
+    color: var(
+    --black);
+    letter-spacing: 0%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
 }
 
 .button__brifs {
-    padding-bottom: 20px;
-    gap: 20px;
+    padding-bottom: 10px;
+    gap: var(--g10);
+    display: flex;
+    justify-content: space-between;
 }
 
 .deal__cardinator__info h4 {
@@ -3181,7 +3273,7 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 .main__ponel.collapsed li.logo_flex.flex {
-    padding: var(--p10) var(--p10) var(--p20) var(--p10);
+    padding: var(--p30) var(--p10) var(--p20) var(--p10);
 }
 
 .password__new form > div {
@@ -3235,70 +3327,70 @@ table.dataTable tbody th, table.dataTable tbody td {
     color: #000;
 }
 
-/* Общий контейнер для чекпоинтов */
+
 .checkpoint .radio {
     position: relative;
     display: inline-block;
     cursor: pointer;
-    margin-right: 0; /* на случай, если у вас несколько подряд */
+    margin-right: 0; 
   }
   
-  /* Прячем системный чекбокс */
+  
   .checkpoint .radio input[type="checkbox"] {
     position: absolute;
-    opacity: 0;      /* убираем из потока */
-    cursor: pointer; /* чтобы курсор оставался "рукой" */
+    opacity: 0;      
+    cursor: pointer; 
   }
   
-  /* Базовые стили для label, чтобы внутри него разместить псевдоэлементы */
+  
   .checkpoint .radio label {
     position: relative;
-    padding-left: 42px;  /* отступ под овал */
-    line-height: 20px;   /* высота строки для выравнивания */
-    /* padding: 0; */
+    padding-left: 42px;  
+    line-height: 20px;   
+    
     cursor: pointer;
     background: var(--blockbody);
     border-radius: 10px;
-    user-select: none;   /* при клике не выделяется текст */
+    user-select: none;   
   }
   
-  /* Овал (серый в неактивном состоянии) */
+  
   .checkpoint .radio label::before {
     content: "";
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 34px;              /* ширина овала */
-    height: 34px;             /* высота овала */
-    background-color: #ccc;   /* неактивный — серый */
-    border-radius: 999px;     /* делаем овал */
+    width: 34px;              
+    height: 34px;             
+    background-color: #ccc;   
+    border-radius: 999px;     
     transition: background-color 0.3s ease;
   }
   
-  /* Белый кружок внутри овала */
+  
   .checkpoint .radio label::after {
     content: "";
     position: absolute;
-    /* Центрируем круг по горизонтали внутри овала */
+    
     left: calc(0px + (38px / 2) - (10px / 2));
     top: 50%;
     transform: translateY(-50%);
     width: 30px;
     height: 30px;
     background-color: #fff;
-    border-radius: 50%;       /* круг */
+    border-radius: 50%;       
     transition: background-color 0.3s ease;
   }
   
-  /* Активный (checked) — фон овала становится синим */
+  
   .checkpoint .radio input[type="checkbox"]:checked + label::before {
-    background-color: #007bff; /* синий цвет */
+    background-color: #007bff; 
     top: 9.5px;
     left: 12px;
   }
   .brifs__list .brif:nth-child(1) {
-    background: #FFF2F2;
+    background: #ECF2FF;
   }.brifs .brifs__button__create button {
     background: none !IMPORTANT;
     min-height: 40px;
@@ -3334,7 +3426,7 @@ form.create__deal_id {
     justify-content: space-between;
 }
 
-/** DEAL**/
+
 .module {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -3376,12 +3468,12 @@ form.create__deal_id {
     margin-right: 15px;
 }
 .btn.btn-primary {
-    background: #007bff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    border-radius: 4px;
-    color: #fff;
+    
+    
+    
+    
+    
+    
     cursor: pointer;
 }
 .btn.btn-primary:hover {
@@ -3390,7 +3482,7 @@ form.create__deal_id {
 .avatar-preview {
     margin-top: 10px;
 }
-/* Стили для обязательных полей */
+
 .required {
     color: red;
 }.auth__form form {
@@ -3412,4 +3504,63 @@ form#create-deal-form .module {
 }
 .select2-container--open .select2-dropdown--below {
     z-index: 999999 !important;
+}
+strong {
+    font-weight: 900;
+}li.politic__info {
+    color: var(--ser);
+}p#resend-timer {
+    font-family: var(--onest);
+    font-weight: 300;
+    font-size: 12px !important;
+    line-height: 16.8px;
+    color: var(--ser);
+    letter-spacing: 0%;
+}  .code-input {
+    width: 66px ! IMPORTANT;
+height: 66px !important;
+text-align: center;
+font-size: 1.5rem;
+font-family: var(--onest);
+font-weight: 400;
+font-size: 40px !important;
+line-height: 60px;
+letter-spacing: 0%;
+text-align: center;
+}.ponel__ul li button:hover {
+    background: var(--blockbody) !important;
+    color: var(--black) !important;
+}
+
+.ponel__ul li button:hover span {
+    color: var(--black) !important;
+}a.dropdown-item {
+    width: 24px;
+    height: 24px;
+}a.dropdown-item {
+    width: 24px;
+    height: 24px;
+}a.flex {}
+
+li.logo_flex.flex a {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+}.main__ponel.collapsed li.logo_flex.flex a {
+    max-width: 40px;
+    padding-left: 10px;
+}button.button__variate2.icon {
+    width: 35px;
+    height: 35px;
+    padding: var(--p10);
+}.button__variate2 img {
+    width: 15px;
+    height: 15px;
+}.brifs__body.wow.fadeInLeft {
+    display: flex;
+    flex-direction: column;
+    gap: var(--g20);
+}.brifs__section.brifs__section__finished p {
+    text-align: left;
 }

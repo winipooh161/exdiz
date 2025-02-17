@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deal;
 use App\Models\Chat;
 use App\Models\User;
+use App\Models\DealChangeLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -15,7 +16,7 @@ class DealsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     // Отображение списка сделок
@@ -23,19 +24,13 @@ class DealsController extends Controller
     {
         $title_site = "Сделки Кардинатора";
         $user = Auth::user();
-
-        // Получаем параметры из запроса:
-        // Глобальный поиск (объединяет все дополнительные фильтры)
+    
         $search = $request->input('search');
-        // Фильтр по статусу
         $status = $request->input('status');
-        // Выбор вида отображения (по умолчанию "blocks")
         $viewType = $request->input('view_type', 'blocks');
-
-        // Строим запрос, загружая связанные данные (например, пользователей)
+    
         $query = Deal::with('users');
-
-        // Глобальный поиск по нескольким полям
+    
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
@@ -48,24 +43,28 @@ class DealsController extends Controller
                   ->orWhere('total_sum', 'LIKE', "%{$search}%");
             });
         }
-
-        // Фильтрация по статусу, если значение передано
+    
         if ($status) {
             $query->where('status', $status);
         }
-
-        $deals = $query->get();
-
-        // Передаём все необходимые переменные в представление
+    
+        $deals = $query->get()->map(function ($deal) {
+            // Проверяем, есть ли токен, иначе устанавливаем null
+            $deal->registration_token_url = $deal->registration_token
+                ? route('register_by_deal', ['token' => $deal->registration_token])
+                : null;
+            return $deal;
+        });
+    
         return view('cardinators', compact('title_site', 'user', 'deals', 'status', 'viewType', 'search'));
     }
+    
 
     // Отображение страницы чата сделки
     public function dealUser()
     {
         $user = Auth::user();
     
-        // Если роль партнёра, перенаправляем на страницу сделок кардинатора
         if ($user->status === 'partner') {
             return redirect()->route('deal.cardinator');
         }
@@ -197,52 +196,53 @@ class DealsController extends Controller
                 'priority'     => $validated['priority'],
                 'package'      => $validated['package'],
                 'client_name'  => $validated['name'],
-                'project_number'        => $validated['project_number'] ?? null,
-                'price_service'         => $validated['price_service_option'],
-                'rooms_count_pricing'   => $validated['rooms_count_pricing'] ?? null,
+                'project_number' => $validated['project_number'] ?? null,
+                'price_service' => $validated['price_service_option'],
+                'rooms_count_pricing' => $validated['rooms_count_pricing'] ?? null,
                 'execution_order_comment' => $validated['execution_order_comment'] ?? null,
-                'client_timezone'       => $validated['client_timezone'] ?? null,
-                'office_partner_id'     => $validated['office_partner_id'] ?? null,
-                'coordinator_id'        => $coordinatorId,
-                'total_sum'      => $validated['total_sum'] ?? null,
+                'client_timezone' => $validated['client_timezone'] ?? null,
+                'office_partner_id' => $validated['office_partner_id'] ?? null,
+                'coordinator_id' => $coordinatorId,
+                'total_sum' => $validated['total_sum'] ?? null,
                 'measuring_cost' => $validated['measuring_cost'] ?? null,
                 'project_budget' => $validated['project_budget'] ?? null,
-                'client_info'    => $validated['client_info'] ?? null,
-                'payment_date'   => $validated['payment_date'] ?? null,
+                'client_info' => $validated['client_info'] ?? null,
+                'payment_date' => $validated['payment_date'] ?? null,
                 'execution_comment' => $validated['execution_comment'] ?? null,
-                'comment'        => $validated['comment'] ?? null,
+                'comment' => $validated['comment'] ?? null,
                 'office_equipment' => $office_equipment,
                 'measurement_comments' => $validated['measurement_comments'] ?? null,
-                'start_date'           => $validated['start_date'] ?? null,
-                'project_duration'     => $validated['project_duration'] ?? null,
-                'project_end_date'     => $validated['project_end_date'] ?? null,
-                'architect_id'         => $validated['architect_id'] ?? null,
-                'designer_id'          => $validated['designer_id'] ?? null,
-                'visualizer_id'        => $validated['visualizer_id'] ?? null,
-                'visualization_link'   => $validated['visualization_link'] ?? null,
-                'final_floorplan'      => null,
-                'final_collage'        => null,
-                'final_project_file'   => null,
-                'client_project_rating'      => $validated['client_project_rating'] ?? null,
-                'architect_rating_client'    => $validated['architect_rating_client'] ?? null,
-                'architect_rating_partner'   => $validated['architect_rating_partner'] ?? null,
+                'start_date' => $validated['start_date'] ?? null,
+                'project_duration' => $validated['project_duration'] ?? null,
+                'project_end_date' => $validated['project_end_date'] ?? null,
+                'architect_id' => $validated['architect_id'] ?? null,
+                'designer_id' => $validated['designer_id'] ?? null,
+                'visualizer_id' => $validated['visualizer_id'] ?? null,
+                'visualization_link' => $validated['visualization_link'] ?? null,
+                'final_floorplan' => null,
+                'final_collage' => null,
+                'final_project_file' => null,
+                'client_project_rating' => $validated['client_project_rating'] ?? null,
+                'architect_rating_client' => $validated['architect_rating_client'] ?? null,
+                'architect_rating_partner' => $validated['architect_rating_partner'] ?? null,
                 'architect_rating_coordinator' => $validated['architect_rating_coordinator'] ?? null,
-                'designer_rating_client'     => $validated['designer_rating_client'] ?? null,
-                'designer_rating_partner'    => $validated['designer_rating_partner'] ?? null,
+                'designer_rating_client' => $validated['designer_rating_client'] ?? null,
+                'designer_rating_partner' => $validated['designer_rating_partner'] ?? null,
                 'designer_rating_coordinator' => $validated['designer_rating_coordinator'] ?? null,
-                'visualizer_rating_client'   => $validated['visualizer_rating_client'] ?? null,
-                'visualizer_rating_partner'  => $validated['visualizer_rating_partner'] ?? null,
+                'visualizer_rating_client' => $validated['visualizer_rating_client'] ?? null,
+                'visualizer_rating_partner' => $validated['visualizer_rating_partner'] ?? null,
                 'visualizer_rating_coordinator' => $validated['visualizer_rating_coordinator'] ?? null,
-                'coordinator_rating_client'  => $validated['coordinator_rating_client'] ?? null,
+                'coordinator_rating_client' => $validated['coordinator_rating_client'] ?? null,
                 'coordinator_rating_partner' => $validated['coordinator_rating_partner'] ?? null,
-                'coordinator_comment'        => $validated['coordinator_comment'] ?? null,
+                'coordinator_comment' => $validated['coordinator_comment'] ?? null,
                 'contract_number' => $validated['contract_number'],
-                'deal_note'       => $validated['deal_note'] ?? null,
+                'deal_note' => $validated['deal_note'] ?? null,
                 'user_id' => auth()->id(),
                 'registration_token' => Str::random(32),
                 'registration_token_expiry' => now()->addDays(7),
             ]);
 
+            // Обработка загрузки файлов
             $fileFields = [
                 'avatar',
                 'execution_order_file',
@@ -257,19 +257,13 @@ class DealsController extends Controller
             ];
 
             foreach ($fileFields as $field) {
-                if ($request->hasFile($field) && $request->file($field)->isValid()) {
-                    $dir = "dels/{$deal->id}";
-                    $extension = $request->file($field)->getClientOriginalExtension();
-                    $fileName = $field . '.' . $extension;
-                    $filePath = $request->file($field)->storeAs($dir, $fileName, 'public');
-                    if ($field === 'avatar') {
-                        $deal->update(['avatar_path' => $filePath]);
-                    } else {
-                        $deal->update([$field => $filePath]);
-                    }
+                $uploadData = $this->handleFileUpload($request, $deal, $field, $field === 'avatar' ? 'avatar_path' : $field);
+                if (!empty($uploadData)) {
+                    $deal->update($uploadData);
                 }
             }
 
+            // Прикрепляем пользователей
             $responsibles = $request->input('responsibles', []);
             $deal->users()->attach([auth()->id() => ['role' => 'coordinator']]);
             foreach ($responsibles as $respId) {
@@ -292,9 +286,10 @@ class DealsController extends Controller
     public function updateDeal(Request $request, $id)
     {
         $deal = Deal::findOrFail($id);
-        $userRole = Auth::user()->status;
+        $user = Auth::user();
+        $userRole = $user->status;
 
-        if ($userRole == 'coordinator' && $userRole == 'admin') {
+        if ($userRole == 'coordinator' || $userRole == 'admin') {
             $rules = [
                 'project_number' => 'nullable|string|max:21',
                 'status'         => 'nullable|in:Ждем ТЗ,Планировка,Коллажи,Визуализация,Рабочка/сбор ИП,Проект готов,Проект завершен,Проект на паузе,Возврат,В работе,Завершенный,На потом,Регистрация,Бриф прикриплен,Поддержка,Активный',
@@ -351,6 +346,7 @@ class DealsController extends Controller
         }
 
         $validated = $request->validate($rules);
+        $originalData = $deal->getAttributes();
         $dataToUpdate = $validated;
 
         $fileFields = [];
@@ -361,18 +357,77 @@ class DealsController extends Controller
         }
 
         foreach ($fileFields as $field) {
-            if ($request->hasFile($field) && $request->file($field)->isValid()) {
-                $dir = "dels/{$deal->id}";
-                $extension = $request->file($field)->getClientOriginalExtension();
-                $fileName = $field . '.' . $extension;
-                $filePath = $request->file($field)->storeAs($dir, $fileName, 'public');
-                $dataToUpdate[$field] = $filePath;
+            $uploadData = $this->handleFileUpload($request, $deal, $field, $field);
+            if (!empty($uploadData)) {
+                $dataToUpdate = array_merge($dataToUpdate, $uploadData);
             }
         }
 
         $deal->update($dataToUpdate);
+        $this->logDealChanges($deal, $originalData, $deal->getAttributes());
 
         return redirect()->back()->with('success', 'Сделка успешно обновлена.');
+    }
+
+    /**
+     * Логирование изменений сделки.
+     */
+    protected function logDealChanges($deal, $original, $new)
+    {
+        foreach (['updated_at', 'created_at'] as $key) {
+            unset($original[$key], $new[$key]);
+        }
+
+        $changes = [];
+        foreach ($new as $key => $newValue) {
+            if (array_key_exists($key, $original) && $original[$key] != $newValue) {
+                $changes[$key] = [
+                    'old' => $original[$key],
+                    'new' => $newValue,
+                ];
+            }
+        }
+
+        if (!empty($changes)) {
+            DealChangeLog::create([
+                'deal_id'   => $deal->id,
+                'user_id'   => Auth::id(),
+                'user_name' => Auth::user()->name,
+                'changes'   => $changes,
+            ]);
+        }
+    }
+
+    /**
+     * Вывод логов изменений по сделке.
+     */
+    public function changeLogsForDeal(Request $request, $dealId)
+    {
+        $deal = Deal::findOrFail($dealId);
+
+        if (!in_array(Auth::user()->status, ['coordinator', 'admin'])) {
+            return redirect()->back()->with('error', 'Доступ запрещён.');
+        }
+
+        $logs = DealChangeLog::where('deal_id', $deal->id)->orderBy('created_at', 'desc')->get();
+        $title_site = "Аудит изменений сделки: " . $deal->name;
+
+        return view('deal_change_logs', compact('logs', 'title_site', 'deal'));
+    }
+
+    /**
+     * Метод для общего просмотра логов (по всем сделкам).
+     */
+    public function changeLogs(Request $request)
+    {
+        if (!in_array(Auth::user()->status, ['coordinator', 'admin'])) {
+            return redirect()->back()->with('error', 'Доступ запрещён.');
+        }
+
+        $logs = DealChangeLog::orderBy('created_at', 'desc')->paginate(20);
+        $title_site = "Аудит изменений сделок";
+
+        return view('deal_change_logs', compact('logs', 'title_site'));
     }
 
     public function showDealChat($dealId)
@@ -391,10 +446,10 @@ class DealsController extends Controller
 
     public function removeExpiredDeals()
     {
-        $expiredDeals = Deal::where('registration_token_expiry', '<', now())->get();
-        foreach ($expiredDeals as $deal) {
+        // Оптимизированное удаление просроченных сделок
+        Deal::where('registration_token_expiry', '<', now())->each(function($deal) {
             $deal->delete();
-        }
+        });
         return redirect()->route('deal.cardinator')->with('success', 'Просроченные сделки удалены.');
     }
 
@@ -429,5 +484,26 @@ class DealsController extends Controller
             Log::error("Ошибка при отправке SMS для сделки ID: {$deal->id}. Ответ сервера: " . $response->body());
             throw new \Exception('Ошибка при отправке SMS.');
         }
+    }
+
+    /**
+     * Метод для обработки загрузки файлов.
+     *
+     * @param Request $request
+     * @param Deal $deal
+     * @param string $field
+     * @param string|null $targetField Если указано, то используется для обновления модели
+     * @return array
+     */
+    private function handleFileUpload(Request $request, $deal, $field, $targetField = null)
+    {
+        if ($request->hasFile($field) && $request->file($field)->isValid()) {
+            $dir = "dels/{$deal->id}";
+            $extension = $request->file($field)->getClientOriginalExtension();
+            $fileName = $field . '.' . $extension;
+            $filePath = $request->file($field)->storeAs($dir, $fileName, 'public');
+            return [$targetField ?? $field => $filePath];
+        }
+        return [];
     }
 }

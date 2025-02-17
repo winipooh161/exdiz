@@ -3,35 +3,41 @@
 <div class="container-auth">
     <div class="auth__body flex center">
         <div class="auth__form">
-            <h1 class="" style="text-align: center">Вход </h1>
+            <h1 class="" style="text-align: center">Вход по коду </h1>
             <p class="auth__title_sub">Мы рады видеть вас! </br>
-                Войдите в свою учетную запись</p>
+                <strong>Войдите</strong> в свою учетную запись</p>
             <form id="auth-form" action="{{ route('login.code.post') }}" method="POST">
                 @csrf
                 <div id="phone-section">
                     <label for="phone">
-                        <p>Телефон:</p>
-                        <input type="phone" name="phone" id="phone" class="form-control maskphone" placeholder="+7 (___) ___-__-__" value="{{ old('phone') }}"  maxlength="50" required>
+                        
+                        <input type="phone" name="phone" id="phone" class="form-control maskphone" placeholder="Введите телефон" value="{{ old('phone') }}"  maxlength="50" required>
                         <div id="phone-error" class="error-message"></div>
                     </label>
-                    <button type="button" id="send-code-btn" class="btn btn-primary">Отправить код</button>
+                    <button type="button" id="send-code-btn" class="btn btn-primary">Получить код</button>
+                    <ul class="auth__form__link">
+                       
+                        <li class="politic__info" style="text-align: center">Нажимая кнопку «Получить код», вы принимаете 
+                 <a href=""> условия пользовательского соглашения</a></li>
+                    </ul>
                 </div>
                 <div id="code-section" class="hidden">
                     <div class="code-inputs">
                         @for ($i = 0; $i < 4; $i++)
-                            <input type="text" class="code-input" placeholder="X"  maxlength="1" required>
+                            <input type="text" class="code-input" placeholder=""  maxlength="1" required>
                         @endfor
                     </div>
                     <input type="hidden" name="code" id="code" value="">
                     <div id="code-error" class="error-message"></div> 
                     <div class="code-section-link">
                         <a href="#" id="resend-code-link" class="disabled-link">Отправить код повторно</a>
-                        <p id="resend-timer" style="display: none;">Код можно будет отправить через <span id="resend-countdown">60</span> секунд.</p>
+                        <p id="resend-timer" style="display: none;">Получить код повторно можно через <span id="resend-countdown">60</span> секунд.</p>
                     </div>
                 </div>
             </form>
             <ul class="auth__form__link">
-                <li><a href="{{ route('login.password') }}">Войти по паролю</a></li>
+                <li class="else__auth">---------- или ----------</li>
+                <li><a href="{{ route('login.password') }}">Войти с паролем</a></li>
                 <li><a href="{{ route('register') }}">Регистрация</a></li>
             </ul>
         </div>
@@ -43,12 +49,7 @@
         display: flex;
         gap: 5px;
     }
-    .code-input {
-        width: 80px !IMPORTANT;
-        height: 100px !important;
-        text-align: center;
-        font-size: 1.5rem;
-    }
+  
     .error-message {
         color: red;
         font-size: 0.875rem;

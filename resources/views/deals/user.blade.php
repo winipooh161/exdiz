@@ -58,16 +58,16 @@
                                 <h4>Ответственные за сделку:</h4>
                                 @if ($deal->users->isNotEmpty())
                                     @foreach ($deal->users as $user)
-                                        <li class="deal__responsible__user">
-                                            <div class="deal__responsible__avatar">
-                                                <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}"
-                                                    alt="Аватар {{ $user->name }}">
-                                            </div>
-                                            <div class="deal__responsible__info">
-                                                <h5>{{ $user->name }}</h5>
-                                                <p>{{ $user->status }}</p>
-                                            </div>
-                                        </li>
+                                    <li onclick="window.location.href='/profile/view/{{ $user->id }}'" class="deal__responsible__user">
+                                        <div class="deal__responsible__avatar">
+                                            <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}" alt="Аватар {{ $user->name }}">
+                                        </div>
+                                        <div class="deal__responsible__info">
+                                            <h5>{{ $user->name }}</h5>
+                                            <p>{{ $user->status }}</p>
+                                        </div>
+                                    </li>
+                                    
                                     @endforeach
                                 @else
                                     <li class="deal__responsible__user">

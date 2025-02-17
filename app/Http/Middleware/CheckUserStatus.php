@@ -18,22 +18,18 @@ class CheckUserStatus
      */
     public function handle(Request $request, Closure $next, ...$statuses)
     {
-        // Проверяем, что пользователь авторизован
         if (Auth::check()) {
             // Пользователь с статусом "admin" получает доступ ко всем страницам
             if (Auth::user()->status === 'admin') {
-                return $next($request); // Доступ разрешен
+                return $next($request);
             }
-    
+
             // Проверяем, соответствует ли статус пользователя разрешённым
             if (in_array(Auth::user()->status, $statuses)) {
-                return $next($request); // Доступ разрешен
+                return $next($request);
             }
         }
-    
-        // Если пользователь не авторизован или не имеет права доступа
+
         return redirect()->route('home')->with('error', 'У вас недостаточно прав!');
     }
-    
-    
 }

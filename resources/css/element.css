@@ -1,19 +1,18 @@
 input,
 textarea,
 select {
-    border: 1px solid rgb(161, 200, 255);
     resize: none;
     min-height: 60px;
     margin: 0;
     font-size: 16px;
     width: 100%;
     border-radius: var(--p10);
-    padding: var(--p10);
-    background: var(--fff);
+    padding: 15px;
+    background: var(--blockbody);
 }
 
 .ponel__body button {
-    min-height: 78px;
+    min-height: 72px;
     font-weight: 600;
     color: var(--black);
     border-radius: var(--radius);
@@ -22,11 +21,11 @@ select {
 }
 
 button {
-    min-height: 78px;
-    text-transform: uppercase;
+    min-height: 62px;
+    
     font-weight: 600;
     max-width: 350px;
-    cursor: url(/resources/icon/cursor_point.png), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
@@ -34,6 +33,11 @@ button {
     border-radius: 9px;
     padding: var(--p10) var(--p30);
     background: var(--blue);
+    font-family: Onest;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22.4px;
+    letter-spacing: 0%;
 }
 
 
@@ -41,7 +45,7 @@ button {
 
 a {
     color: #01acff;
-    cursor: url(/resources/icon/cursor_point.png), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
     text-decoration: none;
 }
 
@@ -954,16 +958,16 @@ button.remove-button {
 .introjs-prevbutton {
     display: none !important;
 }.brif__body ul li::before {
-    content: "✖";
-    color: #ff7575;
+    content: "🗙";
+    /* color: #ff7575; */
 }
 .completed {
-    /* text-decoration: line-through; ✓ ✖"*/ 
+     
     color: var(--blue) !important;
 }
 .completed::before {
- content: "✓" !important;
- color: #BAFF75 !important;
+ content: "✔" !important;
+ /* color: #BAFF75 !important; */
 }table.dataTable thead th, table.dataTable thead td {
     border: none;
 }
@@ -976,7 +980,12 @@ button.remove-button {
     max-width: 400px;
     min-width: 300px;
     width: 100%;
-    min-height: 78px;
+    min-height: 62px;
+    font-family: Onest;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22.4px;
+    letter-spacing: 0%;
 }
 
 .emoji-button {
@@ -1004,7 +1013,7 @@ button.remove-button {
     margin: 3px;
 }
 
-/* Остальные стили, как в предыдущем примере */
+
 .chat-container {
     display: flex;
     gap: 20px;
@@ -1022,7 +1031,7 @@ button.remove-button {
 }
 .chat-box {
     flex: 1;
-    /* border: 1px solid #ddd; */
+    
     padding: 0px;
     position: relative;
     border-radius: var(--radius);
@@ -1111,4 +1120,8 @@ button.remove-button {
 }
 .read-status.read {
     font-weight: bold;
+}
+
+.button__variate2:hover {
+    background-attachment: var(--fff);
 }

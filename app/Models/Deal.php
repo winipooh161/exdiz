@@ -102,7 +102,7 @@ class Deal extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function chat()
     {
         return $this->hasOne(Chat::class);
@@ -122,7 +122,7 @@ class Deal extends Model
     {
         return $this->belongsTo(Commercial::class, 'commercial_id');
     }
-    
+
     public function brief()
     {
         return $this->belongsTo(Common::class, 'common_id');
@@ -142,7 +142,7 @@ class Deal extends Model
     {
         return $this->belongsToMany(User::class, 'deal_user', 'deal_id', 'user_id');
     }
-    
+
     public function coordinators()
     {
         return $this->users()->wherePivot('role', 'coordinator');
@@ -152,12 +152,12 @@ class Deal extends Model
     {
         return $this->users()->wherePivot('role', 'responsible');
     }
-    
+
     public function allUsers()
     {
         return $this->users()->wherePivotIn('role', ['responsible', 'coordinator']);
     }
-    
+
     public function getUnreadMessagesCount($userId)
     {
         return $this->chatMessages()
@@ -165,7 +165,7 @@ class Deal extends Model
             ->where('is_read', false)
             ->count();
     }
-    
+
     public function view(User $user, Deal $deal)
     {
         return $deal->users->contains($user->id);

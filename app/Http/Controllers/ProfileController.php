@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -18,9 +18,7 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    // ===================================
     // 1. Отображение собственного профиля
-    // ===================================
     public function index()
     {
         $user = Auth::user();
@@ -28,66 +26,55 @@ class ProfileController extends Controller
         return view('profile', compact('user', 'title_site'));
     }
 
-    // ================================================================
-    // 2. Просмотр профиля другого пользователя (новый метод)
-    // ================================================================
+    // 2. Просмотр профиля другого пользователя
     public function viewProfile($id)
     {
+        $title_site = "Профиль аккаунта | Личный кабинет Экспресс-дизайн";
         $viewer = Auth::user();
         $target = User::findOrFail($id);
 
-        // Если запрашивается собственный профиль, перенаправляем на страницу профиля
         if ($viewer->id === $target->id) {
             return redirect()->route('profile');
         }
 
-        // Проверяем, имеет ли текущий пользователь право просматривать профиль $target
         if (!$this->canViewProfile($viewer, $target)) {
             abort(403, 'Доступ запрещён.');
         }
 
-        return view('profile_view', ['target' => $target]);
+        return view('profile_view', ['target' => $target, 'title_site' => $title_site]);
     }
 
     /**
      * Проверка возможности просмотра профиля другого пользователя.
-     *
-     * @param  \App\Models\User  $viewer  Текущий (просматривающий) пользователь
-     * @param  \App\Models\User  $target  Просматриваемый профиль
-     * @return bool
+     * Здесь используется свойство status, а не role.
      */
     protected function canViewProfile($viewer, $target)
     {
-        // Всегда разрешаем просмотр своего профиля
         if ($viewer->id === $target->id) {
             return true;
         }
-
-        // Приводим роль просматривающего к нижнему регистру для корректного сравнения
-        $viewerRole = strtolower($viewer->role);
-
-        // Координатор и администратор видят все профили
-        if (in_array($viewerRole, ['coordinator', 'admin'])) {
+    
+        $viewerStatus = strtolower(trim($viewer->status));
+        $targetStatus = strtolower(trim($target->status));
+    
+        if (in_array($viewerStatus, ['admin', 'coordinator'])) {
             return true;
         }
-
-        // Остальные правила в зависимости от роли просматривающего
-        switch ($viewerRole) {
+    
+        switch ($viewerStatus) {
             case 'user':
-                return in_array(strtolower($target->role), ['partner', 'coordinator', 'architect', 'designer']);
+                return in_array($targetStatus, ['partner', 'coordinator', 'architect', 'designer']);
             case 'partner':
-                return in_array(strtolower($target->role), ['coordinator', 'architect', 'designer']);
+                return in_array($targetStatus, ['coordinator', 'architect', 'designer']);
             case 'architect':
             case 'designer':
-                return in_array(strtolower($target->role), ['client', 'coordinator']);
+                return in_array($targetStatus, ['user', 'coordinator']);
             default:
                 return false;
         }
     }
 
-    // ===========================================
     // 3. Отправка кода подтверждения на телефон
-    // ===========================================
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -95,11 +82,7 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::user();
-
-        // Удаляем все нецифровые символы из номера телефона
         $rawPhone = preg_replace('/\D/', '', $request->input('phone'));
-
-        // Формируем форматированный номер телефона: +7 (XXX) XXX-XX-XX
         $formattedPhone = '+7 (' . substr($rawPhone, 1, 3) . ') ' 
                          . substr($rawPhone, 4, 3) 
                          . '-' 
@@ -108,9 +91,8 @@ class ProfileController extends Controller
                          . substr($rawPhone, 9);
 
         $verificationCode = rand(1000, 9999);
-        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B'; // Пример API-ключа
+        $apiKey = '6CDCE0B0-6091-278C-5145-360657FF0F9B';
 
-        // Отправка кода через SMS.RU (пример)
         $response = Http::get("https://sms.ru/sms/send", [
             'api_id' => $apiKey,
             'to'     => $rawPhone,
@@ -124,11 +106,8 @@ class ProfileController extends Controller
             ]);
         }
 
-        // Сохраняем код и время истечения срока действия
         $user->verification_code = $verificationCode;
         $user->verification_code_expires_at = now()->addMinutes(10);
-
-        // Сохраняем форматированный номер телефона
         $user->phone = $formattedPhone;
         $user->save();
 
@@ -138,9 +117,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    // ================================================
     // 4. Подтверждение кода подтверждения телефона
-    // ================================================
     public function verifyCode(Request $request)
     {
         $request->validate([
@@ -177,9 +154,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    // =======================================
     // 5. Обновление аватара пользователя
-    // =======================================
     public function updateAvatar(Request $request)
     {
         $validated = $request->validate([
@@ -188,19 +163,16 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // Удаление старого аватара, если он существует
         if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
             unlink(public_path($user->avatar_url));
         }
 
         $avatar = $request->file('avatar');
         $avatarPath = 'user/avatar/' . $user->id . '/' . uniqid() . '.' . $avatar->getClientOriginalExtension();
-
         $destinationPath = public_path('user/avatar/' . $user->id);
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
-
         $avatar->move($destinationPath, basename($avatarPath));
         $user->avatar_url = $avatarPath;
         $user->save();
@@ -208,9 +180,7 @@ class ProfileController extends Controller
         return redirect()->route('profile')->with('success', 'Аватар успешно обновлен');
     }
 
-    // =======================================
     // 6. Удаление аккаунта пользователя
-    // =======================================
     public function deleteAccount()
     {
         try {
@@ -228,9 +198,7 @@ class ProfileController extends Controller
         }
     }
 
-    // ========================================
     // 7. Изменение пароля (старый метод)
-    // ========================================
     public function changePassword(Request $request)
     {
         $request->validate([
@@ -247,9 +215,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    // ========================================
     // 8. Обновление профиля (старый метод)
-    // ========================================
     public function updateProfile(Request $request)
     {
         $validatedData = $request->validate([
@@ -274,20 +240,44 @@ class ProfileController extends Controller
         ]);
     }
 
-    // ================================================================
-    // 9. Новый метод: обновление имени, email и (опционально) пароля за один запрос
-    // ================================================================
+    // 9. Обновление профиля (новый метод: имя, email, пароль и дополнительные поля)
     public function updateProfileAll(Request $request)
     {
         $this->authorize('update', Auth::user());
         
-        $request->validate([
-            'name'         => 'nullable|string|max:255',
-            'email'        => 'nullable|email|unique:users,email,' . Auth::id(),
-            'new_password' => 'nullable|min:8|confirmed',
-        ]);
-
         $user = Auth::user();
+
+        // Общие правила валидации
+        $rules = [
+            'name'         => 'nullable|string|max:255',
+            'email'        => 'nullable|email|unique:users,email,' . $user->id,
+            'new_password' => 'nullable|min:8|confirmed',
+        ];
+
+        // Дополнительные правила в зависимости от статуса пользователя
+        switch ($user->status) {
+            case 'user':
+                $rules['city'] = 'nullable|string|max:255';
+                break;
+            case 'partner':
+                $rules['city'] = 'nullable|string|max:255';
+                $rules['contract_number'] = 'nullable|string|max:255';
+                $rules['comment'] = 'nullable|string';
+                break;
+            case 'executor': // Профиль исполнителя
+                $rules['city'] = 'nullable|string|max:255'; // город/часовой пояс
+                $rules['portfolio_link'] = 'nullable|url';
+                $rules['experience'] = 'nullable|string|max:255';
+                $rules['rating'] = 'nullable|string|max:255';
+                $rules['active_projects_count'] = 'nullable|integer';
+                break;
+            case 'coordinator':
+                $rules['experience'] = 'nullable|string|max:255';
+                $rules['rating'] = 'nullable|string|max:255';
+                break;
+        }
+
+        $validated = $request->validate($rules);
 
         if ($request->filled('name')) {
             $user->name = $request->name;
@@ -297,6 +287,51 @@ class ProfileController extends Controller
         }
         if ($request->filled('new_password')) {
             $user->password = Hash::make($request->new_password);
+        }
+
+        // Обновляем дополнительные поля в зависимости от статуса
+        switch ($user->status) {
+            case 'user':
+                if ($request->filled('city')) {
+                    $user->city = $request->city;
+                }
+                break;
+            case 'partner':
+                if ($request->filled('city')) {
+                    $user->city = $request->city;
+                }
+                if ($request->filled('contract_number')) {
+                    $user->contract_number = $request->contract_number;
+                }
+                if ($request->filled('comment')) {
+                    $user->comment = $request->comment;
+                }
+                break;
+            case 'executor':
+                if ($request->filled('city')) {
+                    $user->city = $request->city;
+                }
+                if ($request->filled('portfolio_link')) {
+                    $user->portfolio_link = $request->portfolio_link;
+                }
+                if ($request->filled('experience')) {
+                    $user->experience = $request->experience;
+                }
+                if ($request->filled('rating')) {
+                    $user->rating = $request->rating;
+                }
+                if ($request->filled('active_projects_count')) {
+                    $user->active_projects_count = $request->active_projects_count;
+                }
+                break;
+            case 'coordinator':
+                if ($request->filled('experience')) {
+                    $user->experience = $request->experience;
+                }
+                if ($request->filled('rating')) {
+                    $user->rating = $request->rating;
+                }
+                break;
         }
 
         $user->save();

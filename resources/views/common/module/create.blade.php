@@ -1,8 +1,8 @@
 <form action="{{ route('common.store') }}" method="POST" class="div__create_form">
     @csrf
     <div class="div__create_block">
-   <h1><span class="Jikharev">Уважаемый клиент,</span>   мы подготовили для Вас Общий бриф</h1>
-        <p>Вам необходимо заполнить все поля. Чем больше мы получим информации, тем более точный результат мы сможем гарантировать!</p>
+   <h1><span class="Jikharev">Добро пожаловать!</span>   </h1>
+   <p><strong>Дорогой клиент,</strong> для продолжения требуется пройти <strong>бриф-опросник</strong> </p>
         <button type="submit">Создать бриф</button>
     </div>
 </form>

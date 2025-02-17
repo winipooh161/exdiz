@@ -5,12 +5,12 @@
             <div class="auth__form">
                 <h1>Войти</h1>
                 <p class="auth__title_sub">Мы рады видеть вас! </br>
-                    Войдите в свою учетную запись</p>
-                <form action="{{ route('login.post') }}" method="POST" id="login-form">
+                    <strong>Войдите</strong> в свою учетную запись</p>
+                <form action="{{ route('login.code.post') }}" method="POST" id="login-form">
                     @csrf
                     <label for="phone" id="phone-label">
-                        <p>Телефон:</p>
-                        <input type="text" name="phone" id="phone" class="form-control maskphone" placeholder="+7 (___) ___-__-__" value="{{ old('phone') }}" required>
+                        
+                        <input type="text" name="phone" id="phone" class="form-control maskphone" placeholder="Введите телефон" value="{{ old('phone') }}" required>
                         @error('phone')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
@@ -36,8 +36,8 @@
                     <!-- Пароль (по умолчанию скрыт) -->
                     <div id="password-fields" style="display: none;">
                         <label for="password">
-                            <p>Пароль:</p>
-                            <input type="password" name="password" id="password" placeholder="********"class="form-control" required>
+                            
+                            <input type="password" name="password" id="password" placeholder="Пароль"class="form-control" required>
                             @error('password')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -45,8 +45,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary" id="login-btn" style="display: none;">Войти</button>
                     <ul class="auth__form__link">
+                        <li class="else__auth">---------- или ----------</li>
                         <li><a href="{{ url('/registration') }}">Регистрация</a></li>
-                        <li><a href="#" id="toggle-login-method">Войти по паролю</a></li>
+                        <li><a href="#" id="toggle-login-method">Войти с паролем</a></li>
                     </ul>
                 </form>
             </div>
@@ -114,7 +115,7 @@
                 // Показываем вход по коду
                 passwordFields.style.display = 'none';
                 codeFields.style.display = 'block';
-                toggleButton.textContent = 'Войти по паролю'; // Меняем текст ссылки
+                toggleButton.textContent = 'Войти с паролем'; // Меняем текст ссылки
                 loginBtn.style.display = 'none'; // Скрываем кнопку "Войти"
             }
         });
