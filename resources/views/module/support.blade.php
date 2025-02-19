@@ -1,14 +1,15 @@
     <div class="support wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s">
         <h1 class="flex">
-            Ваша  <span class="Jikharev">техническая поддержка</span>
+            Техническая поддержка
         </h1>
         <div class="support__content">
             <div class="support__tickets">
              В разработке...
             </div>
         </div>
-        <div class="faq__body">
-            <h2>Часто задаваемые вопросы</h2>
+        <h1>Часто задаваемые вопросы</h1>
+        <div class="faq__body support-faq__body">
+           
             <div class="faq_block">
                 <div class="faq_item">
                     <div class="faq_question" onclick="toggleFaq(this)">
@@ -103,11 +104,11 @@
                 // Убираем класс "active" у всех элементов
                 document.querySelectorAll('.faq_item').forEach(item => {
                     if (item !== faqItem) {
-                        item.classList.remove('Активный');
+                        item.classList.remove('active');
                     }
                 });
                 // Переключаем класс "active" для текущего элемента
-                faqItem.classList.toggle('Активный');
+                faqItem.classList.toggle('active');
             }
         </script>
         <div id="modal1" class="modal">

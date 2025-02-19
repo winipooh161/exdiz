@@ -274,7 +274,7 @@ body {
     -ms-flex-align: end;
     align-items: flex-end;
     padding: 10px;
-    background: rgb(249, 249, 249);
+    background: var(--blockbody);
 }
 
 .chat-message p {
@@ -1017,7 +1017,11 @@ button.remove-button {
 .chat-container {
     display: flex;
     gap: 20px;
+    padding: var(--p20);
     max-width: 100%;
+    border-radius: var(--radius);
+    background: var(
+    --fff);
 }
 .user-list {
     width: 250px;
@@ -1038,7 +1042,21 @@ button.remove-button {
 }
 .chat-header {
     font-weight: bold;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    display: flex;
+    min-height: 66px;
+    background: var(--fff);
+    justify-content: flex-start;
+    margin: var(--m20) !important; 
+    border-radius: var(
+    --radius);
+    align-content: center;
+    align-items: center;
+    font-family: Onest;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0px;
 }
 .chat-messages {
     max-height: 400px;

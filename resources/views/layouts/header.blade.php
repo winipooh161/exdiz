@@ -32,11 +32,12 @@
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                  <img src="/storage/icon/exit.svg" alt="">
              </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
+              
                 
             @endguest
         </div>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
     </div>
 </header>

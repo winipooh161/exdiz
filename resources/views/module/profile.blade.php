@@ -1,11 +1,16 @@
 
 <h1 class="flex">
-    Ваш <span class="Jikharev">профиль</span>
+    Ваш профиль
 </h1>
 
 <div class="profile flex between">
     <!-- Левая колонка: Аватар и базовая информация -->
     <div class="profile__info center bgfff flex wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s">
+        <div class="status__profile">
+       
+                <a href="">{{ $user->status ?? 'Не установлен' }}</a>
+           
+        </div>
         <div class="profile__avatar">
             <form id="update-avatar-form" action="{{ route('profile.update_avatar') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -23,172 +28,103 @@
             </form>
             <div class="hover__create">
                 <!-- SVG-иконка карандаша -->
-                <svg viewBox="0 0 15 15" fill="none">
-                    <!-- ваш SVG-код -->
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <mask id="mask0_1358_2896" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="18" height="18"> <path d="M3 11C3 7.22876 3 5.34315 4.17157 4.17157C5.34315 3 7.22876 3 11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.22876 21 5.34315 21 4.17157 19.8284C3 18.6569 3 16.7712 3 13V11Z" fill="#273B4A"></path> </mask> <g mask="url(#mask0_1358_2896)"> <path d="M5.40989 12.5901L5.25713 12.7429C4.27646 13.7235 3.78613 14.2139 3.49264 14.8158C3.39066 15.025 3.30712 15.2427 3.24299 15.4664C3.05843 16.1102 3.09488 16.8027 3.16777 18.1877L3.5 24.5H21V19.7573C21 18.3059 21 17.5802 20.7614 16.9207C20.6962 16.7404 20.6181 16.565 20.5277 16.3959C20.1971 15.7774 19.6577 15.2919 18.5789 14.321L18.3643 14.1279C17.4682 13.3214 17.0202 12.9182 16.5078 12.8039C16.1864 12.7322 15.8523 12.741 15.5352 12.8295C15.0295 12.9705 14.6033 13.3967 13.7508 14.2492C13.1184 14.8816 12.8023 15.1977 12.4625 15.2406C12.2519 15.2672 12.0383 15.226 11.8526 15.1231C11.5531 14.9572 11.3742 14.5399 11.0166 13.7053C10.2559 11.9304 9.87554 11.0429 9.22167 10.7151C8.89249 10.5501 8.52413 10.4792 8.1572 10.5101C7.42836 10.5716 6.75554 11.2445 5.40989 12.5901L5.40989 12.5901Z" fill="#2A4157" fill-opacity="0.24" stroke="#222222"></path> </g> <path d="M3 11C3 7.22876 3 5.34315 4.17157 4.17157C5.34315 3 7.22876 3 11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.22876 21 5.34315 21 4.17157 19.8284C3 18.6569 3 16.7712 3 13V11Z" stroke="#222222" stroke-width="1.2"></path> <circle cx="16.5" cy="7.5" r="1.5" fill="#222222"></circle> </g></svg>
             </div>
+        </div>
+        <div class="button__a__profile">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Выйти из аккаунта</a>
+            <a class="buttonred" href="#" onclick="event.preventDefault(); document.getElementById('delete-account-form').submit();">Удалить аккаунт</a>
         </div>
 
-        <div class="profile__link flex">
-            <form id="delete-account-form" action="{{ route('delete_account') }}" method="POST" style="display:none;">
-                @csrf
-            </form> 
-            <div class="class-border-profile">
-                <h3>{{ $user->name }}</h3>
-                <label>
-                    <p>Номер телефона</p>
-                    <a href="">{{ $user->phone ?? 'Не указан' }}</a>
-                </label>
-                <label>
-                    <p>Почта</p>
-                    <a href="">{{ $user->email }}</a>
-                </label>
-                <label>
-                    <p>Статус</p>
-                    <a href="">{{ $user->status ?? 'Не установлен' }}</a>
-                </label>
-                <label>
-                    <p>Дата регистрации</p>
-                    <a href="">{{ $user->created_at->format('d.m.Y H:i') }}</a>
-                </label>
-                
-                <!-- Дополнительные данные в зависимости от статуса -->
-                @if($user->status == 'user')
-                    <label>
-                        <p>Город</p>
-                        <a href="">{{ $user->city ?? 'Не указан' }}</a>
-                    </label>
-                @elseif($user->status == 'partner')
-                    <label>
-                        <p>Город</p>
-                        <a href="">{{ $user->city ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Номер договора</p>
-                        <a href="">{{ $user->contract_number ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Комментарий</p>
-                        <a href="">{{ $user->comment ?? 'Не указан' }}</a>
-                    </label>
-                @elseif($user->status == 'executor')
-                    <label>
-                        <p>Город/Часовой пояс</p>
-                        <a href="">{{ $user->city ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Ссылка на портфолио</p>
-                        <a href="{{ $user->portfolio_link }}">{{ $user->portfolio_link ?? 'Не указана' }}</a>
-                    </label>
-                    <label>
-                        <p>Стаж</p>
-                        <a href="">{{ $user->experience ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Рейтинг в ЭД</p>
-                        <a href="">{{ $user->rating ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Проекты в работе</p>
-                        <a href="">{{ $user->active_projects_count ?? '0' }}</a>
-                    </label>
-                @elseif($user->status == 'coordinator')
-                    <label>
-                        <p>Стаж</p>
-                        <a href="">{{ $user->experience ?? 'Не указан' }}</a>
-                    </label>
-                    <label>
-                        <p>Рейтинг в ЭД</p>
-                        <a href="">{{ $user->rating ?? 'Не указан' }}</a>
-                    </label>
-                @endif
-            </div>
-            <div class="button__a__profile">
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Выйти из аккаунта</a>
-                <a class="buttonred" href="#" onclick="event.preventDefault(); document.getElementById('delete-account-form').submit();">Удалить аккаунт</a>
-            </div>
-        </div>
+        
     </div>
 
     <!-- Правая колонка: Форма редактирования профиля -->
     <div class="profile__modules wow fadeInLeft" data-wow-duration="2s" data-wow-delay="2s">
-        <div class="profile__info profile__info__table">
+        <div class=" profile__info__table">
             <div class="password__new" id="update-all-section">
-                <h3>Изменение имени, почты, пароля и дополнительных данных</h3>
+                <h3>Личная информация</h3>
                 <form id="update-all-form">
                     @csrf
-                    <div>
-                        <label for="name">Имя:</label>
-                        <input type="text" id="name" name="name" value="{{ $user->name }}" placeholder="Имя и фамилия">
+                    <div class="row__column-profile">
+                        <!-- Левая колонка -->
+                        <div class="column-profile">
+                            <div class="form-group-colum__profile">
+                                <label for="name">Имя:</label>
+                                <input type="text" id="name" name="name" value="{{ $user->name }}" placeholder="Имя и фамилия">
+                            </div>
+                            <div class="form-group-colum__profile">
+                                <label for="email">Электронная почта:</label>
+                                <input type="email" id="email" name="email" value="{{ $user->email }}" placeholder="example@mail.com">
+                            </div>
+                            <div class="form-group-colum__profile">
+                                <label for="new_password">Новый пароль</label>
+                                <input type="password" id="new_password" name="new_password" placeholder="********">
+                            </div>
+                            <div class="form-group-colum__profile">
+                                <label for="new_password_confirmation">Подтверждение пароля</label>
+                                <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="********">
+                            </div>
+                        </div>
+            
+                        <!-- Правая колонка -->
+                        <div class="column">
+                            @if($user->status == 'user')
+                                <div class="form-group-colum__profile">
+                                    <label for="city">Город:</label>
+                                    <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город">
+                                </div>
+                            @elseif($user->status == 'partner')
+                                <div class="form-group-colum__profile">
+                                    <label for="city">Город:</label>
+                                    <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="contract_number">Номер договора:</label>
+                                    <input type="text" id="contract_number" name="contract_number" value="{{ $user->contract_number }}" placeholder="Номер договора">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="comment">Комментарий:</label>
+                                    <textarea id="comment" name="comment" placeholder="Дополнительная информация">{{ $user->comment }}</textarea>
+                                </div>
+                            @elseif($user->status == 'executor')
+                                <div class="form-group-colum__profile">
+                                    <label for="city">Город/Часовой пояс:</label>
+                                    <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город или часовой пояс">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="portfolio_link">Ссылка на портфолио:</label>
+                                    <input type="url" id="portfolio_link" name="portfolio_link" value="{{ $user->portfolio_link }}" placeholder="Ссылка на портфолио">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="experience">Стаж:</label>
+                                    <input type="text" id="experience" name="experience" value="{{ $user->experience }}" placeholder="Ваш стаж">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="rating">Рейтинг в ЭД:</label>
+                                    <input type="text" id="rating" name="rating" value="{{ $user->rating }}" placeholder="Ваш рейтинг">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="active_projects_count">Проекты в работе:</label>
+                                    <input type="number" id="active_projects_count" name="active_projects_count" value="{{ $user->active_projects_count }}" placeholder="Количество проектов">
+                                </div>
+                            @elseif($user->status == 'coordinator')
+                                <div class="form-group-colum__profile">
+                                    <label for="experience">Стаж:</label>
+                                    <input type="text" id="experience" name="experience" value="{{ $user->experience }}" placeholder="Ваш стаж">
+                                </div>
+                                <div class="form-group-colum__profile">
+                                    <label for="rating">Рейтинг в ЭД:</label>
+                                    <input type="text" id="rating" name="rating" value="{{ $user->rating }}" placeholder="Ваш рейтинг">
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <div>
-                        <label for="email">Электронная почта:</label>
-                        <input type="email" id="email" name="email" value="{{ $user->email }}" placeholder="example@mail.com">
-                    </div>
-                    <div>
-                        <label for="new_password">Новый пароль</label>
-                        <input type="password" id="new_password" name="new_password" placeholder="********">
-                    </div>
-                    <div>
-                        <label for="new_password_confirmation">Подтверждение пароля</label>
-                        <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="********">
-                    </div>
-                    
-                    <!-- Дополнительные поля в зависимости от статуса -->
-                    @if($user->status == 'user')
-                        <div>
-                            <label for="city">Город:</label>
-                            <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город">
-                        </div>
-                    @elseif($user->status == 'partner')
-                        <div>
-                            <label for="city">Город:</label>
-                            <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город">
-                        </div>
-                        <div>
-                            <label for="contract_number">Номер договора:</label>
-                            <input type="text" id="contract_number" name="contract_number" value="{{ $user->contract_number }}" placeholder="Номер договора">
-                        </div>
-                        <div>
-                            <label for="comment">Комментарий:</label>
-                            <textarea id="comment" name="comment" placeholder="Дополнительная информация">{{ $user->comment }}</textarea>
-                        </div>
-                    @elseif($user->status == 'executor')
-                        <div>
-                            <label for="city">Город/Часовой пояс:</label>
-                            <input type="text" id="city" name="city" value="{{ $user->city }}" placeholder="Ваш город или часовой пояс">
-                        </div>
-                        <div>
-                            <label for="portfolio_link">Ссылка на портфолио:</label>
-                            <input type="url" id="portfolio_link" name="portfolio_link" value="{{ $user->portfolio_link }}" placeholder="Ссылка на портфолио">
-                        </div>
-                        <div>
-                            <label for="experience">Стаж:</label>
-                            <input type="text" id="experience" name="experience" value="{{ $user->experience }}" placeholder="Ваш стаж">
-                        </div>
-                        <div>
-                            <label for="rating">Рейтинг в ЭД:</label>
-                            <input type="text" id="rating" name="rating" value="{{ $user->rating }}" placeholder="Ваш рейтинг">
-                        </div>
-                        <div>
-                            <label for="active_projects_count">Проекты в работе:</label>
-                            <input type="number" id="active_projects_count" name="active_projects_count" value="{{ $user->active_projects_count }}" placeholder="Количество проектов">
-                        </div>
-                    @elseif($user->status == 'coordinator')
-                        <div>
-                            <label for="experience">Стаж:</label>
-                            <input type="text" id="experience" name="experience" value="{{ $user->experience }}" placeholder="Ваш стаж">
-                        </div>
-                        <div>
-                            <label for="rating">Рейтинг в ЭД:</label>
-                            <input type="text" id="rating" name="rating" value="{{ $user->rating }}" placeholder="Ваш рейтинг">
-                        </div>
-                    @endif
-
                     <div id="error-message" style="color: red; display: none;"></div>
                     <button type="submit">Сохранить изменения</button>
                 </form>
             </div>
+            
         </div>
         
         <!-- Форма смены номера телефона -->

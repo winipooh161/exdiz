@@ -364,8 +364,8 @@ class ComposerStaticInit69113f354d328d08bae02daea98b5f62
         ),
         'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            1 => __DIR__ . '/..' . '/spatie/ignition/src',
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -723,6 +723,7 @@ class ComposerStaticInit69113f354d328d08bae02daea98b5f62
         'App\\Models\\Commercial' => __DIR__ . '/../..' . '/app/Models/Commercial.php',
         'App\\Models\\Common' => __DIR__ . '/../..' . '/app/Models/Common.php',
         'App\\Models\\Deal' => __DIR__ . '/../..' . '/app/Models/Deal.php',
+        'App\\Models\\DealChangeLog' => __DIR__ . '/../..' . '/app/Models/DealChangeLog.php',
         'App\\Models\\Document' => __DIR__ . '/../..' . '/app/Models/Document.php',
         'App\\Models\\Estimate' => __DIR__ . '/../..' . '/app/Models/Estimate.php',
         'App\\Models\\Message' => __DIR__ . '/../..' . '/app/Models/Message.php',

@@ -53,6 +53,7 @@ return array(
     'App\\Models\\Commercial' => $baseDir . '/app/Models/Commercial.php',
     'App\\Models\\Common' => $baseDir . '/app/Models/Common.php',
     'App\\Models\\Deal' => $baseDir . '/app/Models/Deal.php',
+    'App\\Models\\DealChangeLog' => $baseDir . '/app/Models/DealChangeLog.php',
     'App\\Models\\Document' => $baseDir . '/app/Models/Document.php',
     'App\\Models\\Estimate' => $baseDir . '/app/Models/Estimate.php',
     'App\\Models\\Message' => $baseDir . '/app/Models/Message.php',

@@ -10,8 +10,8 @@
             <p><strong>Дорогой клиент,</strong> для продолжения требуется пройти <strong>бриф-опросник</strong> </p>
             <div class="button__create__brifs flex gap3" id="step-8">
             <!-- Две кнопки. Каждая «говорит» контроллеру, какой именно бриф нужно создать. -->
-            <button type="submit" name="brif_type" value="common">Создать Общий бриф</button>
-            <button type="submit" name="brif_type" value="commercial">Создать Коммерческий бриф</button>
+            <button type="submit"  class="button__icon" name="brif_type" value="common"><span>Создать Общий бриф </span> <img src="/storage/icon/plus.svg" alt=""></button>
+            <button type="submit"  class="button__icon" name="brif_type" value="commercial"><span>Создать Коммерческий бриф </span> <img src="/storage/icon/plus.svg" alt=""></button>
         </div>
         </div>
     </form>
@@ -160,8 +160,8 @@
         </h1>
 
         <div class="brifs__button__create flex">
-            <button onclick="window.location.href='{{ route('common.create') }}'">Создать Общий бриф</button>
-            <button onclick="window.location.href='{{ route('commercial.create') }}'">Создать Коммерческий бриф</button>
+            <button class="button__icon" onclick="window.location.href='{{ route('common.create') }}'"><span>Создать Общий бриф </span> <img src="/storage/icon/plus.svg" alt=""></button>
+            <button class="button__icon" onclick="window.location.href='{{ route('commercial.create') }}'"><span>Создать Коммерческий бриф </span> <img src="/storage/icon/plus.svg" alt=""></button>
         </div>
     </div>
 
@@ -179,42 +179,57 @@
             @else
                 <ul class="brifs__list">
                     @foreach ($activeBrifs as $brif)
-                        <li class="brif"
-                            onclick="window.location.href='{{ route(
-                                $brif instanceof \App\Models\Common
-                                    ? 'common.questions'
-                                    : 'commercial.questions',
-                                [
-                                    'id'   => $brif->id,
-                                    'page' => $brif->current_page
-                                ]
-                            ) }}'">
-                            
-                            <h4>{{ $brif->title }} #{{ $brif->id }}</h4>
-                            <div class="brif__body flex">
-                                <ul>
-                                    @foreach (
-                                        ($brif instanceof \App\Models\Common
-                                            ? $pageTitlesCommon
-                                            : $pageTitlesCommercial)
-                                        as $index => $title
-                                    )
-                                        <li class="{{ $index + 1 <= $brif->current_page ? 'completed' : '' }}">
-                                            {{ $title }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-
-                            <div class="button__brifs flex">
-                                <button class="button__variate2"><img src="/storage/icon/create__info.svg" alt=""> <span>Заполнить</span></button>
-                                <button class="button__variate2 icon"><img src="/storage/icon/close__info.svg" alt=""></button>
-                            </div>
-                            <p class="flex wd100 between">
-                                <span>{{ $brif->created_at->format('H:i') }}</span>
-                                <span>{{ $brif->created_at->format('d.m.Y') }}</span>
-                            </p>
-                        </li>
+                    <li class="brif"
+                    onclick="window.location.href='{{ route(
+                        $brif instanceof \App\Models\Common
+                            ? 'common.questions'
+                            : 'commercial.questions',
+                        [
+                            'id'   => $brif->id,
+                            'page' => $brif->current_page
+                        ]
+                    ) }}'">
+                    
+                    <h4>{{ $brif->title }} #{{ $brif->id }}</h4>
+                    <div class="brif__body flex">
+                        <ul>
+                            @foreach (
+                                ($brif instanceof \App\Models\Common
+                                    ? $pageTitlesCommon
+                                    : $pageTitlesCommercial)
+                                as $index => $title
+                            )
+                                <li class="{{ $index + 1 <= $brif->current_page ? 'completed' : '' }}">
+                                    {{ $title }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                
+                    <div class="button__brifs flex">
+                        <!-- Кнопка заполнения (без изменений) -->
+                        <button class="button__variate2">
+                            <img src="/storage/icon/create__info.svg" alt=""> 
+                            <span>Заполнить</span>
+                        </button>
+                        <!-- Кнопка удаления с event.stopPropagation() и вызовом confirmDelete -->
+                        <button class="button__variate2 icon"
+                            onclick="event.stopPropagation(); confirmDelete({{ $brif->id }});">
+                            <img src="/storage/icon/close__info.svg" alt="">
+                        </button>
+                    </div>
+                    <p class="flex wd100 between">
+                        <span>{{ $brif->created_at->format('H:i') }}</span>
+                        <span>{{ $brif->created_at->format('d.m.Y') }}</span>
+                    </p>
+                
+                    <!-- Скрытая форма для удаления -->
+                    <form id="delete-form-{{ $brif->id }}" action="{{ route('brifs.destroy', $brif->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </li>
+                
                     @endforeach
                 </ul>
             @endif
@@ -238,6 +253,10 @@
                             ) }}'">
                             
                             <h4>{{ $brif->title }} #{{ $brif->id }}</h4>
+                            <div class="button__brifs flex">
+                                <button class="button__variate2"><img src="/storage/icon/create__info.svg" alt=""> <span>Посмотреть</span></button>
+                               
+                            </div>
                             <p class="flex wd100 between">
                                 <span>{{ $brif->created_at->format('H:i') }}</span>
                                 <span>{{ $brif->created_at->format('d.m.Y') }}</span>
@@ -249,3 +268,10 @@
         </div>
     </div>
 @endif
+<script>
+    function confirmDelete(brifId) {
+        if (confirm("Вы действительно хотите удалить этот бриф? Это действие нельзя будет отменить.")) {
+            document.getElementById('delete-form-' + brifId).submit();
+        }
+    }
+</script>

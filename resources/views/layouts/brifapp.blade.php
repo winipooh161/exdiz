@@ -70,6 +70,9 @@
             @yield('content')  @include('layouts/mobponel')
         </main>
     </div>
+    <div class="question_class-button">
+       <a href="#top-title" class="top-title"><img src="/storage/icon/send.svg" alt=""></a>
+    </div>
     <script>
         const unreadCounter = document.getElementById('unread-count');
 

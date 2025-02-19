@@ -269,11 +269,12 @@ class CommonController extends Controller
 
     $title_site = "Процесс создания Общего брифа | Личный кабинет Экспресс-дизайн";
     $user = Auth::user();
-
+    $totalPages = count($questions);
     return view('common.questions', [
         'questions' => $questions[$page],
         'page'      => $page,
         'user'      => $user,
+        'totalPages'=> $totalPages,
         'brif'      => $brif, // Now correctly passed as $brif
         'title'     => $titles[$page]['title'] ?? '',
         'subtitle'  => $titles[$page]['subtitle'] ?? '',
@@ -292,85 +293,93 @@ class CommonController extends Controller
      */
     public function saveAnswers(Request $request, $id, $page)
     {
-        // Валидация
+        // Валидация входящих данных
         $data = $request->validate([
-            'answers' => 'nullable|array',
-            'price' => 'nullable|numeric',
-            'documents' => 'nullable|array',
-            'documents.*' => 'file|max:25600|mimes:pdf,xlsx,xls,doc,docx,jpg,jpeg,png,heic,heif'
+            'answers'      => 'nullable|array',
+            'price'        => 'nullable|numeric',
+            'documents'    => 'nullable|array',
+            'documents.*'  => 'file|max:25600|mimes:pdf,xlsx,xls,doc,docx,jpg,jpeg,png,heic,heif'
         ]);
-
-        // Находим бриф по ID и пользователю
+    
+        // Находим бриф по ID и по текущему пользователю
         $brif = Common::where('id', $id)
             ->where('user_id', auth()->id())
             ->first();
-
+    
         if (!$brif) {
             return redirect()->route('brifs.index')
                 ->with('error', 'Бриф не найден или не принадлежит данному пользователю.');
         }
-
-        // Если есть поле price
+    
+        // Если передано поле price — обновляем его
         if (isset($data['price'])) {
             $brif->price = $data['price'];
         }
-
-        // Обновляем ответы в колонках таблицы
+    
+        // Обновляем ответы в соответствующих колонках таблицы
         if (isset($data['answers'])) {
             foreach ($data['answers'] as $key => $answer) {
-                if (Schema::hasColumn('commons', $key)) {
+                if (\Illuminate\Support\Facades\Schema::hasColumn('commons', $key)) {
                     $brif->$key = $answer;
                 }
             }
         }
-
-        // Если это последняя страница (к примеру, 15) и есть файлы
+    
+        // Если это страница 15 — обработка загрузки файлов
         if ($page == 15 && $request->hasFile('documents')) {
             $uploadedFiles = [];
             $totalSize = 0;
             $userId = auth()->id();
-
+    
             foreach ($request->file('documents') as $file) {
                 if ($file->isValid()) {
                     $fileSize = $file->getSize();
                     $totalSize += $fileSize;
-
+    
                     if ($totalSize > 25 * 1024 * 1024) {
-                        return redirect()->back()->with('error', 'Total file size exceeds 25 MB.');
+                        return redirect()->back()->with('error', 'Суммарный размер файлов не должен превышать 25 МБ.');
                     }
-
+    
                     $filename = uniqid() . '_' . $file->getClientOriginalName();
                     $briefId = $brif->id;
-
                     $directory = public_path("uploads/documents/user/{$userId}/commons/{$briefId}");
+    
                     if (!file_exists($directory)) {
                         mkdir($directory, 0755, true);
                     }
-
+    
                     $file->move($directory, $filename);
                     $uploadedFiles[] = "uploads/documents/user/{$userId}/commons/{$briefId}/{$filename}";
                 } else {
-                    return redirect()->back()->with('error', 'One or more files are invalid.');
+                    return redirect()->back()->with('error', 'Один или несколько файлов имеют неверный формат.');
                 }
             }
-
+    
             if (!empty($uploadedFiles)) {
                 $existingDocuments = $brif->documents ? json_decode($brif->documents, true) : [];
                 $brif->documents = json_encode(array_merge($existingDocuments, $uploadedFiles));
             }
         }
-
-         // Список вопросов для разных страниц
-         $questions = [
-            1 => ['question_1_1', 'question_1_2'],
-            2 => ['question_2_1', 'question_2_2'],
-            3 => ['question_3_1', 'question_3_2'],
-            4 => ['question_4_1', 'question_4_2'],
-            5 => ['question_5_1', 'question_5_2'],
-            6 => ['question_6_1', 'question_6_2'],
-            7 => ['question_7_1', 'question_7_2'],
-            8 => ['question_8_1', 'question_8_2'],
-            9 => ['question_9_1', 'question_9_2'],
+    
+        // Обработка действия «назад»
+        if ($request->input('action') === 'prev') {
+            $prevPage = $page > 1 ? $page - 1 : 1;
+            $brif->current_page = $prevPage;
+            $brif->save();
+            return redirect()->route('common.questions', ['id' => $brif->id, 'page' => $prevPage]);
+        }
+    
+        // Массив для определения, есть ли следующая страница
+        $questionsMapping = [
+            1  => ['question_1_1', 'question_1_2'],
+            2  => ['question_2_1', 'question_2_2'],
+            3  => ['question_3_1', 'question_3_2'],
+            4  => ['question_4_1', 'question_4_2'],
+            5  => ['question_5_1', 'question_5_2'],
+            6  => ['question_6_1', 'question_6_2'],
+            7  => ['question_7_1', 'question_7_2'],
+            8  => ['question_8_1', 'question_8_2'],
+            9  => ['question_9_1', 'question_9_2'],
             10 => ['question_10_1', 'question_10_2'],
             11 => ['question_11_1', 'question_11_2'],
             12 => ['question_12_1', 'question_12_2'],
@@ -378,43 +387,39 @@ class CommonController extends Controller
             14 => ['question_14_1', 'question_14_2'],
             15 => ['question_15_1', 'question_15_2'],
         ];
-
-        // Определяем, есть ли следующая страница
+    
         $nextPage = $page + 1;
-        if (!isset($questions[$nextPage])) {
-            // Если страниц больше нет, значит завершаем бриф
+        // Если следующей страницы нет — завершаем заполнение брифа
+        if (!isset($questionsMapping[$nextPage])) {
             $brif->status = 'Завершенный';
             $brif->save();
-
-            // Ищем (или создаём) сделку, привязываем к ней бриф
-            $deal = Deal::where('user_id', auth()->id())->first(); 
+    
+            // Поиск (или создание) сделки и привязка к брифу
+            $deal = Deal::where('user_id', auth()->id())->first();
             if ($deal) {
                 $brif->deal_id = $deal->id;
                 $brif->save();
-
+    
                 $deal->common_id = $brif->id;
                 $deal->update([
-                    'client_name' => auth()->user()->name,
-                    'client_phone' => auth()->user()->phone ?? 'N/A',
-                    'total_sum' => $brif->price ?? 0,
-                    'status' => 'Бриф прикриплен',
-                    'link' => "/common/{$brif->id}",
+                    'client_name'   => auth()->user()->name,
+                    'client_phone'  => auth()->user()->phone ?? 'N/A',
+                    'total_sum'     => $brif->price ?? 0,
+                    'status'        => 'Бриф прикриплен',
+                    'link'          => "/common/{$brif->id}",
                 ]);
-
-                // Пример SMS-уведомления координатору (если нужно)
-                // $coordinator = $deal->coordinator; // и т.д.
             }
-
+    
             return redirect()->route('brifs.index')
                 ->with('success', 'Бриф успешно заполнен!');
         }
-
-        // Иначе продолжаем — сохраняем страницу и идём дальше
+    
+        // Иначе — сохраняем номер следующей страницы и перенаправляем пользователя туда
         $brif->current_page = $nextPage;
         $brif->save();
-
+    
         return redirect()->route('common.questions', ['id' => $brif->id, 'page' => $nextPage]);
     }
-
+    
     
 }

@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     // Маршрут для брифов
     Route::get('/brifs', [BrifsController::class, 'index'])->name('brifs.index');
     Route::post('/brifs/store', [BrifsController::class, 'store'])->name('brifs.store');
+    Route::delete('/brifs/{brif}', [App\Http\Controllers\BrifsController::class, 'destroy'])->name('brifs.destroy');
 
     // Маршрут для брифов ОБЩИЙ
     Route::get('/common/questions/{id}/{page}', [CommonController::class, 'questions'])

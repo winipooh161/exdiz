@@ -251,6 +251,36 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .button__create__brifs {
+        flex-wrap: wrap;
+        gap: vaR(--g10);
+        width: 100%;
+    }
+    .profile__info__table {
+        width: 100%;
+        /* max-height: 370px; */
+    }
+    .form-group-colum__profile {
+        width: 100%;
+    }
+    .div__create_form {
+        background-position: left;
+    }
+    .div__create_block button {
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+    li.brif h4 {
+
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 22.95px;
+        letter-spacing: 0%;
+    }
+    .brifs .brifs__button__create button {max-width: 100%;display: flex;gap: var(--g20);min-width: 100%;justify-content: center;}
+    .auth__form {
+        padding: 130px 15px;
+    }
     .form__title h1 {
         width: 55%;
         padding-bottom: 10px;
@@ -262,8 +292,21 @@
     }
     .div__create_block h1 {
         width: 100%;
+        font-weight: 400;
+        font-size: 46px !important;
+        padding: 0;
+        line-height: 53.59px;
+        letter-spacing: -2%;
+        text-align: center;
     }.div__create_block p {
         width: 100%;
+        text-align: center;
+        font-family: Onest;
+        font-weight: 400;
+        font-size: 14px !important;
+        line-height: 19.6px;
+        letter-spacing: 0%;
+        text-align: center;
     }
     .question_class-button {
         position: fixed;
@@ -335,6 +378,13 @@
     .brifs__section h2 {
         border-bottom: 1px solid var(--blue);
         margin-bottom: 10px;
+        font-family: Onest;
+        font-weight: 400;
+        font-size: 22px;
+        line-height: 28.05px;
+        letter-spacing: 0%;
+        margin: 0;
+        padding: 0;
     }
 
     div#home {
@@ -445,15 +495,17 @@
 
     .header__user {
         -ms-flex-wrap: nowrap !IMPORTANT;
-            flex-wrap: nowrap !IMPORTANT;
+        flex-wrap: nowrap !IMPORTANT;
+        display: flex;
         width: 100%;
+        justify-content: space-between;
     }
 
     .header__user__name.flex.exit {
-        width: 100%;
+        max-width: 100%;
         -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
     }
 
     .header__nubmer {
@@ -494,6 +546,11 @@
 }
 
 @media only screen and (max-width: 580px) {
+    .div__create_block h1 .Jikharev {
+        padding: 0px;
+        font-size: 65px;
+        padding: 0;
+    }
     .faq_item__deal {
         width: 100%;
     }
@@ -560,7 +617,7 @@
 
     .mb.mobile__ponel button {
         padding: 2px;
-        height: 25px;
+        height: 26px;
     }
 
     .mb.mobile__ponel ul li {

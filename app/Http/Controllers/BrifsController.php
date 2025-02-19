@@ -354,7 +354,7 @@ class BrifsController extends Controller
         $photos = file_exists($photosPath) ? array_diff(scandir($photosPath), ['.', '..']) : [];
     
         return view('common.show', compact(
-            'Бриф прикриплен', 'user', 'title_site', 'pageTitlesCommon', 'questions', 'documents', 'photos'
+            'brif', 'user', 'title_site', 'pageTitlesCommon', 'questions', 'documents', 'photos'
         ));
     }
     
@@ -408,7 +408,7 @@ class BrifsController extends Controller
             }
         }
     
-        return view('commercial.show', compact('Бриф прикриплен', 'user', 'title_site', 'zones', 'preferencesFormatted', 'documents'));
+        return view('commercial.show', compact('brif', 'user', 'title_site', 'zones', 'preferencesFormatted', 'documents'));
     }
         
     public function commercial_store(Request $request)
@@ -469,5 +469,18 @@ class BrifsController extends Controller
         // На случай, если по каким-то причинам brif_type не отправилось
         return redirect()->back()->with('error', 'Не удалось определить тип брифа.');
     }
+    public function destroy($id)
+{
+    // Попытка найти бриф среди Общих и Коммерческих
+    $brif = \App\Models\Common::find($id) ?: \App\Models\Commercial::find($id);
     
+    // Проверяем, принадлежит ли бриф текущему пользователю
+    if ($brif && $brif->user_id == auth()->id()) {
+        $brif->delete();
+        return redirect()->back()->with('success', 'Бриф успешно удалён');
+    }
+    
+    return redirect()->back()->with('error', 'Удалить бриф не удалось');
+}
+
 }
