@@ -1,9 +1,9 @@
 * {
     box-sizing: border-box;
     border: 0px;
-    transition: 0.5s;
-    margin: 0px;
-    padding: 0px;
+    transition: .5s;
+    margin: 0;
+    padding: 0
 }
 
 :root {
@@ -25,97 +25,16 @@
     --bluetext: #01ACFF;
     --black: #1E1E1E;
     --blue: linear-gradient(88.84deg, #0081FF 0%, #00ABFF 100%);
-    --red: red;
-
+    --red: red
 }
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
     border: 0px;
     font: inherit;
     vertical-align: baseline;
-    transition: 0.5s;
-    margin: 0px;
-    padding: 0px;
+    transition: .5s;
+    margin: 0;
+    padding: 0
 }
 
 body {
@@ -123,32 +42,30 @@ body {
     font-family: var(--onest);
     color: var(--black);
     overflow-x: hidden;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: var(--blockbody);
-    overflow-y: scroll !important;
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor.png"), auto !important;
+    overflow-y: scroll!important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor.png),auto!important
 }
 
 .gap1 {
-    gap: 10px;
+    gap: 10px
 }
 
 .gap2 {
-    gap: 20px;
+    gap: 20px
 }
 
 .gap3 {
-    gap: 30px;
+    gap: 30px
 }
-
 
 img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover
 }
-
 
 li.else__auth {
     color: var(--ser);
@@ -157,13 +74,13 @@ li.else__auth {
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 0%;
-    text-align: center;
+    text-align: center
 }
 
 iframe {
     width: 100%;
     min-height: 600px;
-    object-fit: contain;
+    object-fit: contain
 }
 
 .home .home__module {
@@ -174,29 +91,31 @@ iframe {
     overflow: scroll;
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
-ul,
-ol,
-li {
-    list-style-type: none;
+ul,ol,li {
+    list-style-type: none
 }
 
 table {
-    border-collapse: collapse;
-    width: 100%;
+    /* border-collapse: collapse; */
+    width: 100%
 }
 
-th,
-td {
+th,td {
     text-align: left;
     padding: 12px;
     font-size: 22px;
     background: none;
-    color: rgb(0, 0, 0);
-    border-bottom: 1px solid rgb(0, 0, 0) !important;
-    font-weight: 500 !important;
+    color: #000;
+    /* border-bottom: 1px solid rgb(0,0,0)!important; */
+    /* font-weight: 500!important; */
+    font-family: Onest;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17.85px;
+    letter-spacing: 0%;
 }
 
 .container {
@@ -204,45 +123,45 @@ td {
     width: 100%;
     height: 100%;
     max-height: 100%;
-    min-height: 100%;
+    min-height: 100%
 }
 
 .container-auth {
     max-width: 1620px;
     width: 100%;
     height: 100%;
-    margin: 0px auto;
+    margin: 0 auto
 }
 
 .collapsed li.logo_flex a img {
     width: 100%;
-    transition: 0.01s !IMPORTANT;
+    transition: .01s!important
 }
 
 .main__flex {
     display: flex;
     gap: var(--g20);
     min-height: 732px;
-    max-height: 100% !important;
+    max-height: 100%!important
 }
 
 li.logo_flex.flex a {
     gap: 5px;
     max-height: 37px;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap
 }
 
 li.logo_flex.flex img {
     width: 40px;
     height: 100%;
     max-height: 39px;
-    object-fit: contain;
+    object-fit: contain
 }
 
 li.logo_flex.flex span img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain
 }
 
 .main__ponel {
@@ -251,29 +170,29 @@ li.logo_flex.flex span img {
     max-height: 100%;
     height: 100vh;
     min-height: 100%;
-    border-radius: 0px;
+    border-radius: 0;
     position: relative;
-    transition: 0.5s;
+    transition: .5s;
     padding: 34px var(--p20) 20px var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .main__ponel.collapsed {
     max-width: 92px;
-    padding: var(--p10);
+    padding: var(--p10)
 }
 
 .ponel__body {
     position: sticky;
     width: 100%;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0
 }
 
 .ponel__ul li button img {
     width: 32px;
     height: 32px;
-    object-fit: contain;
+    object-fit: contain
 }
 
 .ponel__ul li {
@@ -282,8 +201,8 @@ li.logo_flex.flex span img {
     align-items: center;
     place-content: center;
     width: 100%;
-    padding: 0px 0px 5px;
-    justify-content: flex-start;
+    padding: 0 0 5px;
+    justify-content: flex-start
 }
 
 .ponel__ul li button {
@@ -299,19 +218,19 @@ li.logo_flex.flex span img {
     overflow: hidden;
     background: none;
     padding: var(--p20);
-    justify-content: flex-start;
+    justify-content: flex-start
 }
 
 .main__ponel.collapsed .ponel__ul li button {
     justify-content: left;
-    max-width: 72px;
+    max-width: 72px
 }
 
 .toggle-btn {
     border: none;
     cursor: pointer;
     font-size: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .main__module {
@@ -322,13 +241,13 @@ li.logo_flex.flex span img {
     gap: var(--g20);
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .header__user__name.flex {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .header__user__name.flex.exit {
@@ -339,7 +258,7 @@ li.logo_flex.flex span img {
     border-radius: var(--radius);
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    flex-direction: row;
+    flex-direction: row
 }
 
 .header__user__name.flex.exit a {
@@ -349,11 +268,11 @@ li.logo_flex.flex span img {
     height: 24px;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .header__user {
-    gap: var(--g10);
+    gap: var(--g10)
 }
 
 .header__body {
@@ -365,7 +284,7 @@ li.logo_flex.flex span img {
     justify-content: flex-end;
     flex-direction: row-reverse;
     padding: var(--p10);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 header {
@@ -377,30 +296,28 @@ header {
     align-content: flex-start;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center
 }
 
 .header__user__logo {
     border-radius: 10px;
-    overflow: hidden;
-
-
+    overflow: hidden
 }
 
 .news-item h2 {
     padding-bottom: 10px;
-    color: var(--blue);
+    color: var(--blue)
 }
 
 .news-item {
     margin-bottom: var(--p20);
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--body);
+    background: var(--body)
 }
 
 .news-item a {
-    color: var(--black);
+    color: var(--black)
 }
 
 .brif {
@@ -408,13 +325,13 @@ header {
     min-height: 286px;
     display: flex;
     position: relative;
-    transition: 0.5s;
+    transition: .5s;
     border-radius: var(--radius);
     padding: var(--p20);
     background: var(--blockbody);
     flex-direction: column;
     justify-content: space-between;
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 ul.brifs__list.brifs__list__null li {
@@ -422,7 +339,7 @@ ul.brifs__list.brifs__list__null li {
     -webkit-box-align: center;
     align-items: center;
     min-height: 200px;
-    place-content: center;
+    place-content: center
 }
 
 .brifs__blocks {
@@ -430,7 +347,7 @@ ul.brifs__list.brifs__list__null li {
     min-height: 311px;
     overflow: hidden;
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .brifs__blocks .brifs__section {
@@ -440,7 +357,7 @@ ul.brifs__list.brifs__list__null li {
     max-height: 350px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 span.brif__status {
@@ -449,7 +366,7 @@ span.brif__status {
     right: 5px;
     border-radius: 3px;
     padding: 5px;
-    background: rgb(255, 255, 255);
+    background: rgb(255,255,255)
 }
 
 div#home ul.brifs__list {
@@ -459,13 +376,13 @@ div#home ul.brifs__list {
     -webkit-box-direction: normal;
     flex-direction: column;
     -webkit-box-pack: start;
-    justify-content: flex-start;
+    justify-content: flex-start
 }
 
 div#home ul.brifs__list .brif {
     width: 100%;
     margin-bottom: var(--p20);
-    background: var(--body);
+    background: var(--body)
 }
 
 ul.brifs__list {
@@ -475,7 +392,7 @@ ul.brifs__list {
     align-content: flex-start;
     gap: var(--g20);
     -webkit-box-align: start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .form-group {
@@ -490,7 +407,7 @@ ul.brifs__list {
     -webkit-box-pack: justify;
     justify-content: space-between;
     padding: var(--p20);
-    background: var(--blockbody);
+    background: var(--blockbody)
 }
 
 .form__button {
@@ -499,14 +416,14 @@ ul.brifs__list {
     padding-bottom: 100px;
     gap: var(--g20);
     padding-top: var(--p20);
-    justify-content: flex-end !important;
+    justify-content: flex-end!important
 }
 
 .form__body {
     max-height: 100%;
     display: flex;
-    gap: var(--g20) !important;
-    align-items: flex-start !important;
+    gap: var(--g20)!important;
+    align-items: flex-start!important
 }
 
 .faq_question {
@@ -515,57 +432,53 @@ ul.brifs__list {
     justify-content: space-between;
     -webkit-box-align: center;
     align-items: center;
-    transition: color 0.3s;
+    transition: color .3s;
     border-radius: 10px;
     padding: var(--p20);
     background: var(--blockbody);
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 .faq_question:hover {
-    color: rgb(0, 123, 255);
+    color: #007bff
 }
 
 .faq_answer {
-
     overflow: hidden;
     display: none;
-    padding: 0px;
-
+    padding: 0;
     max-height: 0;
-    transition: max-height 0.3s ease;
+    transition: max-height .3s ease
 }
 
 .faq_item.active .faq_answer {
     max-height: 506px;
     display: block;
     min-height: 100%;
-    padding: 20px;
+    padding: 20px
 }
-
-.faq_question .arrow {}
 
 .faq_item {
     min-height: 59px;
     width: 100%;
     position: relative;
     border-radius: var(--radius);
-    background: var(--blockbody);
+    background: var(--blockbody)
 }
 
 .faq_item.active .faq_question .arrow {
-    transform: rotate(180deg);
+    transform: rotate(180deg)
 }
 
 .faq__body {
-    width: 49%;
+    width: 49%
 }
 
 .modal {
     position: fixed;
     z-index: 99999;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     transform: translate(200%);
     width: 100%;
     height: 100%;
@@ -576,14 +489,14 @@ ul.brifs__list {
     overflow: hidden;
     display: none;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    background: rgba(0, 0, 0, 0.7);
+    transition: opacity .5s ease-in-out;
+    background: rgba(0,0,0,.7)
 }
 
 .faq_question__deal.flex ul li button {
     padding: 8px;
-    color: rgb(255, 255, 255);
-    min-height: 40px;
+    color: #fff;
+    min-height: 40px
 }
 
 .modal-content {
@@ -592,8 +505,8 @@ ul.brifs__list {
     width: 100%;
     text-align: center;
     transform: translateY(50px);
-    background: rgb(255, 255, 255);
-    padding: 54px 80px;
+    background: rgb(255,255,255);
+    padding: 54px 80px
 }
 
 .close-modal {
@@ -601,26 +514,26 @@ ul.brifs__list {
     position: absolute;
     top: 8px;
     right: 8px;
-    float: right;
+    float: right
 }
 
 .modal.show .modal-content {
-    transform: translateX(0px);
+    transform: translate(0)
 }
 
 .training .modal-content {
-    max-width: 1272px;
+    max-width: 1272px
 }
 
 .training__body {
     width: 100%;
-    padding-bottom: var(--p20);
+    padding-bottom: var(--p20)
 }
 
 .training__body ul {
     display: flex;
     gap: var(--g20);
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 li.block__video {
@@ -635,7 +548,7 @@ li.block__video {
     place-content: center;
     -webkit-box-align: center;
     align-items: center;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .profile__modules {
@@ -644,13 +557,11 @@ li.block__video {
     display: flex;
     gap: var(--g20);
     padding: var(--p20);
-    /* height: 100%; */
     background: var(--fff);
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .profile__info {
-    /* width: 21%; */
     min-width: 290px;
     display: flex;
     background: var(--blockbody);
@@ -663,7 +574,7 @@ li.block__video {
     flex-flow: row-reverse wrap;
     place-content: flex-start;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .profile {
@@ -674,9 +585,9 @@ li.block__video {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     flex-direction: row;
-    display: flex !important;
-    -webkit-box-pack: justify !important;
-    justify-content: space-between !important;
+    display: flex!important;
+    -webkit-box-pack: justify!important;
+    justify-content: space-between!important
 }
 
 .profile__avatar {
@@ -684,23 +595,20 @@ li.block__video {
     overflow: hidden;
     position: relative;
     width: 100%;
-    /* padding: var(--p20); */
-    /* height: 300px; */
-    width: 100%;
     height: 234px;
     border-radius: 9px;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .profile__avatar form {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 2
 }
 
 .profile__avatar form:hover {
-    opacity: 0.5;
+    opacity: .5
 }
 
 .profile__form {
@@ -709,7 +617,7 @@ li.block__video {
     display: flex;
     flex-wrap: wrap;
     -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .profile__link.flex {
@@ -723,14 +631,14 @@ li.block__video {
     padding: var(--p20);
     -webkit-box-align: center;
     background: var(--fff);
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .profile__form form {
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .home__module.news {
@@ -738,7 +646,7 @@ li.block__video {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    border-radius: var(--radius);
+    border-radius: var(--radius)
 }
 
 .home__module.brifs {
@@ -749,7 +657,7 @@ li.block__video {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    padding: 0px;
+    padding: 0
 }
 
 .support__module {
@@ -758,19 +666,19 @@ li.block__video {
     min-height: 384px;
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 label p {
-    padding: 0px 0px 4px;
+    padding: 0 0 4px
 }
 
 .support__body {
-    gap: var(--g30);
+    gap: var(--g30)
 }
 
 li.logo_flex.flex {
-    padding: 0 0 var(--p30) var(--p10);
+    padding: 0 0 var(--p30) var(--p10)
 }
 
 .ponel__ul li button span {
@@ -782,22 +690,23 @@ li.logo_flex.flex {
     font-weight: 400;
     font-size: 18px;
     line-height: 22.95px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .auth__body {
     width: 100%;
-    right: 0;
     display: flex;
-    inset: 0px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     position: fixed;
-    background-image: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png");
+    background-image: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png);
     background-position: center center;
     background-size: 100%;
     background-repeat: no-repeat;
     height: 100%;
-    justify-content: flex-end !important;
-    ;
+    justify-content: flex-end!important
 }
 
 .auth__form {
@@ -811,13 +720,13 @@ li.logo_flex.flex {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 .auth__form button {
     width: 100%;
     max-width: 100%;
-    margin-top: var(--m10);
+    margin-top: var(--m10)
 }
 
 ul.auth__form__link {
@@ -829,12 +738,12 @@ ul.auth__form__link {
     flex-direction: column;
     place-content: center;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .code-inputs {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-evenly
 }
 
 .code-inputs input {
@@ -842,7 +751,7 @@ ul.auth__form__link {
     font-size: 30px;
     text-align: center;
     min-height: 53px;
-    margin: 0px;
+    margin: 0
 }
 
 div#code-fields {
@@ -853,23 +762,23 @@ div#code-fields {
     place-content: center;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 a#send-code-btn {
     text-align: center;
     display: block;
     padding-top: var(--p10);
-    width: 100% !important;
+    width: 100%!important
 }
 
 .code-section-link {
     text-align: center;
-    padding-top: var(--p30);
+    padding-top: var(--p30)
 }
 
 .support__form__button {
-    padding-top: var(--p10);
+    padding-top: var(--p10)
 }
 
 .brif__body ul {
@@ -878,7 +787,7 @@ a#send-code-btn {
     place-content: center space-between;
     -webkit-box-align: center;
     align-items: center;
-    padding: 10px 0px;
+    padding: 10px 0
 }
 
 .brif__body ul li {
@@ -889,20 +798,20 @@ a#send-code-btn {
     color: var(--ser);
     font-size: 11px;
     line-height: 14.03px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .form-group h2 {
-    padding: 0px;
+    padding: 0;
     font-weight: 500;
     font-size: 22px;
     line-height: 28.05px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 form.back__fon__common {
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .form__title {
@@ -910,30 +819,29 @@ form.back__fon__common {
     justify-content: space-between;
     flex-direction: row;
     align-content: center;
-    align-items: center;
+    align-items: center
 }
 
 .form__title__info {
-    width: 100%;
+    width: 100%
 }
 
 .form__title .form__button.flex.between {
-    padding: 0;
+    padding: 0
 }
 
 .form__title h1 {
-    /* font-family: Onest; */
     font-weight: 700;
     font-size: 32px;
     line-height: 40.8px;
     padding: 0;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .faq_answer textarea {
     min-height: 106px;
     background: var(--fff);
-    font-size: 18px;
+    font-size: 18px
 }
 
 .form__title p {
@@ -942,92 +850,86 @@ form.back__fon__common {
     font-size: 20px;
     line-height: 25.5px;
     text-align: left;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .form-group textarea {
     min-height: 140px;
     margin-top: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .pointblock {
-    padding-bottom: var(--p30);
+    padding-bottom: var(--p30)
 }
 
 .control__price {
     font-size: 30px;
     height: 33px;
-    min-height: 64px !important;
+    min-height: 64px!important
 }
 
 .faq__custom-template__prise {
     width: 100%;
-    padding: var(--p30) 0;
+    padding: var(--p30) 0
 }
 
 .faq__custom-template__prise h6 {
-    font-size: 34px;
+    font-size: 34px
 }
 
 .faq__custom-template__prise h6 span {
-    color: var(--blue);
+    color: var(--blue)
 }
 
 .brifs__section__finished .brif {
-    min-height: 125px;
+    min-height: 125px
 }
 
 div#zones-container {
     display: flex;
     width: 100%;
     gap: var(--g20);
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .blur__form__zone {
     position: absolute;
-    left: 0px;
+    left: 0;
     width: 100%;
-    top: 0px;
+    top: 0;
     height: 100%;
     display: flex;
     z-index: 1;
     -webkit-box-align: center;
     align-items: center;
-    /* backdrop-filter: blur(2px); */
     place-content: center;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255,255,255,.07)
 }
 
 .blur__form__zone p {
     font-size: 18px;
-    /* font-weight: 700; */
     font-family: Onest;
     font-weight: 400;
-    font-size: 16px !important;
+    font-size: 16px!important;
     line-height: 22.4px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 span.remove-zone {
     display: flex;
     padding: var(--p20);
     width: 60px;
-    /* position: absolute; */
     background: var(--blockbody);
     border-radius: var(--radius);
     height: 60px;
-    /* top: 10px; */
-    /* right: 10px; */
-    /* padding: 1px; */
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 .zone-item textarea {
-    min-height: 130px;
+    min-height: 130px
 }
 
 .header__user__name.flex.exit span {
@@ -1042,7 +944,7 @@ span.remove-zone {
     font-size: 18px;
     line-height: 22.95px;
     letter-spacing: 0%;
-    place-content: center;
+    place-content: center
 }
 
 .zone-item {
@@ -1059,11 +961,11 @@ span.remove-zone {
     align-items: flex-start;
     place-content: flex-start center;
     padding: 20px var(--p20) var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .back__fon svg path {
-    fill: rgb(245, 252, 255);
+    fill: #f5fcff
 }
 
 .back__fon {
@@ -1071,61 +973,60 @@ span.remove-zone {
     width: 100%;
     z-index: -1;
     height: 100%;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
     -webkit-box-align: end;
-    align-items: flex-end;
+    align-items: flex-end
 }
 
 .div__create_block h1 {
     width: 45%;
     display: flex;
     flex-direction: column;
-    padding: 0 0 10px 0;
+    padding: 0 0 10px;
     font-family: Onest;
     font-weight: 400;
     font-size: 54px;
     line-height: 59.4px;
     letter-spacing: 0%;
-    font-size: 50px !important;
+    font-size: 50px!important
 }
 
 .div__create_block p {
     width: 51%;
-    text-align: left;
+    text-align: left
 }
 
 .div__create_block {
     height: 100%;
     gap: var(--g20);
     display: flex;
-    padding-left: 20px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
     place-content: flex-start center;
     -webkit-box-align: start;
     align-items: flex-start;
-    padding: 20px;
+    padding: 20px
 }
 
 .div__create_form {
-    height: 100%;
+    height: 100%
 }
 
 .mb.mobile__ponel {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     z-index: 100;
-    left: 0px;
-    width: 100%;
+    left: 0;
+    width: 100%
 }
 
 li.block__video h3 {
-    text-align: center;
+    text-align: center
 }
 
 .mb.mobile__ponel ul {
@@ -1134,7 +1035,7 @@ li.block__video h3 {
     justify-content: space-evenly;
     border-radius: var(--radius) var(--radius) 0 0;
     padding: var(--p20) var(--p10) var(--p10);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .header__nubmer a {
@@ -1144,17 +1045,17 @@ li.block__video h3 {
     font-size: 12px;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .training .faq__body .faq_item {
     margin-bottom: var(--m20);
-    padding: 0px;
+    padding: 0
 }
 
 .profile.flex.between {
     flex-wrap: nowrap;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .smet {
@@ -1167,7 +1068,7 @@ li.block__video h3 {
     flex-direction: column;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .button_smets {
@@ -1179,7 +1080,7 @@ li.block__video h3 {
     -webkit-box-align: center;
     align-items: center;
     gap: var(--g10);
-    place-content: center;
+    place-content: center
 }
 
 .flex_title_smets {
@@ -1189,11 +1090,11 @@ li.block__video h3 {
     -webkit-box-align: center;
     align-items: center;
     padding: var(--p10);
-    background: rgb(63, 192, 115);
+    background: rgb(63,192,115)
 }
 
 .red {
-    background: rgb(253, 27, 68);
+    background: rgb(253,27,68)
 }
 
 a.estimate-link {
@@ -1202,7 +1103,7 @@ a.estimate-link {
     height: 100%;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .create_mets {
@@ -1213,17 +1114,17 @@ a.estimate-link {
     gap: var(--g10);
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .block_discount {
     display: flex;
     padding-bottom: var(--p20);
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 button.create-step_1-submit {
-    margin-top: var(--p20);
+    margin-top: var(--p20)
 }
 
 form.create-step_2-form {
@@ -1231,19 +1132,19 @@ form.create-step_2-form {
     -webkit-box-pack: justify;
     justify-content: space-between;
     gap: var(--g20);
-    width: 100%;
+    width: 100%
 }
 
 .wd_button {
     display: flex;
     position: fixed;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .wd_button .port {
@@ -1251,29 +1152,29 @@ form.create-step_2-form {
     border-radius: var(--radius);
     gap: var(--g20);
     padding: var(--p20) var(--p20) 0;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .content-visible {
     width: 100%;
     border-radius: var(--radius);
     border: none;
-    display: flex !important;
+    display: flex!important
 }
 
 label {
     position: relative;
     display: block;
     margin-bottom: 5px;
-    color: rgb(85, 85, 85);
+    color: #555
 }
 
 .label__categories label p {
     border-radius: var(--radius);
     margin-bottom: var(--p10);
     padding: var(--p20);
-    background: rgb(255, 255, 255);
-    color: var(--black) !important;
+    background: rgb(255,255,255);
+    color: var(--black)!important
 }
 
 .row.service-row.label__categories {
@@ -1283,39 +1184,39 @@ label {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    height: 100%;
+    height: 100%
 }
 
 .col-12.service-col-12.hp_input_prise {
     border-radius: var(--radius);
     width: 100%;
-    color: var(--black) !important;
+    color: var(--black)!important
 }
 
 .col-12.service-col-12.hp_input_prise label {
     display: flex;
     -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .form-section {
     width: 48.5%;
     max-height: 100%;
     border-radius: 5px;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 h3 {
     margin-bottom: 15px;
-    color: rgb(51, 51, 51);
+    color: #333
 }
 
 input {
     width: 100%;
     margin-bottom: 15px;
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgb(204,204,204);
     border-radius: 5px;
-    padding: 10px;
+    padding: 10px
 }
 
 button {
@@ -1325,12 +1226,12 @@ button {
     min-height: 40px;
     font-weight: 600;
     max-width: 260px;
-    transition: 0.5s;
+    transition: .5s;
     color: var(--fff);
     border-radius: var(--radius);
     padding: var(--p10) var(--p30);
     background: var(--blue);
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 .reda {
@@ -1342,7 +1243,7 @@ button {
     margin-bottom: 10px;
     position: relative;
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .col-12.service-col-12.hp_input_prise label p {
@@ -1351,45 +1252,45 @@ button {
     border-radius: var(--radius);
     margin-bottom: var(--p10);
     padding: var(--p20);
-    background: rgb(255, 255, 255);
+    background: rgb(255,255,255)
 }
 
 .create-checkbox_stage:checked+label p {
-    color: rgb(255, 255, 255) !important;
-    width: 100% !important;
-    border-radius: var(--radius) !important;
-    margin-bottom: var(--p10) !important;
-    padding: var(--p20) 40px var(--p20) var(--p20) !important;
-    background: rgb(0, 163, 255) !important;
+    color: #fff!important;
+    width: 100%!important;
+    border-radius: var(--radius)!important;
+    margin-bottom: var(--p10)!important;
+    padding: var(--p20) 40px var(--p20) var(--p20)!important;
+    background: rgb(0,163,255)!important
 }
 
 a.estimate_link.pdf {
     place-content: center;
-    color: rgb(255, 255, 255);
+    color: #fff;
     border-radius: var(--radius);
     -webkit-box-align: center;
     align-items: center;
     padding: var(--p10);
-    background: rgb(253, 27, 68);
+    background: rgb(253,27,68)
 }
 
 a.estimate_link.excel {
-    color: rgb(255, 255, 255);
+    color: #fff;
     border-radius: var(--radius);
     padding: var(--p10);
-    background: rgb(63, 192, 115);
+    background: rgb(63,192,115)
 }
 
 .viev_smet {
     width: 100%;
     gap: var(--g10);
     display: flex;
-    place-content: center flex-end;
+    place-content: center flex-end
 }
 
 .flex_title_smets p {
     font-size: 14px;
-    color: var(--fff);
+    color: var(--fff)
 }
 
 .profile__info.profile__info__table {
@@ -1397,15 +1298,15 @@ a.estimate_link.excel {
     width: 100%;
     align-content: flex-start;
     -webkit-box-align: start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .password__new {
     width: 100%;
     max-height: 100%;
     border-radius: 5px;
-    padding: 0px;
-    background: var(--fff);
+    padding: 0;
+    background: var(--fff)
 }
 
 .profile__link.flex a {
@@ -1415,18 +1316,18 @@ a.estimate_link.excel {
     gap: var(--g10);
     text-transform: uppercase;
     font-weight: 600;
-    place-content: center;
+    place-content: center
 }
 
 .brifs__button__create.flex {
     display: flex;
     gap: var(--g10);
     place-content: center flex-end;
-    align-items: center;
+    align-items: center
 }
 
 .port input {
-    margin: 0px !important;
+    margin: 0!important
 }
 
 .deal__info {
@@ -1437,16 +1338,16 @@ a.estimate_link.excel {
     position: relative;
     -webkit-box-align: center;
     align-items: center;
-    padding: 0px;
+    padding: 0;
     background: var(--blockbody);
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .deal__container {
     display: flex;
     gap: var(--g20);
     -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .deal__chat__user {
@@ -1455,14 +1356,14 @@ a.estimate_link.excel {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .deal__responsible {
     width: 25%;
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--blockbody);
+    background: var(--blockbody)
 }
 
 .deal__responsible ul {
@@ -1470,7 +1371,7 @@ a.estimate_link.excel {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    gap: var(--g10);
+    gap: var(--g10)
 }
 
 .deal__responsible ul li {
@@ -1481,21 +1382,21 @@ a.estimate_link.excel {
     -webkit-box-align: center;
     align-items: center;
     padding: var(--p10);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .deal__responsible ul li img {
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 .deal__responsible__avatar {
     width: 40px;
-    height: 40px;
+    height: 40px
 }
 
 .deal__responsible__info h3 {
-    margin: 0px;
-    padding: 0px 0px 4px;
+    margin: 0;
+    padding: 0 0 4px
 }
 
 .estimate_copy a {
@@ -1503,7 +1404,7 @@ a.estimate_link.excel {
     color: var(--fff);
     border-radius: var(--radius);
     border: 1px solid;
-    padding: var(--p10);
+    padding: var(--p10)
 }
 
 .estimate_del {
@@ -1511,16 +1412,16 @@ a.estimate_link.excel {
     -webkit-box-align: center;
     align-items: center;
     place-content: center;
-    gap: 5px;
+    gap: 5px
 }
 
 .block_smet_container {
-    padding: 0 var(--p20);
+    padding: 0 var(--p20)
 }
 
 .faq_question span {
     font-weight: 500;
-    font-size: 28px;
+    font-size: 28px
 }
 
 .deal__body .faq__body {
@@ -1532,28 +1433,27 @@ a.estimate_link.excel {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .deal__body .faq_item.active .faq_answer {
     display: flex;
     gap: var(--p20);
     align-content: space-around;
-    max-height: 700px;
-
+    max-height: 700px
 }
 
 .deal__body .faq_item.active .faq_answer ul li {
-    padding: var(--p10);
+    padding: var(--p10)
 }
 
 form#auth-form button {
-    max-width: 100%;
+    max-width: 100%
 }
 
 .deal__info img {
     border-radius: var(--radius);
-    width: 200px;
+    width: 200px
 }
 
 .faq_question__deal__info {
@@ -1568,29 +1468,29 @@ form#auth-form button {
     -webkit-box-direction: normal;
     flex-direction: column;
     place-content: center flex-end;
-    align-items: center;
+    align-items: center
 }
 
 .deal__avatar {
     width: 250px;
-    height: 100%;
+    height: 100%
 }
 
 .deal__avatar img {
     min-width: 200px;
     width: 100%;
-    border-radius: var(--radius) 0 0 var(--radius);
+    border-radius: var(--radius) 0 0 var(--radius)
 }
 
 .faq_question__deal.flex {
     width: 100%;
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 .edit-form input {
     display: block;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 5px
 }
 
 .deal__body .faq_item.active .faq_answer form {
@@ -1600,18 +1500,18 @@ form#auth-form button {
     width: 82%;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    padding: 0 var(--p20);
+    padding: 0 var(--p20)
 }
 
 .deal__body .faq_item.active .faq_answer form label {
     width: 49%;
     font-weight: 700;
-    font-size: 10px;
+    font-size: 10px
 }
 
 form.edit-form.update_form__creater input {
     border: 1px solid var(--blue);
-    border-radius: var(--radius) !important;
+    border-radius: var(--radius)!important
 }
 
 form.edit-form input {
@@ -1621,12 +1521,12 @@ form.edit-form input {
     border-right: none;
     border-left: none;
     border-image: initial;
-    border-bottom: 1px solid var(--blue);
+    border-bottom: 1px solid var(--blue)
 }
 
 .deal__cardinator__lists__flex__info {
     width: 17%;
-    padding: var(--p20) var(--p10);
+    padding: var(--p20) var(--p10)
 }
 
 .deal__cardinator__info {
@@ -1638,33 +1538,33 @@ form.edit-form input {
     gap: 10px;
     align-content: flex-start;
     -webkit-box-align: start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .deal__cardinator__info p {
     color: var(--black);
     font-weight: 500;
-    font-size: 20px !important;
+    font-size: 20px!important
 }
 
 .deal__cardinator__info p a {
     overflow-wrap: break-word;
     white-space: normal;
-    font-size: 16px !important;
+    font-size: 16px!important
 }
 
 .deal__body .faq_item.active .faq_answer form label select {
-    margin-top: 10px;
+    margin-top: 10px
 }
 
 .deal__cardinator__lists__flex__info form {
-    width: 100% !important;
-    padding: var(--p20) 0 !important;
+    width: 100%!important;
+    padding: var(--p20) 0!important
 }
 
 .faq_question__deal__status p {
     top: 10px;
-    right: 10px;
+    right: 10px
 }
 
 .deal__info__title {
@@ -1676,7 +1576,7 @@ form.edit-form input {
     flex-direction: column;
     align-content: flex-start;
     -webkit-box-align: start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .cardinators__create {
@@ -1684,37 +1584,37 @@ form.edit-form input {
     gap: var(--g10);
     place-content: center flex-start;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .cardinators__create input {
     height: 25px;
     width: 25px;
-    margin: 0px;
+    margin: 0
 }
 
 .deal__avatar.deal__avatar__cardinator {
     width: 200px;
-    height: 100%;
+    height: 100%
 }
 
 .deal__body .faq_item.active .faq_answer form label input {
     font-size: 12px;
-    margin: 3px 0px 5px;
-    padding: 0px;
+    margin: 3px 0 5px;
+    padding: 0;
     height: 20px;
     max-height: 20px;
-    border-radius: 0px;
+    border-radius: 0
 }
 
 .auth__form label {
     padding-bottom: 10px;
-    margin: 0px;
+    margin: 0
 }
 
 .show-modal-animation {
     display: block;
-    opacity: 1;
+    opacity: 1
 }
 
 div#modal3 .modal-content {
@@ -1727,21 +1627,21 @@ div#modal3 .modal-content {
     -webkit-box-align: center;
     align-items: center;
     place-content: center space-between;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .deal__cardinator__lists .faq__body .faq__block {
     overflow-y: scroll;
-    max-height: 700px;
+    max-height: 700px
 }
 
 .brif .name__brif {
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 800
 }
 
 .training .faq__body .faq_item .faq_question {
-    padding: var(--p20) !important;
+    padding: var(--p20)!important
 }
 
 .support_adm__card {
@@ -1749,30 +1649,30 @@ div#modal3 .modal-content {
     gap: var(--p20);
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .support_chat .message {
     border-radius: 5px;
-    margin: 10px 0px;
-    padding: 10px;
+    margin: 10px 0;
+    padding: 10px
 }
 
 .support_chat .user-message {
     text-align: right;
-    background: rgb(241, 241, 241);
+    background: rgb(241,241,241)
 }
 
 .support_chat .admin-message {
     text-align: left;
-    background: rgb(224, 247, 250);
+    background: rgb(224,247,250)
 }
 
 .support__tickets {
     display: flex;
     -webkit-box-pack: justify;
     justify-content: space-between;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .support__tickets ul {
@@ -1784,14 +1684,14 @@ div#modal3 .modal-content {
     flex-direction: column;
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .create__tiket {
     width: 70%;
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .support__chat {
@@ -1800,43 +1700,42 @@ div#modal3 .modal-content {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    width: 50%;
+    width: 50%
 }
 
 .support__tickets ul li {
     border-radius: var(--radius);
     padding: var(--p10);
-    background: var(--body);
 }
 
 .bgfff {
     height: 100%;
-    border-radius: var(--radius);
+    border-radius: var(--radius)
 }
 
 .create__tiket p {
     text-align: left;
-    padding: 3px 0px;
+    padding: 3px 0
 }
 
 .question_class-button {
     position: fixed;
     z-index: 9;
     bottom: var(--p20);
-    right: var(--p20);
+    right: var(--p20)
 }
 
 .question_class-button button {
     width: 50px;
     height: 50px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 20px 3px;
+    box-shadow: #00000026 0 0 20px 3px;
     padding: 5px;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .support__chat form {
     display: flex;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .time__homes {
@@ -1849,18 +1748,18 @@ div#modal3 .modal-content {
     -webkit-box-direction: normal;
     flex-direction: column;
     padding: var(--p20);
-    background: var(--body);
+    background: var(--body)
 }
 
 .time__homes span {
     font-size: 40px;
-    padding: var(--p20) 20px 0;
+    padding: var(--p20) 20px 0
 }
 
 .time__homes h3 {
     font-size: 50px;
-    margin: 0px;
-    padding: 10px;
+    margin: 0;
+    padding: 10px
 }
 
 .support {
@@ -1868,14 +1767,14 @@ div#modal3 .modal-content {
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .support__tickets h2 {
     display: flex;
     place-content: center space-between;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .lk__info_vertion ul {
@@ -1887,11 +1786,11 @@ div#modal3 .modal-content {
     gap: var(--g10);
     -webkit-box-align: start;
     align-items: flex-start;
-    padding: var(--p10);
+    padding: var(--p10)
 }
 
 .lk__info_vertion ul li p {
-    font-weight: 500;
+    font-weight: 500
 }
 
 .support .faq_block {
@@ -1899,14 +1798,14 @@ div#modal3 .modal-content {
     gap: var(--g20);
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
+    flex-direction: column
 }
 
 .unread-count {
     position: absolute;
-    top: 0px;
-    right: 0px;
-    color: rgb(255, 255, 255);
+    top: 0;
+    right: 0;
+    color: #fff;
     font-size: 12px;
     border-radius: 12px;
     margin-left: 5px;
@@ -1915,28 +1814,25 @@ div#modal3 .modal-content {
     min-width: var(--p20);
     text-align: center;
     padding: 2px 6px;
-    background: rgb(255, 59, 59);
+    background: rgb(255,59,59)
 }
 
 .home__module.news h2 {
     display: flex;
     align-content: flex-start;
     -webkit-box-align: start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .px20 {
     margin-left: 5px;
-    width: var(--p20);
+    width: var(--p20)
 }
 
-input,
-textarea,
-select {
+input,textarea,select {
     resize: none;
-    border: none !important;
+    border: none!important;
     min-height: 40px;
-    font-size: 16px;
     width: 100%;
     border-radius: var(--radius);
     padding: var(--p10);
@@ -1944,7 +1840,7 @@ select {
     font-weight: 400;
     font-size: 16px;
     line-height: 22.4px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .ponel__body button {
@@ -1953,23 +1849,18 @@ select {
     color: var(--black);
     border-radius: var(--radius);
     padding: var(--p10) var(--p30);
-    background: var(--fff);
+    background: var(--fff)
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1,h2,h3,h4,h5,h6 {
     display: flex;
     line-height: 100%;
-    padding-bottom: 0px;
+    padding-bottom: 0
 }
 
 h5 {
-    font-size: 20px !important;
-    font-weight: 500;
+    font-size: 20px!important;
+    font-weight: 500
 }
 
 h4 {
@@ -1977,67 +1868,65 @@ h4 {
     font-weight: 400;
     font-size: 18px;
     line-height: 22.95px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
-h2,
-h3 {
+h2,h3 {
     font-family: var(--onest);
     font-weight: 400;
     font-size: 22px;
     line-height: 28.05px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 h1 {
     padding-bottom: 10px;
-    font-weight: bold;
     font-size: 56px;
     font-family: var(--onest);
     font-weight: 700;
     font-size: 32px;
     line-height: 40.8px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 p {
-    font-size: 20px !important;
+    font-size: 20px!important;
     font-weight: 500;
     font-family: var(--onest);
     font-weight: 400;
     font-size: 18px;
     line-height: 21.6px;
     letter-spacing: 0%;
-    text-align: center;
+    text-align: center
 }
 
 a {
     color: var(--blue);
     text-decoration: none;
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 .wrap {
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .between {
     -webkit-box-pack: justify;
     justify-content: space-between;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .center {
     -webkit-box-pack: center;
     justify-content: center;
     -webkit-box-align: center;
-    align-items: center;
+    align-items: center
 }
 
 .profile__avatar .hover__create svg {
     width: 64%;
-    opacity: 0.5;
+    opacity: .5
 }
 
 .profile__avatar .hover__create {
@@ -2047,30 +1936,33 @@ a {
     width: 100%;
     height: 100%;
     display: flex;
-    inset: 0px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .success-message {
     position: fixed;
     bottom: var(--p20);
     right: -300px;
-    color: rgb(255, 255, 255);
+    color: #fff;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
-    font-family: Arial, sans-serif;
+    box-shadow: #0000001a 0 4px 6px;
+    font-family: Arial,sans-serif;
     font-size: 16px;
     cursor: pointer;
-    transition: right 0.5s ease-in-out;
+    transition: right .5s ease-in-out;
     z-index: 1000;
     padding: 15px 25px;
-    background: rgb(76, 175, 80);
+    background: rgb(76,175,80)
 }
 
 .success-message:hover {
-    opacity: 0.9;
+    opacity: .9
 }
 
 .error-message {
@@ -2078,26 +1970,26 @@ a {
     position: fixed;
     bottom: var(--p20);
     right: -300px;
-    color: rgb(255, 255, 255);
+    color: #fff;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
-    font-family: Arial, sans-serif;
+    box-shadow: #0000001a 0 4px 6px;
+    font-family: Arial,sans-serif;
     font-size: 16px;
     cursor: pointer;
-    transition: right 0.3s;
+    transition: right .3s;
     padding: 15px 25px;
-    background: rgb(244, 67, 54);
+    background: rgb(244,67,54)
 }
 
 .error-message:hover {
-    opacity: 0.9;
-    right: 0px;
+    opacity: .9;
+    right: 0
 }
 
 #loading-screen {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -2106,80 +1998,80 @@ a {
     -webkit-box-align: center;
     align-items: center;
     z-index: 1000;
-    background: white;
+    background: white
 }
 
 #loading-screen.hidden {
     opacity: 0;
-    pointer-events: none;
+    pointer-events: none
 }
 
 #loading-screen img {
     width: 100%;
     max-width: 400px;
-    height: auto;
+    height: auto
 }
 
 #content {
     opacity: 0;
     animation: 1s ease-out 1s 1 normal forwards running contentFadeIn;
-    padding: var(--p20);
+    padding: var(--p20)
 }
 
 ::-webkit-scrollbar {
     width: 12px;
-    height: 12px;
+    height: 12px
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 6px;
     border: 3px solid transparent;
-    background: padding-box var(--blue);
+    background: padding-box var(--blue)
 }
 
 ::-webkit-scrollbar-track {
     border-radius: 6px;
-    background: rgb(240, 240, 240);
+    background: rgb(240,240,240)
 }
 
 #unread-messages-counter {
     font-size: 13px;
     font-weight: 700;
     position: absolute;
-    top: 0px;
+    top: 0;
     width: 15px;
     display: flex;
     border-radius: 50%;
     height: 15px;
-    color: rgb(255, 255, 255);
+    color: #fff;
     right: -7px;
     -webkit-box-align: center;
     align-items: center;
     place-content: center;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 #unread-count {
-    color: red;
+    color: red
 }
 
 .header__nubmer button {
     position: relative;
     width: 25px;
-    padding: 0px;
+    padding: 0
 }
 
 .header__nubmer {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center space-between;
+    place-content: center space-between
 }
 
 .header__number button {
     width: 25px;
     position: relative;
-    padding: 0px;
+    padding: 0
 }
 
 .custom-file-upload {
@@ -2192,18 +2084,18 @@ a {
     height: 50px;
     border-radius: var(--radius);
     cursor: pointer;
-    transition: background-color 0.3s;
-    background: rgb(1, 172, 255);
+    transition: background-color .3s;
+    background: rgb(1,172,255)
 }
 
 .custom-file-upload:hover {
-    background: rgb(69, 160, 73);
+    background: rgb(69,160,73)
 }
 
 .custom-file-upload svg {
     width: 24px;
     height: 24px;
-    fill: rgb(255, 255, 255);
+    fill: #fff
 }
 
 .faq_question__deal.flex ul {
@@ -2211,18 +2103,18 @@ a {
     -webkit-box-align: center;
     align-items: center;
     gap: 5px;
-    place-content: center;
+    place-content: center
 }
 
 .faq_question__deal.flex ul .icon {
     width: 25px;
     height: 25px;
-    padding: 0px;
+    padding: 0
 }
 
 .faq_question__deal.flex ul li .icon img {
     height: 100%;
-    width: 100%;
+    width: 100%
 }
 
 .faq_question__deal.flex ul li a {
@@ -2230,31 +2122,31 @@ a {
     border-radius: var(--radius);
     width: 100%;
     padding: 7px;
-    background: var(--blue);
+    background: var(--blue)
 }
 
 div#modal3 {
-    z-index: 999;
+    z-index: 999
 }
 
 div#modal3 .modal-content .logo__modal {
-    width: 200px;
+    width: 200px
 }
 
 div#modal3 .modal-content h3 {
     font-size: 28px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0
 }
 
 div#modal3 .modal-content p {
     font-size: 15px;
-    padding-bottom: var(--p20);
+    padding-bottom: var(--p20)
 }
 
 div#modal3 .modal-content .brifs__button__create.flex {
     -webkit-box-pack: center;
-    justify-content: center;
+    justify-content: center
 }
 
 .faq_block.faq_block-blur {
@@ -2264,86 +2156,86 @@ div#modal3 .modal-content .brifs__button__create.flex {
     -webkit-box-align: center;
     align-items: center;
     place-content: center;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 .faq_block.faq_block-blur p {
-    font-size: 15px;
+    font-size: 15px
 }
 
 .modules__adm ul {
     display: flex;
-    gap: var(--g10);
+    gap: var(--g10)
 }
 
 .modules__adm ul li .icon {
     width: 50px;
-    height: 50px;
+    height: 50px
 }
 
 .introjs-tooltiptext {
     text-align: center;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 700
 }
 
 .introjs-button {
     font-weight: 500;
     max-width: 260px;
     border: none;
-    transition: 0.5s;
+    transition: .5s;
     color: var(--fff);
     border-radius: var(--radius);
-    background: var(--blue);
+    background: var(--blue)
 }
 
 .emoji-picker-container {
     position: relative;
-    display: inline-block;
+    display: inline-block
 }
 
 .emoji-picker {
     position: absolute;
     bottom: 100%;
-    left: 0px;
-    border: 1px solid rgb(204, 204, 204);
+    left: 0;
+    border: 1px solid rgb(204,204,204);
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
+    box-shadow: #0000001a 0 2px 5px;
     z-index: 10;
     padding: 10px;
-    background: white;
+    background: white
 }
 
 .emoji {
     font-size: 1.5rem;
-    cursor: pointer;
+    cursor: pointer
 }
 
 .emoji:hover {
     border-radius: 4px;
-    background: rgb(240, 240, 240);
+    background: rgb(240,240,240)
 }
 
 .file-preview-container {
     margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 10px
 }
 
 .file-preview {
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 5px
 }
 
 .file-preview img {
     max-width: 50px;
     max-height: 50px;
     object-fit: cover;
-    border: 1px solid rgb(221, 221, 221);
-    border-radius: 4px;
+    border: 1px solid rgb(221,221,221);
+    border-radius: 4px
 }
 
 div#file-preview-container {
@@ -2353,31 +2245,31 @@ div#file-preview-container {
     position: absolute;
     gap: var(--g10);
     width: 100%;
-    background: var(--fff);
+    background: var(--fff)
 }
 
 div#file-preview-container img {
     width: 100px;
     height: 100px;
-    border-radius: var(--radius);
+    border-radius: var(--radius)
 }
 
 .chat-form__input {
     display: flex;
     gap: var(--p10);
-    width: 100%;
+    width: 100%
 }
 
 button#emoji-picker-button {
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgb(0,0,0);
     font-size: 24px;
-    padding: 0px !important;
+    padding: 0!important
 }
 
 .file-preview-item {
     position: relative;
     display: inline-block;
-    margin: 5px;
+    margin: 5px
 }
 
 .remove-button {
@@ -2385,7 +2277,7 @@ button#emoji-picker-button {
     top: 5px;
     right: 5px;
     border: none;
-    color: rgb(255, 255, 255);
+    color: #fff;
     cursor: pointer;
     border-radius: 50%;
     width: var(--p20);
@@ -2393,45 +2285,44 @@ button#emoji-picker-button {
     text-align: center;
     line-height: 16px;
     font-size: 14px;
-    background: rgba(255, 0, 0, 0.7);
+    background: rgba(255,0,0,.7)
 }
 
-.file-preview img,
-.file-preview span {
+.file-preview img,.file-preview span {
     display: block;
     max-width: 100px;
     max-height: 100px;
-    border-radius: 5px;
+    border-radius: 5px
 }
 
 button.remove-button {
     position: absolute;
-    top: 0px;
+    top: 0;
     font-size: 8px;
-    right: 15px !important;
-    width: var(--p20) !important;
-    height: var(--p20) !important;
-    padding: 0px !important;
+    right: 15px!important;
+    width: var(--p20)!important;
+    height: var(--p20)!important;
+    padding: 0!important
 }
 
 .brifs__section.brifs__section__finished.wow.fadeInDown {
-    padding-top: var(--p20);
+    padding-top: var(--p20)
 }
 
 div#brifs h1 {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center flex-start;
+    place-content: center flex-start
 }
 
 .header__user__name.flex.exit a:hover img {
-    filter: grayscale(1);
+    filter: grayscale(1)
 }
 
 div#chat-message {
     width: 100%;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgb(0,0,0)
 }
 
 .chat-container {
@@ -2439,7 +2330,7 @@ div#chat-message {
     max-width: 100%;
     display: flex;
     gap: var(--p20);
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .user-list {
@@ -2447,44 +2338,44 @@ div#chat-message {
     min-width: 250px;
     border-radius: 8px;
     overflow: hidden;
-    background: var(--blockbody);
+    background: var(--blockbody)
 }
 
 .user-list h4 {
     display: flex;
-    color: rgb(255, 255, 255);
+    color: #fff;
     font-size: 1em;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-flow: column wrap;
     gap: 10px;
-    margin: 0px;
+    margin: 0;
     padding: 15px;
-    background: rgb(1, 172, 255);
+    background: rgb(1,172,255)
 }
 
 .user-list ul {
     overflow-y: auto;
     max-height: 497px;
     list-style: none;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0
 }
 
 .user-list li {
     gap: 10px;
     display: flex;
-    border-bottom: 1px solid rgb(238, 238, 238);
-    transition: background 0.2s;
+    border-bottom: 1px solid rgb(238,238,238);
+    transition: background .2s;
     -webkit-box-pack: start;
     justify-content: flex-start;
     position: relative;
     padding: var(--p20);
-    cursor: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png"), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important
 }
 
 .user-list li:hover {
-    background: rgb(240, 248, 255);
+    background: rgb(240,248,255)
 }
 
 .chat-box {
@@ -2497,16 +2388,16 @@ div#chat-message {
     -webkit-box-direction: normal;
     flex-direction: column;
     height: 585px;
-    background: var(--blockbody);
+    background: var(--blockbody)
 }
 
 .chat-header {
-    color: rgb(0, 0, 0);
+    color: #000;
     font-size: 1.2em;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 8px 8px 0 0;
     padding: 15px;
     background: var(--blockbody);
-    margin: 0px !important;
+    margin: 0!important
 }
 
 .chat-messages {
@@ -2514,7 +2405,7 @@ div#chat-message {
     flex: 1 1 0px;
     overflow-y: auto;
     padding: 15px;
-    background: rgb(249, 249, 249);
+    background: rgb(249,249,249)
 }
 
 .chat-messages ul {
@@ -2524,8 +2415,8 @@ div#chat-message {
     -webkit-box-direction: normal;
     flex-direction: column;
     list-style: none;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0
 }
 
 .chat-messages li {
@@ -2535,26 +2426,26 @@ div#chat-message {
     border-radius: 8px;
     display: inline-block;
     overflow-wrap: break-word;
-    padding: var(--p20) var(--p10);
+    padding: var(--p20) var(--p10)
 }
 
 .message-sent {
     margin-left: auto;
     text-align: right;
-    background: rgb(209, 236, 241);
+    background: rgb(209,236,241)
 }
 
 .message-received {
     margin-right: auto;
     text-align: left;
-    background: rgb(248, 215, 218);
+    background: rgb(248,215,218)
 }
 
 .message-time {
-    font-size: 0.75em;
-    color: rgb(85, 85, 85);
+    font-size: .75em;
+    color: #555;
     margin-top: 5px;
-    text-align: right;
+    text-align: right
 }
 
 .chat-input {
@@ -2562,48 +2453,48 @@ div#chat-message {
     height: 60px;
     position: relative;
     gap: 10px;
-    border-radius: 0px 0px 8px 8px;
-    padding: 10px;
+    border-radius: 0 0 8px 8px;
+    padding: 10px
 }
 
 .chat-input textarea {
     -webkit-box-flex: 1;
     flex: 1 1 0px;
     resize: none;
-    border: 1px solid rgb(221, 221, 221);
+    border: 1px solid rgb(221,221,221);
     border-radius: 5px;
     font-size: 1em;
-    padding: 10px;
+    padding: 10px
 }
 
 .chat-input button {
     width: 10%;
     display: flex;
     border: none;
-    color: rgb(255, 255, 255);
+    color: #fff;
     font-size: 2em;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background .2s;
     -webkit-box-align: center;
     align-items: center;
     place-content: center;
-    margin: 0px;
+    margin: 0;
     padding: 10px 20px;
-    background: rgb(1, 172, 255);
+    background: rgb(1,172,255)
 }
 
 .chat-input button:hover {
-    background: rgb(0, 86, 179);
+    background: rgb(0,86,179)
 }
 
 button#send-message {
-    width: 12%;
+    width: 12%
 }
 
 .chat-input button img {
     width: 34px;
-    height: 34px;
+    height: 34px
 }
 
 li.message-sent strong {
@@ -2611,7 +2502,7 @@ li.message-sent strong {
     font-size: 12px;
     padding-bottom: 5px;
     -webkit-box-pack: end;
-    justify-content: flex-end;
+    justify-content: flex-end
 }
 
 li.message-sent div {
@@ -2619,94 +2510,90 @@ li.message-sent div {
     -webkit-box-pack: end;
     justify-content: flex-end;
     word-break: break-all;
-    overflow-wrap: break-word;
+    overflow-wrap: break-word
 }
 
 .user-list li .avatar {
     width: 29px;
-    height: 29px;
+    height: 29px
 }
 
 .user-list li .avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 50%
 }
 
 .user-list ul h5 {
-    font-size: 11px;
+    font-size: 11px
 }
 
 li.message-sent div.message-time {
     display: flex;
     -webkit-box-pack: start;
-    justify-content: flex-start;
+    justify-content: flex-start
 }
 
 .user-list__avatar {
     width: 45px;
     border-radius: 50%;
     overflow: hidden;
-    height: 34px;
+    height: 34px
 }
 
 .user-list h4 input {
     height: 13px;
     max-height: 28px;
     font-size: 12px;
-    margin: 0px;
-    padding: 3px 10px;
+    margin: 0;
+    padding: 3px 10px
 }
 
 .image-collage {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
+    gap: 10px
 }
 
 .image-collage img {
     width: 100%;
     height: auto;
-    border-radius: 5px;
+    border-radius: 5px
 }
 
 button.emoji-button {
-    width: 5%;
+    width: 5%
 }
 
 .deal__cardinator__info ul li {
     width: 100%;
     display: flex;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .brif:hover {
     cursor: pointer;
-    transition: 0.5s;
-    background: rgb(246, 252, 255);
+    transition: .5s;
+    background: rgb(246,252,255)
 }
 
-a,
-button {
-    cursor: pointer;
+a,button {
+    cursor: pointer
 }
 
 .body__tt {
-    margin-bottom: var(--p20);
+    margin-bottom: var(--p20)
 }
 
-/* Ãâ€˜ÃÂ°ÃÂ·ÃÂ¾ÃÂ²Ã‘â€¹ÃÂ¹ Ã‘ÂÃ‘â€šÃÂ¸ÃÂ»Ã‘Å’ ÃÂ´ÃÂ»Ã‘Â ÃÂºÃÂ°Ã‘ÂÃ‘â€šÃÂ¾ÃÂ¼ÃÂ½ÃÂ¾ÃÂ³ÃÂ¾ Ã‘â€¡ÃÂµÃÂºÃÂ±ÃÂ¾ÃÂºÃ‘ÂÃÂ° */
 .custom-checkbox+label {
     position: relative;
     padding-left: 30px;
-    /* ÃÅ¾Ã‘â€šÃ‘ÂÃ‘â€šÃ‘Æ’ÃÂ¿ ÃÂ´ÃÂ»Ã‘Â ÃÂºÃÂ²ÃÂ°ÃÂ´Ã‘â‚¬ÃÂ°Ã‘â€šÃÂ° */
-    cursor: pointer;
+    cursor: pointer
 }
 
-/* ÃÅ¸Ã‘ÂÃÂµÃÂ²ÃÂ´ÃÂ¾Ã‘ÂÃÂ»ÃÂµÃÂ¼ÃÂµÃÂ½Ã‘â€š ÃÂ´ÃÂ»Ã‘Â ÃÂºÃÂ²ÃÂ°ÃÂ´Ã‘â‚¬ÃÂ°Ã‘â€šÃÂ½ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ±ÃÂ»ÃÂ¾ÃÂºÃÂ° */
-.custom-checkbox+label::before {
+.custom-checkbox+label:before {
     content: "";
     position: absolute;
     left: 15px;
@@ -2715,229 +2602,167 @@ button {
     width: 24px;
     height: 24px;
     border: 2px solid #737373;
-    border-radius: 7px !important;
-    /* ÃÂºÃÂ²ÃÂ°ÃÂ´Ã‘â‚¬ÃÂ°Ã‘â€š, ÃÂ±ÃÂµÃÂ· Ã‘ÂÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ³ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂ¹ */
+    border-radius: 7px!important;
     background-color: #fff;
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
-/* ÃÅ¸Ã‘â‚¬ÃÂ¸ ÃÂ¾Ã‘â€šÃÂ¼ÃÂµÃ‘â€¡ÃÂµÃÂ½ÃÂ½ÃÂ¾ÃÂ¼ Ã‘ÂÃÂ¾Ã‘ÂÃ‘â€šÃÂ¾Ã‘ÂÃÂ½ÃÂ¸ÃÂ¸ Ã¢â‚¬â€œ ÃÂ¸ÃÂ·ÃÂ¼ÃÂµÃÂ½Ã‘ÂÃÂµÃÂ¼ ÃÂ³Ã‘â‚¬ÃÂ°ÃÂ½ÃÂ¸Ã‘â€ Ã‘Æ’ ÃÂ¸ ÃÂ´ÃÂ¾ÃÂ±ÃÂ°ÃÂ²ÃÂ»Ã‘ÂÃÂµÃÂ¼ ÃÂ³ÃÂ°ÃÂ»ÃÂ¾Ã‘â€¡ÃÂºÃ‘Æ’ */
-.custom-checkbox:checked+label::before {
-    border-color: #01ACFF;
-    /* Ãâ€œÃÂ°ÃÂ»ÃÂ¾Ã‘â€¡ÃÂºÃÂ° Ã‘Â ÃÂ¸Ã‘ÂÃÂ¿ÃÂ¾ÃÂ»Ã‘Å’ÃÂ·ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµÃÂ¼ SVG (Ã‘â€ ÃÂ²ÃÂµÃ‘â€š ÃÂ³ÃÂ°ÃÂ»ÃÂ¾Ã‘â€¡ÃÂºÃÂ¸ Ã¢â‚¬â€œ Ã‘ÂÃÂ¸ÃÂ½ÃÂ¸ÃÂ¹) */
+.custom-checkbox:checked+label:before {
+    border-color: #01acff;
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 7L6 9L10 5' stroke='blue' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
     border-radius: 7px;
-    color: #01ACFF;
+    color: #01acff
 }
 
-
 button:hover img {
-    transition: 0.5s;
-
+    transition: .5s
 }
 
 .main__ponel.collapsed .ponel__ul li button:hover {
-    transition: 0.5s;
-    color: rgb(255, 255, 255);
-
+    transition: .5s;
+    color: #fff
 }
 
 .news-item:hover {
-    transition: 0.5s;
+    transition: .5s
 }
-
-button:hover {}
 
 button.active_Btn img {
-    filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1)
 }
 
-main,
-.header__user__logo img,
-span.remove-zone img,
-.user-list__avatar img {
+main,.header__user__logo img,span.remove-zone img,.user-list__avatar img {
     width: 100%;
-    height: 100%;
+    height: 100%
 }
 
-.home .home__module::-webkit-scrollbar,
-.main__ponel.collapsed .ponel__ul li span,
-.main__ponel.collapsed .ponel__ul li button span,
-.mb,
-div#div_gop,
-span#back-arrow,
-.radio input[type="checkbox"],
-.custom-checkbox {
-    display: none;
+.home .home__module::-webkit-scrollbar,.main__ponel.collapsed .ponel__ul li span,.main__ponel.collapsed .ponel__ul li button span,.mb,div#div_gop,span#back-arrow,.radio input[type=checkbox],.custom-checkbox {
+    display: none
 }
 
-.collapsed li.logo_flex a,
-.form__title,
-.faq_block.flex.center,
-.training .faq__body,
-.deal__body .faq_item.active .faq_answer ul,
-.deal__body .faq_item.active .faq_answer label,
-a.edit-button,
-.support .faq__body,
-.wd100,
-.modules__adm {
-    width: 100%;
+.collapsed li.logo_flex a,.form__title,.faq_block.flex.center,.training .faq__body,.deal__body .faq_item.active .faq_answer ul,.deal__body .faq_item.active .faq_answer label,a.edit-button,.support .faq__body,.wd100,.modules__adm {
+    width: 100%
 }
 
-div#home,
-.estimate-estimates.flex {
-    gap: var(--g20);
+div#home,.estimate-estimates.flex {
+    gap: var(--g20)
 }
 
-.faq_question h2,
-.zone-item h3,
-.deal__body .faq__body h2,
-.deal__responsible ul h2,
-.support__chat h2 {
-    padding: 0px;
+.faq_question h2,.zone-item h3,.deal__body .faq__body h2,.deal__responsible ul h2,.support__chat h2 {
+    padding: 0
 }
 
-.form-group p,
-.faq_answer p,
-.lk__info_vertion ul p {
-    font-size: 16px;
+.form-group p,.faq_answer p,.lk__info_vertion ul p {
     text-align: left;
     font-weight: 400;
     font-size: 16px;
     line-height: 20.4px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
-.pc,
-.flex {
-    display: flex;
+.pc,.flex {
+    display: flex
 }
 
-.block_discount label,
-.header__nubmer li {
-    position: relative;
+.block_discount label,.header__nubmer li {
+    position: relative
 }
 
-.block_abs_redact,
-.abs_block_listrs,
-.abs_hp_input_prise,
-span.create-input_service-span {
+.block_abs_redact,.abs_block_listrs,.abs_hp_input_prise,span.create-input_service-span {
     position: absolute;
     top: 15px;
-    right: 15px;
+    right: 15px
 }
 
-.div_block_input_estimate,
-.deal__body,
-.support__content,
-.times__home__module {
+.div_block_input_estimate,.deal__body,.support__content,.times__home__module {
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
-.block_one,
-div#div_container_two_lists {
-    width: 33%;
+.block_one,div#div_container_two_lists {
+    width: 33%
 }
 
-.row.service-row .create-checkbox_stage,
-.col-12.service-col-12.hp_input_prise input {
+.row.service-row .create-checkbox_stage,.col-12.service-col-12.hp_input_prise input {
     width: 100%;
     position: absolute;
     top: -17px;
     visibility: hidden;
     box-sizing: border-box;
-    height: 100%;
+    height: 100%
 }
 
-.service-h3,
-.introjs-helperNumberLayer,
-.introjs-prevbutton {
-    display: none !important;
+.service-h3,.introjs-helperNumberLayer,.introjs-prevbutton {
+    display: none!important
 }
 
-.wd_button .port input,
-.cardinators__create label,
-.auth__form label input,
-td input,
-.complaint__user h3,
-.error-message p {
-    margin: 0px;
+.wd_button .port input,.cardinators__create label,.auth__form label input,td input,.complaint__user h3,.error-message p {
+    margin: 0
 }
 
-.estimate_copy,
-.time__calendar {
+.estimate_copy,.time__calendar {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
-.deal__cardinator__info h2,
-.time__calendar p {
-    font-size: var(--p20);
+.deal__cardinator__info h2,.time__calendar p {
+    font-size: var(--p20)
 }
 
-.complaint,
-.modules__adm ul li {
+.complaint,.modules__adm ul li {
     border-radius: var(--radius);
     padding: var(--p20);
-    background: var(--fff);
+    background: var(--fff)
 }
 
-.header__nubmer a img,
-.home__module.news img {
-    width: var(--p20);
+.header__nubmer a img,.home__module.news img {
+    width: var(--p20)
 }
 
-.success-message.show,
-.error-message.show {
-    right: var(--p20);
+.success-message.show,.error-message.show {
+    right: var(--p20)
 }
 
-.button:hover,
-button.active_Btn {
-    background: rgb(1, 172, 255) !important;
+.button:hover,button.active_Btn {
+    background: rgb(1,172,255)!important
 }
 
-.main__ponel.collapsed .ponel__ul li button:hover span,
-.ponel__ul li button:hover,
-.ponel__ul li button:hover span,
-button.active_Btn span {
-    color: rgb(255, 255, 255) !important;
+.main__ponel.collapsed .ponel__ul li button:hover span,.ponel__ul li button:hover,.ponel__ul li button:hover span,button.active_Btn span {
+    color: #fff!important
 }
 
 div#step-mobile-1 {
-    background: none;
+    background: none
 }
 
 .back__fon svg path {
-    fill: rgb(242, 242, 242);
+    fill: #f2f2f2
 }
 
 .profile__avatar form:hover {
-    background-image: url("../storage/icon/skr.svg");
+    background-image: url(../storage/icon/skr.svg);
     width: 100%;
-    height: 100%;
+    height: 100%
 }
 
 .brifs__section__finished .brif:nth-child(1) {
-    background: rgb(226, 255, 217);
+    background: rgb(226,255,217)
 }
 
 .flex_table__format_table tr {
     height: 80px;
-    min-height: 80px;
+    min-height: 80px
 }
 
-th,
-td img {
-    width: 25px;
+th,td img {
+    width: 25px
 }
 
 .link__deistv a {
@@ -2948,7 +2773,7 @@ td img {
     height: 100%;
     display: flex;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 td.link__deistv {
@@ -2956,55 +2781,54 @@ td.link__deistv {
     gap: var(--g10);
     min-height: 80px;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .filter form {
     display: flex;
     align-items: center;
     gap: var(--g10);
-    place-content: center space-between;
+    place-content: center space-between
 }
 
 .filter form .search {
     width: 100%;
-
     gap: var(--g10);
     height: 100%;
     display: flex;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .filter form .search input {
-    margin: 0px;
+    margin: 0
 }
 
 .filter {
-    padding-top: 0px;
+    padding-top: 0
 }
 
 .filter form .search button {
     padding: 8px;
     height: 40px;
     min-height: 40px;
-    width: 40px;
+    width: 40px
 }
 
 .filter form .search button img {
-    width: 25px;
+    width: 25px
 }
 
 .variate__view button {
     width: 40px;
     height: 40px;
-    padding: 0px;
+    padding: 0;
     min-height: 40px;
-    background: none;
+    background: none
 }
 
 .variate__view img {
-    width: 25px;
+    width: 25px
 }
 
 .variate__view {
@@ -3012,22 +2836,22 @@ td.link__deistv {
     gap: var(--g10);
     height: 100%;
     align-items: center;
-    place-content: center;
+    place-content: center
 }
 
 .filter form .search select {
-    max-width: 300px;
+    max-width: 300px
 }
 
 .faq_answer__deal {
-    display: none;
+    display: none
 }
 
 .faq_block__deal {
     display: flex;
     align-items: center;
     gap: var(--g20);
-    place-content: center flex-start;
+    place-content: center flex-start
 }
 
 .faq_item__deal {
@@ -3035,9 +2859,9 @@ td.link__deistv {
     position: relative;
     background: var(--fff);
     border-radius: var(--radius);
-    padding: 0px;
+    padding: 0;
     min-height: 200px;
-    width: 100%;
+    width: 100%
 }
 
 .faq__body__deal {
@@ -3046,67 +2870,67 @@ td.link__deistv {
     display: flex;
     align-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 div#dealModal .modal-content {
     padding: var(--p30);
     max-width: 850px;
     background: var(--fff);
-    border-radius: var(--radius);
+    border-radius: var(--radius)
 }
 
 div#dealModal .modal-content div#modalBody {
     display: flex;
     align-items: flex-start;
     place-content: flex-start center;
-    flex-direction: column;
+    flex-direction: column
 }
 
 div#dealModal .modal-content div#modalBody form {
     display: flex;
     gap: var(--g10);
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 div#dealModal .modal-content div#modalBody .deal__cardinator__lists__flex__info {
-    width: 100%;
+    width: 100%
 }
 
 div#dealModal .modal-content div#modalBody .deal__cardinator__lists__flex__info form {
-    display: flex;
+    display: flex
 }
 
 div#dealModal .modal-content div#modalBody form label {
-    width: 49%;
+    width: 49%
 }
 
 .active-button {
     background-color: green;
-    color: rgb(255, 255, 255);
+    color: #fff
 }
 
 .modal.show {
     opacity: 1;
     transition: 1s;
-    transform: translateX(0px);
+    transform: translate(0)
 }
 
 .modal-content {
-    background-color: rgb(255, 255, 255);
+    background-color: #fff;
     padding: 20px;
     border-radius: 6px;
     max-width: 600px;
     width: 100%;
-    position: relative;
+    position: relative
 }
 
 .close-modal {
     position: absolute;
     right: 10px;
     top: 10px;
-    cursor: pointer;
+    cursor: pointer
 }
 
 .form-buttons {
@@ -3114,77 +2938,75 @@ div#dealModal .modal-content div#modalBody form label {
     display: flex;
     padding-bottom: 30px;
     margin-top: 20px;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .form-buttons button {
-    margin-right: 10px;
+    margin-right: 10px
 }
 
 .faq_block__deal {
     display: none;
-    width: 32%;
+    width: 32%
 }
-
-.modal__deal label {}
 
 .modal__deal .modal-content form {
     display: flex;
     width: 100%;
     gap: var(--g20);
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .link__deistv a img {
-    object-fit: contain;
+    object-fit: contain
 }
 
 .link__deistv button {
-    padding: 0px;
+    padding: 0;
     width: 19%;
     height: 100%;
-    min-height: 40px;
+    min-height: 40px
 }
 
 .my-message {
-    background-color: rgb(217, 253, 211);
+    background-color: #d9fdd3;
     padding: 8px;
     border-radius: 8px;
     margin: 5px;
-    display: inline-block;
+    display: inline-block
 }
 
 .my-message.single-emoji {
     display: inline-block;
-    background-color: transparent !important;
-    padding: 0px !important;
+    background-color: transparent!important;
+    padding: 0!important
 }
 
 .my-message.single-emoji>div:nth-child(2) {
     padding: 15px;
-    font-size: 55px !important;
+    font-size: 55px!important
 }
 
 .modal__deal {
     transition: 1s;
-    transform: translateX(200%);
+    transform: translate(200%)
 }
 
 .modal__deal.show {
-    transform: translateX(0px);
+    transform: translate(0);
     flex-wrap: wrap;
     align-content: flex-end;
     height: 100%;
-    bottom: 0px;
-    top: 0px;
+    bottom: 0;
+    top: 0;
     background: none;
-    width: 100%;
+    width: 100%
 }
 
 .modal__deal {
     display: flex;
     max-height: 100%;
-    justify-content: flex-end;
+    justify-content: flex-end
 }
 
 .modal__deal .modal-content {
@@ -3193,54 +3015,54 @@ div#dealModal .modal-content div#modalBody form label {
     max-height: 80%;
     overflow: scroll;
     padding: 40px 100px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 20px 1px;
+    box-shadow: #0000000f 0 0 20px 1px;
     display: flex;
-    align-content: flex-end;
+    align-content: flex-end
 }
 
 .modal__deal label {
-    text-align: left;
+    text-align: left
 }
 
 .images-collage {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill,minmax(80px,1fr));
     gap: 5px;
-    max-width: 300px;
+    max-width: 300px
 }
 
 .images-collage .collage-item img {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
+    object-fit: cover
 }
 
 ul.brifs__list.brifs__list__null li p {
-    font-size: 20px;
+    font-size: 20px
 }
 
 .brifs__section.brifs__section__finished {
-    padding-top: 20px;
+    padding-top: 20px
 }
 
 .variate__view button img {
     width: 40px;
-    height: 40px;
+    height: 40px
 }
 
 .deal__container .deal__info__point {
-    width: 100%;
+    width: 100%
 }
 
 .deal__info .deal__avatar img {
-    min-width: 100%;
+    min-width: 100%
 }
 
 div#active-deals-pagination {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 div#brifs {
@@ -3248,45 +3070,44 @@ div#brifs {
     place-content: center space-between;
     align-items: center;
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .brifs__section {
     padding-top: 40px;
     padding: var(--p20);
     background: var(--fff);
-    border-radius: 14px;
+    border-radius: 14px
 }
 
 .brif p {
-    color: #444444;
+    color: #444;
     font-family: var(--onest);
     font-weight: 400;
-    font-size: 10px !IMPORTANT;
+    font-size: 10px!important;
     line-height: 12.75px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .auth__form h1 {
     display: flex;
     justify-content: center;
     color: var(--bluetext);
-    width: 100% !important;
-    text-align: center !important;
+    width: 100%!important;
+    text-align: center!important;
     font-family: var(--onest);
     font-weight: 700;
     font-size: 32px;
     line-height: 41.6px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 label p {
-    font-size: 18px !important;
-    font-weight: 500 !important;
+    font-size: 18px!important;
+    font-weight: 500!important
 }
 
 ul.auth__form__link a {
-
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
@@ -3294,30 +3115,26 @@ ul.auth__form__link a {
     text-decoration: underline;
     text-decoration-style: solid;
     text-decoration-offset: Auto;
-    text-decoration-thickness: Auto;
+    text-decoration-thickness: Auto
 }
 
-.auth__form input,
-textarea,
-select {
-    min-height: 54px;
+.auth__form input,textarea,select {
+    min-height: 54px
 }
 
 .auth__fon {
-    background-image: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png");
+    background-image: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/auth/authFon.png);
     background-position: left;
     height: 100%;
     background-size: contain;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat
 }
-
-p.auth__title_sub {}
 
 p.auth__title_sub {
     text-align: center;
     font-weight: 500;
     padding-bottom: 30px;
-    font-size: 20px !important;
+    font-size: 20px!important
 }
 
 .Jikharev {
@@ -3328,8 +3145,8 @@ p.auth__title_sub {
     position: relative;
     font-weight: initial;
     top: -8px;
-    font-family: Jikharev !important;
-    color: rgb(1, 170, 252) !important;
+    font-family: Jikharev!important;
+    color: #01aafc!important
 }
 
 .button__variate2 {
@@ -3346,78 +3163,79 @@ p.auth__title_sub {
     letter-spacing: 0%;
     align-items: center;
     align-content: center;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .button__brifs {
     padding-bottom: 10px;
     gap: var(--g10);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 .deal__cardinator__info h4 {
-    padding-bottom: 0px;
+    padding-bottom: 0
 }
 
 .brifs__button__create button {
-    padding: 0px;
+    padding: 0;
     width: 40px;
     max-height: 40px;
     min-height: 40px;
-    height: 40px !important;
+    height: 40px!important
 }
 
 .variate__view button:hover img {
     filter: none;
-    background: none !important;
+    background: none!important
 }
 
 button.active-button:hover img {
-    filter: none;
+    filter: none
 }
 
-.variate__view button:hover {
-    background: none !important;
-}
-
-.brifs__button__create button:hover {
-    background: none !important;
+.variate__view button:hover,.brifs__button__create button:hover {
+    background: none!important
 }
 
 .brifs__button__create button:hover img {
     filter: none;
-    background: none !important;
+    background: none!important
 }
 
 .brifs__button__create button {
-    background: none;
+    background: none
 }
 
 table.dataTable thead th {
-    align-content: space-around;
+    align-content: space-around
 }
 
 tr {
-    height: 100%;
+    height: 100%
 }
 
 thead {
-    height: 80px;
+    height: 47px;
     width: 100%;
-    border: none !important;
-    background-image: var(--blue) !important;
-    border-radius: 30px !important;
+    border: none!important;
+    background-image: var(--blue)!important;
+    border-radius: 30px!important;
+    overflow: hidden;
 }
 
 thead th {
     color: var(--fff);
+    font-family: Onest;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22.95px;
+    letter-spacing: 0%;
 }
 
-table.dataTable tbody th,
-table.dataTable tbody td {
+table.dataTable tbody th,table.dataTable tbody td {
     padding: 8px 10px;
-    align-content: space-around;
+    align-content: space-around
 }
 
 .button__a__profile {
@@ -3427,13 +3245,13 @@ table.dataTable tbody td {
     width: 100%;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 .button__a__profile a {
     width: 100%;
     min-height: 72px;
-    background: none !important;
+    background: none!important;
     display: flex;
     border: 1px solid #D2DFFF;
     border-radius: 10px;
@@ -3441,11 +3259,11 @@ table.dataTable tbody td {
     color: var(--black);
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 .buttonred {
-    background: linear-gradient(51deg, rgb(255, 1, 5) 0%, rgb(190, 3, 6) 100%) !important;
+    background: linear-gradient(51deg,rgb(255,1,5) 0%,rgb(190,3,6) 100%)!important
 }
 
 .class-border-profile {
@@ -3456,7 +3274,7 @@ table.dataTable tbody td {
     display: flex;
     flex-direction: column;
     align-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .class-border-profile label {
@@ -3465,15 +3283,15 @@ table.dataTable tbody td {
     flex-direction: column;
     align-content: flex-start;
     align-items: flex-start;
-    padding-bottom: 10px;
+    padding-bottom: 10px
 }
 
 .main__ponel.collapsed li.logo_flex.flex {
-    padding: var(--p30) var(--p10) var(--p20) var(--p10);
+    padding: var(--p30) var(--p10) var(--p20) var(--p10)
 }
 
 .password__new form>div {
-    padding-bottom: 20px;
+    padding-bottom: 20px
 }
 
 .faq_question__deal__status {
@@ -3483,17 +3301,17 @@ table.dataTable tbody td {
     height: 100%;
     flex-direction: column;
     align-content: flex-end;
-    align-items: flex-end;
+    align-items: flex-end
 }
 
 .deal__info__profile {
     display: flex;
     gap: 20px;
-    width: 70%;
+    width: 70%
 }
 
 .deal__info__title h3 {
-    margin: 0px;
+    margin: 0
 }
 
 .faq__body h2 {
@@ -3502,42 +3320,39 @@ table.dataTable tbody td {
     font-weight: 500;
     font-size: 26px;
     line-height: 33.15px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .div__create_form {
-    background-image: url("http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/brifs/formFONbrif.png");
+    background-image: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/public/img/brifs/formFONbrif.png);
     background-position: 100% center;
     border-radius: var(--radius);
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat
 }
 
 .div__create_block h1 .Jikharev {
-    padding: 0px;
-    font-size: 80px;
+    padding: 0;
+    font-size: 80px
 }
 
 .form__button button:nth-child(1) {
     background: none;
     border: 1px solid #000;
-    color: #000;
+    color: #000
 }
 
 .form__button button:hover:nth-child(1) {
-    background: none !important;
+    background: none!important;
     border: 1px solid #000;
-    color: #000;
+    color: #000
 }
 
-
-
-
 .brifs .brifs__button__create button {
-    background: none !IMPORTANT;
+    background: none!important;
     min-height: 40px;
     min-width: 40px;
-    max-width: 40px;
+    max-width: 40px
 }
 
 .div__create_form button {
@@ -3546,218 +3361,189 @@ table.dataTable tbody td {
     font-weight: 600;
     max-width: 371px;
     min-width: 362px;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
+    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png),auto!important;
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
     color: var(--fff);
     border-radius: 9px;
     padding: var(--p10) var(--p30);
-    background: var(--blue);
+    background: var(--blue)
 }
 
 .div__create_form .brifs__button__create button:hover {
-    background: var(--blue) !important;
-
+    background: var(--blue)!important
 }
 
 .class-form-deal-create {
-    width: 32%;
+    width: 32%
 }
 
 form.create__deal_id {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-between
 }
-
 
 .module {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 25px;
     padding: 20px;
-    background: #fafafa;
+    background: #fafafa
 }
 
 .module legend {
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: 700;
     padding-bottom: 5px;
     margin-bottom: 15px;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #ccc
 }
 
 .form-group-deal {
-    margin-bottom: 15px;
+    margin-bottom: 15px
 }
 
 .form-group-deal label {
-    font-weight: bold;
+    font-weight: 700;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 5px
 }
 
-.form-group-deal input[type="text"],
-.form-group-deal input[type="number"],
-.form-group-deal input[type="url"],
-.form-group-deal input[type="date"],
-.form-group-deal select,
-.form-group-deal textarea {
+.form-group-deal input[type=text],.form-group-deal input[type=number],.form-group-deal input[type=url],.form-group-deal input[type=date],.form-group-deal select,.form-group-deal textarea {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
-    font-size: 1em;
+    font-size: 1em
 }
 
-.form-group-deal input[type="file"] {
-    padding: 5px;
+.form-group-deal input[type=file] {
+    padding: 5px
 }
 
 .radio-group label {
-    margin-right: 15px;
+    margin-right: 15px
 }
 
 .btn.btn-primary {
-
-
-
-
-
-
-    cursor: pointer;
+    cursor: pointer
 }
 
 .btn.btn-primary:hover {
-    background: #0056b3;
+    background: #0056b3
 }
 
 .avatar-preview {
-    margin-top: 10px;
+    margin-top: 10px
 }
 
 .required {
-    color: red;
+    color: red
 }
 
-.auth__form form {
-    width: 100%;
-}
-
-.modal-fields {
-    width: 100%;
+.auth__form form,.modal-fields {
+    width: 100%
 }
 
 form#create-deal-form {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-between
 }
 
 form#create-deal-form .module {
-    width: 49%;
+    width: 49%
 }
 
-.select2-container {
-    z-index: 999999 !important;
-}
-
-.select2-container--open .select2-dropdown--below {
-    z-index: 999999 !important;
+.select2-container,.select2-container--open .select2-dropdown--below {
+    z-index: 999999!important
 }
 
 strong {
-    font-weight: 600;
+    font-weight: 600
 }
 
 li.politic__info {
-    color: var(--ser);
+    color: var(--ser)
 }
 
 p#resend-timer {
     font-family: var(--onest);
     font-weight: 300;
-    font-size: 12px !important;
+    font-size: 12px!important;
     line-height: 16.8px;
     color: var(--ser);
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .code-input {
-    width: 66px ! IMPORTANT;
-    height: 66px !important;
-    text-align: center;
+    width: 66px!important;
+    height: 66px!important;
     font-size: 1.5rem;
     font-family: var(--onest);
     font-weight: 400;
-    font-size: 40px !important;
+    font-size: 40px!important;
     line-height: 60px;
     letter-spacing: 0%;
-    text-align: center;
+    text-align: center
 }
 
 .ponel__ul li button:hover {
-    background: var(--blockbody) !important;
-    color: var(--black) !important;
+    background: var(--blockbody)!important;
+    color: var(--black)!important
 }
 
 .ponel__ul li button:hover span {
-    color: var(--black) !important;
+    color: var(--black)!important
 }
 
 a.dropdown-item {
     width: 24px;
-    height: 24px;
+    height: 24px
 }
-
-a.dropdown-item {
-    width: 24px;
-    height: 24px;
-}
-
-a.flex {}
 
 li.logo_flex.flex a {
     display: flex;
     justify-content: flex-start;
     align-content: center;
-    align-items: center;
+    align-items: center
 }
 
 .main__ponel.collapsed li.logo_flex.flex a {
     max-width: 40px;
-    padding-left: 10px;
+    padding-left: 10px
 }
 
 button.button__variate2.icon {
     width: 35px;
     height: 35px;
-    padding: var(--p10);
+    padding: var(--p10)
 }
 
 .button__variate2 img {
     width: 15px;
-    height: 15px;
+    height: 15px
 }
 
 .brifs__body.wow.fadeInLeft {
     display: flex;
     flex-direction: column;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .brifs__section.brifs__section__finished p {
-    text-align: left;
+    text-align: left
 }
 
 .form__title p {
-    padding: 0;
+    padding: 0
 }
 
 .form__title .form__button p {
-    min-width: 150px;
+    min-width: 150px
 }
 
 .question_class-button a {
@@ -3769,18 +3555,16 @@ button.button__variate2.icon {
     height: 40px;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 .question_class-button a img {
     width: 26.0625px;
-    /* position: relative; */
-    /* width: 14.0625px; */
     height: 11.03125px;
     top: 24.38px;
     left: 30px;
     angle: 180 deg;
-    border-width: 1.5px;
+    border-width: 1.5px
 }
 
 .status__profile {
@@ -3791,7 +3575,7 @@ button.button__variate2.icon {
     justify-content: center;
     align-content: center;
     background: #D9F0FF;
-    border-radius: var(--radius);
+    border-radius: var(--radius)
 }
 
 .status__profile a {
@@ -3799,45 +3583,43 @@ button.button__variate2.icon {
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .profile__info__table {
-    width: 100%;
-    /* max-height: 370px; */
+    width: 100%
 }
 
 .password__new h3 {
     font-weight: 400;
     font-size: 28px;
     line-height: 42px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .column-profile {
     display: flex;
     gap: var(--p20);
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .form-group-colum__profile {
-    width: 48%;
+    width: 48%
 }
 
 .row__column-profile {
     display: flex;
     gap: var(--p20);
-    flex-direction: column;
+    flex-direction: column
 }
 
 .form-group-colum__profile label {
-
     font-weight: 400;
     font-size: 16px;
     color: var(--black);
     line-height: 24px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .upload__files h6 {
@@ -3845,16 +3627,15 @@ button.button__variate2.icon {
     font-size: 26px;
     padding-bottom: 20px;
     line-height: 36.4px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .upload__files {
     margin: 20px 0;
-    font-family: Arial, sans-serif;
-    width: 100%;
+    font-family: Arial,sans-serif;
+    width: 100%
 }
 
-/* ÃƒÂÃ‚Â¡Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚Â ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â±ÃƒÂÃ‚Â»ÃƒÂÃ‚Â°Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¸ ÃƒÂÃ‚Â¿ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â°Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂºÃƒÂÃ‚Â¸ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚Â */
 #drop-zone {
     border: 2px dashed #B3B3B3;
     min-height: 220px;
@@ -3866,24 +3647,23 @@ button.button__variate2.icon {
     cursor: pointer;
     background: var(--blockbody);
     position: relative;
-    transition: background-color 0.3s ease;
+    transition: background-color .3s ease;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: center
 }
 
 #drop-zone.dragover {
     background-color: #f0f8ff;
-    border-color: #007bff;
+    border-color: #007bff
 }
 
 #drop-zone p {
     margin: 0;
     font-size: 16px;
-    color: #666;
+    color: #666
 }
 
-/* ÃƒÂÃ‚Â¡ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ ÃƒÂÃ‚Â½ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â²ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾ÃƒÂÃ‚Âµ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»ÃƒÂÃ‚Âµ ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â±ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â° Ãƒâ€˜Ã¢â‚¬Å¾ÃƒÂÃ‚Â°ÃƒÂÃ‚Â¹ÃƒÂÃ‚Â»ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â², ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾ ÃƒÂÃ‚Â¾Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â»Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ ÃƒÂÃ‚ÂµÃƒÂÃ‚Â³ÃƒÂÃ‚Â¾ ÃƒÂÃ‚Â´ÃƒÂÃ‚Â¾Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â¼ */
 #fileInput {
     position: absolute;
     top: 0;
@@ -3891,62 +3671,35 @@ button.button__variate2.icon {
     width: 100%;
     height: 100%;
     opacity: 0;
-    cursor: pointer;
+    cursor: pointer
 }
 
 .brifs__section.brifs__section__finished li.brif h4 {
-    padding-bottom: 16px;
+    padding-bottom: 16px
 }
 
-.brifs__list .brif:nth-child(1),
-.brifs__list .brif:nth-child(4),
-.brifs__list .brif:nth-child(7),
-.brifs__list .brif:nth-child(10),
-.brifs__list .brif:nth-child(13),
-.brifs__list .brif:nth-child(16),
-.brifs__list .brif:nth-child(19),
-.brifs__list .brif:nth-child(22),
-.brifs__list .brif:nth-child(25),
-.brifs__list .brif:nth-child(28) {
-    background: #ECF2FF;
+.brifs__list .brif:nth-child(1),.brifs__list .brif:nth-child(4),.brifs__list .brif:nth-child(7),.brifs__list .brif:nth-child(10),.brifs__list .brif:nth-child(13),.brifs__list .brif:nth-child(16),.brifs__list .brif:nth-child(19),.brifs__list .brif:nth-child(22),.brifs__list .brif:nth-child(25),.brifs__list .brif:nth-child(28) {
+    background: #ECF2FF
 }
 
-.brifs__list .brif:nth-child(2),
-.brifs__list .brif:nth-child(5),
-.brifs__list .brif:nth-child(8),
-.brifs__list .brif:nth-child(11),
-.brifs__list .brif:nth-child(14),
-.brifs__list .brif:nth-child(17),
-.brifs__list .brif:nth-child(20),
-.brifs__list .brif:nth-child(23),
-.brifs__list .brif:nth-child(26),
-.brifs__list .brif:nth-child(29) {
-    background: #ECF7FF;
+.brifs__list .brif:nth-child(2),.brifs__list .brif:nth-child(5),.brifs__list .brif:nth-child(8),.brifs__list .brif:nth-child(11),.brifs__list .brif:nth-child(14),.brifs__list .brif:nth-child(17),.brifs__list .brif:nth-child(20),.brifs__list .brif:nth-child(23),.brifs__list .brif:nth-child(26),.brifs__list .brif:nth-child(29) {
+    background: #ECF7FF
 }
 
-.brifs__list .brif:nth-child(3),
-.brifs__list .brif:nth-child(6),
-.brifs__list .brif:nth-child(9),
-.brifs__list .brif:nth-child(12),
-.brifs__list .brif:nth-child(15),
-.brifs__list .brif:nth-child(18),
-.brifs__list .brif:nth-child(21),
-.brifs__list .brif:nth-child(24),
-.brifs__list .brif:nth-child(27),
-.brifs__list .brif:nth-child(30) {
-    background: #ECECFF;
+.brifs__list .brif:nth-child(3),.brifs__list .brif:nth-child(6),.brifs__list .brif:nth-child(9),.brifs__list .brif:nth-child(12),.brifs__list .brif:nth-child(15),.brifs__list .brif:nth-child(18),.brifs__list .brif:nth-child(21),.brifs__list .brif:nth-child(24),.brifs__list .brif:nth-child(27),.brifs__list .brif:nth-child(30) {
+    background: #ECECFF
 }
 
 button.button__icon {
     display: flex;
     justify-content: space-evenly;
     align-content: center;
-    align-items: center;
+    align-items: center
 }
 
 button.button__icon img {
     width: 22px;
-    height: 22px;
+    height: 22px
 }
 
 .form__body.flex.between.wrap.pointblock {
@@ -3957,12 +3710,11 @@ button.button__icon img {
     padding: var(--p20);
     border-radius: var(--radius);
     justify-content: space-between;
-    align-content: center;
+    align-content: center
 }
 
 .div__create_block button {
-    /* min-width: 250px !important; */
-    max-width: 250px !important;
+    max-width: 250px!important
 }
 
 .zone-item-inputs-title {
@@ -3970,14 +3722,14 @@ button.button__icon img {
     gap: var(--g20);
     justify-content: center;
     align-content: center;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .zone-item-inputs {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--g20);
+    gap: var(--g20)
 }
 
 .zone-item h3 {
@@ -3985,25 +3737,33 @@ button.button__icon img {
     font-weight: 500;
     font-size: 26px;
     line-height: 33.15px;
-    letter-spacing: 0%;
+    letter-spacing: 0%
 }
 
 .form__title .form__button button:nth-child(2) {
     background: var(--fff);
     color: var(--black);
-    border: 1px solid var(--bluetext);
+    border: 1px solid var(--bluetext)
 }
-.form__title .form__button button {max-width: 140px;}
+
+.form__title .form__button button {
+    max-width: 140px
+}
+
 .support-faq__body {
     padding: var(--p20);
     border-radius: var(--radius);
-    background: var(--fff);
-}.div__create_block button span {
+    background: var(--fff)
+}
+
+.div__create_block button span {
     display: flex;
     justify-content: center;
     align-content: center;
-    align-items: center;
-}.div__create_block button span {
+    align-items: center
+}
+
+.div__create_block button span {
     display: flex;
     justify-content: center;
     top: 2px;
@@ -4015,5 +3775,49 @@ button.button__icon img {
     line-height: 19.6px;
     letter-spacing: 0%;
     align-content: center;
+    align-items: center
+}
+.support-chat-block-skiter {
+    padding: var(--p20);
+    height: 100%;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    background: var(--blockbody);
+    justify-content: center;
+    align-content: center;
+}
+
+.support-chat-block-skiter img {
+    width: 317px;
+    height: 317px;
+}   table {
+    /* border: 1px solid #ddd; */
+    width: 100%;
+    background: var(--fff);
+    padding: var(--p20);
+    border-radius: var(--radius);
+}
+td {
+    background: var(--blockbody);
+    border-radius: var(--radius);
+}tr.hd-show {
+    height: 47px;
+    width: 100%;
+    border: none !important;
+    background-image: var(--blue) !important;
+    border-radius: 30px !important;
+    overflow: hidden;
+}
+
+tr.hd-show {}
+
+tr.hd-show td {
+    /* color: var(--fff); */
+    background: none;
+}
+
+tr.hd-show td h3 {
+    color: var(--fff) !important;
 }

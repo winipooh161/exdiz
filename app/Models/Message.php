@@ -6,8 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+    // Обновляем fillable с учётом дополнительных полей: type, message_type, file_path
     protected $fillable = [
-        'sender_id', 'receiver_id', 'chat_id', 'message', 'is_read', 'read_at'
+        'sender_id',
+        'receiver_id',
+        'chat_id',
+        'message',
+        'is_read',
+        'read_at',
+        'type',
+        'message_type',
+        'file_path'
     ];
 
     /**
@@ -35,7 +44,7 @@ class Message extends Model
     }
 
     /**
-     * Метод для маркировки сообщений как прочитанных по чату.
+     * Метод для маркировки сообщений как прочитанных в чате.
      */
     public static function markAsReadByChat($chatId, $userId)
     {

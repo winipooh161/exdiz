@@ -1,6 +1,6 @@
 
 <h1 class="flex">
-    Детали  <span class="Jikharev">брифа </span> 
+    Детали  брифа 
 </h1>
 <table class="table table-bordered" style="">
     <thead>
@@ -42,8 +42,8 @@
     <tbody>
         {{-- Display questions and answers --}}
         @for ($i = 1; $i <= 15; $i++)
-            <tr>
-                <td colspan="2" style=" ">
+            <tr class="hd-show">
+                <td colspan="2" style="">
                     <h3 style="font-size: 16px; margin: 0; text-align:left;">{{ $pageTitlesCommon[$i - 1] }}</h3>
                 </td>
             </tr>
@@ -105,21 +105,7 @@
 <style>
    
 
-    table {
-        border: 1px solid #ddd;
-      
-        width: 100%;
-    }
 
-    th, td {
-      
-        border: 1px solid #ddd;
-    }
-
-    th {
-       
-        font-weight: bold;
-    }
 
  
 </style>

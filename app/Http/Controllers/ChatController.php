@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 class ChatController extends Controller
 {
     /**
-     * Display the list of chats available to the user.
+     * Отображает список чатов, доступных пользователю.
      */
     public function index()
     {
@@ -24,20 +24,19 @@ class ChatController extends Controller
         $user = Auth::user();
         $userId = $user->id;
     
-        // Пустая коллекция для дальнейшего наполнения
         $chats = collect();
     
         /***********************************************
-         * 1) ГРУППОВЫЕ ЧАТЫ
+         * 1) Групповые чаты
          ***********************************************/
         $groupChats = collect();
     
         switch ($user->status) {
             case 'admin':
-                // Админ видит все групповые чаты
+                // Админ видит все групповые чаты с выборкой последних 50 сообщений
                 $groupChats = Chat::where('type', 'group')
                     ->with([
-                        'messages' => fn($q) => $q->orderBy('created_at', 'desc'),
+                        'messages' => fn($q) => $q->orderBy('created_at', 'desc')->limit(50),
                         'users',
                     ])
                     ->get();
@@ -45,41 +44,34 @@ class ChatController extends Controller
     
             case 'coordinator':
             case 'user':
-                // coordinator/user видит только групповые чаты, где он(а) состоит
+                // coordinator/user видят групповые чаты, в которых они состоят
                 $groupChats = Chat::where('type', 'group')
                     ->whereHas('users', fn($q) => $q->where('users.id', $userId))
                     ->with([
-                        'messages' => fn($q) => $q->orderBy('created_at', 'desc'),
+                        'messages' => fn($q) => $q->orderBy('created_at', 'desc')->limit(50),
                         'users',
                     ])
                     ->get();
                 break;
     
             case 'support':
-                // support — групповые чаты НЕ показываем (по заданию)
+                // support – групповые чаты не показываем
                 break;
         }
     
-        // Обрабатываем (подсчитываем непрочитанные, время последнего сообщения и т.д.)
+        // Формирование данных для каждого группового чата
         foreach ($groupChats as $chat) {
-            // Для admin тоже хотим считать непрочитанные? 
-            // Если admin не состоит в чате, pivot может отсутствовать,
-            // но в условии "admin все group" — решите, нужно ли считать unread.
-            // Предположим, если admin не в pivot, last_read_at = null => всё будет "непрочитанное".
             $pivotData   = $chat->users->find($userId)?->pivot;
-            $lastReadAt  = $pivotData?->last_read_at; // может быть null
+            $lastReadAt  = $pivotData?->last_read_at;
             $unreadCount = 0;
     
             if ($lastReadAt) {
                 $unreadCount = $chat->messages->where('created_at', '>', $lastReadAt)->count();
             } else {
-                // если вообще нет pivot (admin) — считаем все? Или 0?
-                $unreadCount = $user->status === 'admin'
-                    ? 0 // Допустим, админу не имеет смысла считать непрочитанные, если он не состоит в чате
-                    : $chat->messages->count();
+                $unreadCount = $user->status === 'admin' ? 0 : $chat->messages->count();
             }
     
-            $lastMessage = $chat->messages->first(); // самое новое сообщение (DESC)
+            $lastMessage = $chat->messages->first();
     
             $chats->push([
                 'id'                => $chat->id,
@@ -92,17 +84,13 @@ class ChatController extends Controller
         }
     
         /***********************************************
-         * 2) ЛИЧНЫЕ ЧАТЫ
+         * 2) Личные чаты
          ***********************************************/
-        // Будем собирать в коллекцию объекты User, а потом "превращать" их в массив чата,
-        // как в вашем исходном коде, чтобы всё было единообразно.
         $personalUsers = collect();
     
         switch ($user->status) {
             case 'admin':
             case 'coordinator':
-                // Личные чаты только с теми пользователями, у которых status != 'user'
-                // (и исключая самого себя)
                 $personalUsers = User::where('id', '<>', $userId)
                     ->where('status', '<>', 'user')
                     ->with([
@@ -112,12 +100,6 @@ class ChatController extends Controller
                 break;
     
             case 'support':
-                // Показываем все личные чаты, где support участвует.
-                // Т.е. нам нужно получить всех пользователей, с кем у support есть personal-чат.
-                // Проще всего получить вообще всех, кроме себя, 
-                // и дальше уже при выводе проверять, есть ли хоть одно личное сообщение?
-                // Или же можно жёстко: "все personal, где sender_id = supportId OR receiver_id = supportId".
-                // Пример (как у вас изначально):
                 $personalUsers = User::where('id', '<>', $userId)
                     ->with([
                         'chats' => fn($q) => $q->where('type', 'personal'),
@@ -126,7 +108,6 @@ class ChatController extends Controller
                 break;
     
             case 'user':
-                // (ваша старая логика) — личные чаты со 'support' или 'coordinator', связанными с его сделками
                 $relatedDealIds = $user->deals()->pluck('deals.id');
                 $personalUsers = User::whereIn('status', ['support', 'coordinator'])
                     ->whereHas('deals', fn($q) => $q->whereIn('deals.id', $relatedDealIds))
@@ -138,9 +119,8 @@ class ChatController extends Controller
                 break;
         }
     
-        // Превращаем $personalUsers в итоговые данные для $chats
+        // Преобразуем пользователей в данные для отображения чата
         foreach ($personalUsers as $chatUser) {
-            // Подсчёт непрочитанных
             $unreadCount = Message::where('sender_id', $chatUser->id)
                 ->where('receiver_id', $userId)
                 ->where('is_read', false)
@@ -167,10 +147,7 @@ class ChatController extends Controller
             ]);
         }
     
-        /***********************************************
-         * 3) СОРТИРОВКА
-         * Сначала непрочитанные (desc), потом по дате
-         ***********************************************/
+        // Сортировка чатов: сначала с непрочитанными, затем по дате последнего сообщения
         $chats = $chats->sortByDesc(function ($chat) {
             return $chat['unread_count'] > 0 ? 1 : 0;
         })->sortByDesc('last_message_time')->values();
@@ -180,7 +157,8 @@ class ChatController extends Controller
     
 
     /**
-     * Fetch all messages for a specific chat.
+     * Загружает сообщения для указанного чата.
+     * Для оптимизации выбирается только 50 последних сообщений.
      */
     public function chatMessages($type, $id)
     {
@@ -202,10 +180,12 @@ class ChatController extends Controller
                         $query->where('sender_id', $recipient->id)
                               ->where('receiver_id', $currentUserId);
                     })
-                    ->orderBy('created_at', 'asc')
-                    ->get();
+                    ->orderBy('created_at', 'desc')
+                    ->limit(50) // Ограничение выборки последних 50 сообщений
+                    ->get()
+                    ->reverse(); // Инвертируем порядок для показа от старых к новым
 
-                // Mark messages as read
+                // Помечаем сообщения как прочитанные
                 Message::where('sender_id', $recipient->id)
                     ->where('receiver_id', $currentUserId)
                     ->whereNull('read_at')
@@ -220,17 +200,18 @@ class ChatController extends Controller
 
                 $messages = $chat->messages()
                     ->with('sender')
-                    ->orderBy('created_at', 'asc')
-                    ->get();
+                    ->orderBy('created_at', 'desc')
+                    ->limit(50)
+                    ->get()
+                    ->reverse();
 
-                // Mark messages as read
                 Message::where('chat_id', $chat->id)
                     ->where('sender_id', '!=', $currentUserId)
                     ->whereNull('read_at')
                     ->update(['is_read' => true, 'read_at' => now()]);
             }
 
-            // Add sender's name
+            // Добавляем имя отправителя для каждого сообщения
             $messages->each(function ($message) {
                 $message->sender_name = optional($message->sender)->name ?? 'Unknown';
             });
@@ -241,13 +222,16 @@ class ChatController extends Controller
                 'messages'        => $formattedMessages,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Error in chatMessages:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Log::error('Error in chatMessages:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
 
     /**
-     * Send a message to a specific chat.
+     * Отправляет сообщение в указанный чат.
      */
     public function sendMessage(Request $request, $type, $id)
     {
@@ -265,7 +249,6 @@ class ChatController extends Controller
             if ($type === 'personal') {
                 $receiver = User::findOrFail($id);
 
-                // Create personal message
                 $message = Message::create([
                     'sender_id'   => $currentUserId,
                     'receiver_id' => $receiver->id,
@@ -289,18 +272,21 @@ class ChatController extends Controller
                 broadcast(new MessageSent($message))->toOthers();
             }
 
-            // Add sender's name
             $message->sender_name = optional($message->sender)->name ?? 'Unknown';
 
             return response()->json(['message' => $message], 201);
         } catch (\Exception $e) {
-            Log::error('Error in sendMessage:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Log::error('Error in sendMessage:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
 
     /**
-     * Fetch new messages after a specific message ID.
+     * Возвращает новые сообщения, у которых id больше, чем указанный.
+     * Это позволяет передавать только разницу (дельта-запрос).
      */
     public function getNewMessages(Request $request, $type, $id)
     {
@@ -344,7 +330,6 @@ class ChatController extends Controller
                 ->with('sender')
                 ->get();
 
-            // Add sender's name
             $newMessages->each(function ($message) {
                 $message->sender_name = optional($message->sender)->name;
             });
@@ -354,27 +339,28 @@ class ChatController extends Controller
                 'messages'        => $newMessages,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Error in getNewMessages:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Log::error('Error in getNewMessages:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
 
     /**
-     * Get unread message counts for all chats.
+     * Возвращает количество непрочитанных сообщений по личным и групповым чатам.
      */
     public function getUnreadCounts()
     {
         try {
             $userId = Auth::id();
 
-            // Personal chats: group by sender_id
             $personalUnread = Message::where('receiver_id', $userId)
                 ->where('is_read', false)
                 ->groupBy('sender_id')
                 ->select('sender_id', DB::raw('count(*) as unread_count'))
                 ->pluck('unread_count', 'sender_id');
 
-            // Group chats: get unread counts based on last_read_at
             $groupUnread = Message::whereHas('chat.users', fn($query) => $query->where('users.id', $userId))
                 ->whereNotNull('chat_id')
                 ->with(['chat' => fn($query) => $query->whereHas('users', fn($q) => $q->where('users.id', $userId))])
@@ -390,15 +376,17 @@ class ChatController extends Controller
                 'group'    => $groupUnread,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Error in getUnreadCounts:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            Log::error('Error in getUnreadCounts:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
-
-
     
     /**
-     * Пометить сообщения как прочитанные
+     * Помечает сообщения как прочитанные.
+     * Для группового чата дополнительно обновляется поле last_read_at в pivot-таблице.
      */
     public function markMessagesAsRead($type, $id)
     {
@@ -431,14 +419,12 @@ class ChatController extends Controller
                     ->where('is_read', false)
                     ->update(['is_read' => true, 'read_at' => now()]);
     
-                // Обновление поля last_read_at в pivot-таблице
                 DB::table('chat_user')
                     ->where('chat_id', $chat->id)
                     ->where('user_id', $userId)
                     ->update(['last_read_at' => now()]);
             }
     
-            // Вызов события с тремя аргументами
             event(new MessagesRead($id, $userId, $type));
     
             DB::commit();
@@ -448,98 +434,92 @@ class ChatController extends Controller
             DB::rollBack();
             Log::error('Ошибка при пометке сообщений как прочитанных:', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Внутренняя ошибка сервера.'], 500);
         }
     }
-    // App\Http\Controllers\ChatController.php
+    
+    /**
+     * Возвращает все чаты пользователя (и групповые, и личные).
+     */
+    public function getUserChats($userId = null)
+    {
+        if (!$userId) {
+            $userId = Auth::id();
+        }
+        $user = User::find($userId);
 
-public function getUserChats($userId = null)
-{
-    if (!$userId) {
-        $userId = Auth::id();
-    }
-    $user = User::find($userId);
+        if (!$user) {
+            return collect();
+        }
 
-    if (!$user) {
-        return collect();
-    }
-
-    // 1. Получаем групповые чаты
-    $groupChats = Chat::where('type', 'group')
-        ->whereHas('users', fn($query) => $query->where('users.id', $userId))
-        ->with(['messages' => fn($query) => $query->orderBy('created_at', 'desc'), 'users'])
-        ->get();
-
-    // 2. Получаем персональные чаты
-    if ($user->status === 'user') {
-        $relatedDealIds = $user->deals()->pluck('deals.id');
-
-        $personalChats = User::whereIn('status', ['support', 'coordinator'])
-            ->whereHas('deals', fn($query) => $query->whereIn('deals.id', $relatedDealIds))
-            ->where('id', '<>', $userId)
-            ->with(['chats' => fn($query) => $query->where('type', 'personal')])
+        $groupChats = Chat::where('type', 'group')
+            ->whereHas('users', fn($query) => $query->where('users.id', $userId))
+            ->with(['messages' => fn($query) => $query->orderBy('created_at', 'desc')->limit(50), 'users'])
             ->get();
-    } else {
-        $personalChats = User::where('id', '<>', $userId)
-            ->with(['chats' => fn($query) => $query->where('type', 'personal')])
-            ->get();
+
+        if ($user->status === 'user') {
+            $relatedDealIds = $user->deals()->pluck('deals.id');
+            $personalChats = User::whereIn('status', ['support', 'coordinator'])
+                ->whereHas('deals', fn($query) => $query->whereIn('deals.id', $relatedDealIds))
+                ->where('id', '<>', $userId)
+                ->with(['chats' => fn($query) => $query->where('type', 'personal')])
+                ->get();
+        } else {
+            $personalChats = User::where('id', '<>', $userId)
+                ->with(['chats' => fn($query) => $query->where('type', 'personal')])
+                ->get();
+        }
+
+        $chats = collect();
+
+        foreach ($groupChats as $chat) {
+            $lastReadAt = $chat->users->find($userId)->pivot->last_read_at ?? null;
+            $unreadCount = $chat->messages->where('created_at', '>', $lastReadAt)->count();
+            $lastMessage = $chat->messages->first();
+    
+            $chats->push([
+                'id'                => $chat->id,
+                'type'              => 'group',
+                'name'              => $chat->name,
+                'avatar_url'        => $chat->avatar_url,
+                'unread_count'      => $unreadCount,
+                'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
+            ]);
+        }
+    
+        foreach ($personalChats as $chatUser) {
+            $unreadCount = Message::where('sender_id', $chatUser->id)
+                ->where('receiver_id', $userId)
+                ->where('is_read', false)
+                ->count();
+    
+            $lastMessage = Message::where(function ($query) use ($chatUser, $userId) {
+                    $query->where('sender_id', $userId)
+                          ->where('receiver_id', $chatUser->id);
+                })
+                ->orWhere(function ($query) use ($chatUser, $userId) {
+                    $query->where('sender_id', $chatUser->id)
+                          ->where('receiver_id', $userId);
+                })
+                ->orderBy('created_at', 'desc')
+                ->first();
+    
+            $chats->push([
+                'id'                => $chatUser->id,
+                'type'              => 'personal',
+                'name'              => $chatUser->name,
+                'avatar_url'        => $chatUser->avatar_url,
+                'unread_count'      => $unreadCount,
+                'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
+            ]);
+        }
+    
+        $sorted = $chats->sortByDesc(function ($chat) {
+            return $chat['unread_count'] > 0 ? 1 : 0;
+        })->sortByDesc('last_message_time')->values();
+    
+        return $sorted;
     }
-
-    // 3. Собираем воедино
-    $chats = collect();
-
-    // а) Групповые
-    foreach ($groupChats as $chat) {
-        $lastReadAt = $chat->users->find($userId)->pivot->last_read_at ?? null;
-        $unreadCount = $chat->messages->where('created_at', '>', $lastReadAt)->count();
-        $lastMessage = $chat->messages->first(); // последнее по дате
-
-        $chats->push([
-            'id'                => $chat->id,
-            'type'              => 'group',
-            'name'              => $chat->name,
-            'avatar_url'        => $chat->avatar_url,
-            'unread_count'      => $unreadCount,
-            'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
-        ]);
-    }
-
-    // б) Персональные
-    foreach ($personalChats as $chatUser) {
-        $unreadCount = Message::where('sender_id', $chatUser->id)
-            ->where('receiver_id', $userId)
-            ->where('is_read', false)
-            ->count();
-
-        $lastMessage = Message::where(function ($query) use ($chatUser, $userId) {
-                $query->where('sender_id', $userId)
-                      ->where('receiver_id', $chatUser->id);
-            })
-            ->orWhere(function ($query) use ($chatUser, $userId) {
-                $query->where('sender_id', $chatUser->id)
-                      ->where('receiver_id', $userId);
-            })
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        $chats->push([
-            'id'                => $chatUser->id,
-            'type'              => 'personal',
-            'name'              => $chatUser->name,
-            'avatar_url'        => $chatUser->avatar_url,
-            'unread_count'      => $unreadCount,
-            'last_message_time' => $lastMessage ? $lastMessage->created_at : null,
-        ]);
-    }
-
-    // 4. Сортируем чаты (непрочитанные вверх, потом по дате последнего сообщения)
-    $sorted = $chats->sortByDesc(function ($chat) {
-        return $chat['unread_count'] > 0 ? 1 : 0;
-    })->sortByDesc('last_message_time')->values();
-
-    return $sorted;
 }
-
-    }

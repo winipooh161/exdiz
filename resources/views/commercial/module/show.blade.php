@@ -114,11 +114,11 @@
 
 <!-- Документы -->
 <h2 style="margin-top: 30px;">Документы</h2>
-<table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+<table class="table table-bordered" style="">
     <thead>
-        <tr style="background-color: #f7f7f7; font-weight: bold;">
-            <th style="padding: 15px; text-align: left;">Название файла</th>
-            <th style="padding: 15px; text-align: left;">Действие</th>
+        <tr style="">
+            <th style="">Название файла</th>
+            <th style="">Действие</th>
         </tr>
     </thead>
     <tbody>
@@ -129,15 +129,15 @@
     @if (!empty($documents) && is_array($documents))
         @foreach ($documents as $document)
             <tr>
-                <td style="padding: 10px;">{{ basename($document) }}</td>
-                <td style="padding: 10px;">
+                <td style="">{{ basename($document) }}</td>
+                <td style="">
                     <a href="{{ asset($document) }}" target="_blank">Скачать</a>
                 </td>
             </tr>
         @endforeach
     @else
         <tr>
-            <td colspan="2" style="padding: 10px; text-align: center;">Документов не найдено</td>
+            <td colspan="2" style=" text-align: center;">Документов не найдено</td>
         </tr>
     @endif
     

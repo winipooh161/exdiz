@@ -87,7 +87,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/commercial/create', [BrifsController::class, 'commercial_create'])->name('commercial.create');
     Route::post('/commercial', [BrifsController::class, 'commercial_store'])->name('commercial.store');
     Route::get('/commercial/{id}', [BrifsController::class, 'commercial_show'])->name('commercial.show');
-
+    Route::get('/refresh-csrf', function () {
+        session()->regenerateToken(); // Генерируем новый токен
+        return response()->json(['token' => csrf_token()]);
+    })->name('csrf.refresh');
+    
     // Сделка для пользователя
     Route::get('/deal-user', [DealsController::class, 'dealUser'])->name('deal.user');
 });
