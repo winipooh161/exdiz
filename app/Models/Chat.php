@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +23,6 @@ class Chat extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('last_read_at');
     }
-    
 
     /**
      * Сообщения в чате.
@@ -41,5 +39,4 @@ class Chat extends Model
     {
         return $this->belongsTo(Deal::class, 'deal_id', 'id');
     }
-    
 }

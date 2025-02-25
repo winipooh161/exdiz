@@ -96,6 +96,16 @@
 }
 
 @media only screen and (max-width: 980px) {
+    .form__title .form__button button {
+        min-height: 45px;
+        max-height: 45px;
+        max-width: 140px;
+        padding: 0;
+    }
+    form.back__fon__common {
+        padding: 0 0 200px 0;
+        background: var(--fff);
+    }
     .button__create__brifs {
         flex-wrap: wrap;
         gap: vaR(--g10);
@@ -244,13 +254,90 @@
 
     }
     .checkpoint label {
-        text-align: center;
+        text-align: left;
+        max-width: 100%;
+        font-family: Onest;
+        padding: 15px 15px 15px 45px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20.4px;
+        letter-spacing: 0%;
+        font-family: Onest;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17.85px;
+        letter-spacing: 0%;
     }button#send-message {
         width: 12%;
     }
 }
 
 @media only screen and (max-width: 768px) {
+    .mb.mobile__ponel ul li button {
+      
+        max-height: 45px;
+        min-height: 45px !important;
+    }
+    .upload__files h6 {
+   
+        font-family: Onest;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22.4px;
+        letter-spacing: 0%;
+    }
+    header {
+
+        padding-top: 10px;}
+    .faq__body h2 {
+        padding-bottom: 0;
+       
+        font-family: Onest;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22.95px;
+        letter-spacing: 0%;
+    }
+    .faq_item {
+        width: 100%;
+    }
+    .form__title .form__button p {
+        min-width: 106px;
+    }
+    .form-group h2 {
+
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20.4px;
+        letter-spacing: 0%;
+    }
+    .form-group textarea {
+        
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 19.6px;
+        letter-spacing: 0%;
+    }
+    .form__title .form__button.flex.between {
+        padding: 0;
+        position: fixed;
+        left: 0;
+        gap: var(--g10);
+      
+        background: var(
+        --blockbody);
+        z-index: 999;
+        bottom: 60px;
+        display: flex;
+        padding: var(
+        --p20);
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+    .form__title .form__button p {
+        padding: 0;
+    }
     .button__create__brifs {
         flex-wrap: wrap;
         gap: vaR(--g10);
@@ -286,7 +373,7 @@
         padding-bottom: 10px;
         font-size: 18px;
     }.form__title p {
-        width: 85%;
+        /* width: 85%; */
         padding-bottom: var(--p30);
         font-size: 12px;
     }
@@ -296,6 +383,12 @@
         font-size: 46px !important;
         padding: 0;
         line-height: 53.59px;
+        letter-spacing: -2%;
+        text-align: center;
+        font-family: Onest;
+        font-weight: 400;
+        font-size: 24px !important;
+        line-height: 30.6px;
         letter-spacing: -2%;
         text-align: center;
     }.div__create_block p {
@@ -431,8 +524,8 @@
     }
 
     .mb.mobile__ponel button img {
-        width: 100%;
-        height: 100%;
+        width: 26px;
+        height: 26px;
     }
 
     button {
@@ -454,10 +547,23 @@
 
     .form__title h1 {
         width: 100%;
+        /* font-family: Onest; */
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30.6px;
+        letter-spacing: 0%;
     }
 
     .form__title p {
-        width: 100%;
+        /* width: 100%; */
+        /* min-width: 100% !IMPORTANT; */
+        max-width: 100%;
+        /* font-family: Onest; */
+        font-weight: 400;
+        font-size: 14px !IMPORTANT;
+        padding: 0;
+        line-height: 17.85px;
+        letter-spacing: 0%;
     }
 
     .form-group {
@@ -541,15 +647,29 @@
         background: none;
     }
     .pointblock {
-        padding-bottom: 0;
+        padding: 0 !important;
+        display: flex;
+        padding-bottom: 30px !important;
+        gap: 5px !important;
+        flex-wrap: wrap;
+        justify-content: flex-start !important;
     }
 }
 
 @media only screen and (max-width: 580px) {
+    .mb.mobile__ponel ul {
+        padding: var(--p10);
+    }
     .div__create_block h1 .Jikharev {
         padding: 0px;
         font-size: 65px;
         padding: 0;
+        font-family: Andantino script;
+        font-weight: 400;
+        font-size: 46px;
+        line-height: 34.59px;
+        letter-spacing: -2%;
+        text-align: center;
     }
     .faq_item__deal {
         width: 100%;
@@ -585,7 +705,7 @@
     }
 
     .checkpoint {
-        width: 47%;
+        /* width: 47%; */
     }
 
     li.block__video {
@@ -601,6 +721,12 @@
 @media only screen and (max-width: 480px) {
     button {
         font-size: 10px;
+        min-height: 56px !important;
+        font-family: Onest;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 19.6px;
+        letter-spacing: 0%;
     }
 
     h1,
@@ -621,7 +747,8 @@
     }
 
     .mb.mobile__ponel ul li {
-        width: 100%;
+        width: 45px;
+        height: 45px;
     }
 
     .mb.mobile__ponel ul li button {
@@ -631,13 +758,15 @@
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
-                justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
         -ms-flex-line-pack: center;
-            align-content: center;
+        align-content: center;
+        max-height: 45px;
+        min-height: 45px !important;
     }
 
     /* Стили для мобильных устройств */
@@ -656,18 +785,18 @@
     }
 
     .checkpoint {
-        width: 47%;
+        max-width: 100%;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
         -webkit-box-pack: center;
-            -ms-flex-pack: center;
-                justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
         -ms-flex-line-pack: center;
-            align-content: center;
+        align-content: center;
     }
 
     /* Стили для мобильных устройств */

@@ -40,7 +40,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Примеры связей (если необходимо)
+    // Примеры связей
     public function deals()
     {
         return $this->belongsToMany(Deal::class, 'deal_user', 'user_id', 'deal_id');

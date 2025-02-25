@@ -13,9 +13,7 @@ use App\Http\Controllers\SmetsController;
 use App\Http\Controllers\DealsController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
-
 use Chatify\ChatifyMessenger;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
@@ -27,71 +25,54 @@ Route::get('/', function () {
 // Стандартные маршруты аутентификации
 Auth::routes();
 
-// Группа маршрутов с префиксом и middleware для аутентификации
+// Группа маршрутов с middleware для аутентификации
 Route::middleware('auth')->group(function () {
-    // Маршрут для домашней страницы
+
+    // Главная страница
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Маршрут для создания нового тикета
+    // Поддержка
     Route::get('/support', [SupportController::class, 'index'])->name('support.index');
     Route::post('/support/reply/{ticket}', [SupportController::class, 'reply'])->name('support.reply');
     Route::post('/support/create', [SupportController::class, 'create'])->name('support.create');
 
-    Route::middleware(['auth', 'status:support'])->group(function () {
+    Route::middleware(['status:support'])->group(function () {
         Route::get('/support/chats', [SupportController::class, 'chats'])->name('support.chats');
         Route::get('/support/chat/{id}', [SupportController::class, 'chat'])->name('support.chat');
         Route::post('/support/chat/{id}/reply', [SupportController::class, 'reply'])->name('support.chat.reply');
     });
 
+    // Профиль
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    // Просмотр профиля другого пользователя
     Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
-
-    // Обновление аватара
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
-
-    // Отправка и подтверждение кода для смены телефона
     Route::post('/profile/send-code', [ProfileController::class, 'sendVerificationCode'])->name('profile.send-code');
     Route::post('/profile/verify-code', [ProfileController::class, 'verifyCode'])->name('profile.verify-code');
-
-    // Удаление аккаунта
     Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete_account');
-
-    // Обновление профиля (старый метод)
     Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-
-    // Обновление профиля (новый метод: имя, email, пароль)
     Route::post('/profile/update-all', [ProfileController::class, 'updateProfileAll'])->name('profile.update_all');
-
-    // Изменение пароля (старый метод)
     Route::post('/profile/change-password', [ProfileController::class, 'changePassword']);
 
-    // Маршрут для брифов
+    // Брифы и прочее
     Route::get('/brifs', [BrifsController::class, 'index'])->name('brifs.index');
     Route::post('/brifs/store', [BrifsController::class, 'store'])->name('brifs.store');
-    Route::delete('/brifs/{brif}', [App\Http\Controllers\BrifsController::class, 'destroy'])->name('brifs.destroy');
-
-    // Маршрут для брифов ОБЩИЙ
-    Route::get('/common/questions/{id}/{page}', [CommonController::class, 'questions'])
-        ->name('common.questions');
-    Route::post('/common/questions/{id}/{page}', [CommonController::class, 'saveAnswers'])
-        ->name('common.saveAnswers');
-
+    Route::delete('/brifs/{brif}', [BrifsController::class, 'destroy'])->name('brifs.destroy');
+    Route::get('/common/questions/{id}/{page}', [CommonController::class, 'questions'])->name('common.questions');
+    Route::post('/common/questions/{id}/{page}', [CommonController::class, 'saveAnswers'])->name('common.saveAnswers');
     Route::get('/common/create', [BrifsController::class, 'common_create'])->name('common.create');
     Route::post('/common', [BrifsController::class, 'common_store'])->name('common.store');
     Route::get('/common/{id}', [BrifsController::class, 'common_show'])->name('common.show');
-
     Route::get('/commercial/questions/{id}/{page}', [CommercialController::class, 'questions'])->name('commercial.questions');
     Route::post('/commercial/questions/{id}/{page}', [CommercialController::class, 'saveAnswers'])->name('commercial.saveAnswers');
-
     Route::get('/commercial/create', [BrifsController::class, 'commercial_create'])->name('commercial.create');
     Route::post('/commercial', [BrifsController::class, 'commercial_store'])->name('commercial.store');
     Route::get('/commercial/{id}', [BrifsController::class, 'commercial_show'])->name('commercial.show');
+
     Route::get('/refresh-csrf', function () {
-        session()->regenerateToken(); // Генерируем новый токен
+        session()->regenerateToken();
         return response()->json(['token' => csrf_token()]);
     })->name('csrf.refresh');
-    
+
     // Сделка для пользователя
     Route::get('/deal-user', [DealsController::class, 'dealUser'])->name('deal.user');
 });
@@ -116,36 +97,37 @@ Route::middleware(['auth', 'status:coordinator,admin,partner'])->group(function 
     Route::get('/deal-cardinator', [DealsController::class, 'dealCardinator'])->name('deal.cardinator');
     Route::get('/deals/create', [DealsController::class, 'createDeal'])->name('deals.create');
     Route::post('/deal/store', [DealsController::class, 'storeDeal'])->name('deals.store');
-
     Route::put('/deal/update/{id}', [DealsController::class, 'updateDeal'])->name('deal.update');
-    // ...
-
-// ...
-
 });
-// ...
+
 Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
-    // Прочие маршруты админа/координатора...
     Route::get('/deal/change-logs', [DealsController::class, 'changeLogs'])->name('deal.change_logs');
-    // Новый маршрут для логов конкретной сделки:
     Route::get('/deal/{deal}/change-logs', [DealsController::class, 'changeLogsForDeal'])->name('deal.change_logs.deal');
 });
-// ...
 
+
+
+
+// Маршруты для создания групповых чатов – доступны для координаторов и администраторов
+Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
+    Route::get('/chats/group/create', [ChatController::class, 'createGroupChatForm'])->name('chats.group.create');
+    Route::post('/chats/group/create', [ChatController::class, 'storeGroupChat'])->name('chats.group.store');
+});
+
+// Общие маршруты для чатов (личные и групповые)
 Route::middleware(['auth'])->group(function () {
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
-
     Route::prefix('/chats/{type}/{id}')->group(function () {
         Route::get('/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
         Route::post('/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
         Route::post('/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.getNewMessages');
         Route::post('/mark-read', [ChatController::class, 'markMessagesAsRead'])->name('chats.markRead');
-        Route::post('/search', [ChatController::class, 'searchMessages'])->name('chats.searchMessages');
-        Route::post('/typing', [ChatController::class, 'typingIndicator'])->name('chats.typingIndicator');
     });
-
+    // Новый маршрут для поиска по чатам и сообщениям
+    Route::post('/chats/search', [ChatController::class, 'search'])->name('chats.search');
     Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
 });
+
 
 Route::middleware(['auth', 'status:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

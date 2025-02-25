@@ -16,9 +16,8 @@ class SupportController extends Controller
     {
         $user = Auth::user();
         $title_site = "Поддержка | Личный кабинет Экспресс-дизайн";
-        // На странице поддержки через URL /support срабатывает условие в chats/index.blade.php,
-        // которое выводит чат с поддержкой (user id = 55)
-        return view('support', compact('title_site', 'user'));
+        // Передаём флаг, чтобы шаблон отобразил режим чата поддержки
+        return view('support', compact('title_site', 'user'))->with('supportChat', true);
     }
     
     // Другие методы поддержки (например, создание тикета) можно добавить здесь

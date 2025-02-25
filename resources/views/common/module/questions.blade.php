@@ -25,27 +25,29 @@
     <!-- Скрытое поле для определения направления перехода -->
     <input type="hidden" name="action" id="actionInput" value="next">
 
-    {{-- Блок с вопросами в формате "checkpoint" (чекбоксы) --}}
+    @php
+    $checkpointQuestions = collect($questions)->where('format', 'checkpoint');
+@endphp
+
+@if($checkpointQuestions->isNotEmpty())
     <div class="form__body flex between wrap pointblock">
-        @foreach ($questions as $question)
-            @if ($question['format'] === 'checkpoint')
-                <div class="checkpoint flex wrap">
-                    <div class="radio">
-                        <input type="checkbox"
-                               id="answer_{{ $loop->index }}"
-                               class="custom-checkbox"
-                               name="answers[{{ $question['key'] }}]"
-                               value="{{ $question['title'] }}"
-                               @if(isset($brif->{$question['key']}) && $brif->{$question['key']} === $question['title'])
-                                   checked
-                               @endif
-                        >
-                        <label for="answer_{{ $loop->index }}">{{ $question['title'] }}</label>
-                    </div>
+        @foreach ($checkpointQuestions as $question)
+            <div class="checkpoint flex wrap">
+                <div class="radio">
+                    <input type="checkbox"
+                           id="answer_{{ $loop->index }}"
+                           class="custom-checkbox"
+                           name="answers[{{ $question['key'] }}]"
+                           value="{{ $question['title'] }}"
+                           @if(isset($brif->{$question['key']}) && $brif->{$question['key']} === $question['title'])
+                               checked
+                           @endif>
+                    <label for="answer_{{ $loop->index }}">{{ $question['title'] }}</label>
                 </div>
-            @endif
+            </div>
         @endforeach
     </div>
+@endif
 
     {{-- Блок с вопросами форматов "default" и "faq" --}}
     <div class="form__body flex between wrap">

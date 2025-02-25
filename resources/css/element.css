@@ -672,19 +672,23 @@ ul.chat-list li a p {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    gap: 5px;
+    gap: var(--g20);
     place-content: center;
     justify-content: space-around;
     align-content: center;
 }
 
 .faq_question__deal.flex ul .icon {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     height: 100%;
     padding: 0;
     align-items: center;
     justify-content: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15.3px;
+    letter-spacing: 0%;
     align-content: center;
 }
 
@@ -693,14 +697,15 @@ ul.chat-list li a p {
     width: 100%;
 }
 
-.faq_question__deal.flex ul li a {
+.faq_question__deal ul li a {
     display: flex;
     border-radius: 10px;
     width: 100%;
     min-height: 40px;
-    color: #000;
+    color: var(--black);
+    background: var(
+    --fff) !important;
     padding: 0;
-    border: 1px solid  #000;
     background: none;
     align-items: center;
     justify-content: center;
@@ -709,7 +714,7 @@ ul.chat-list li a p {
 
 .deal__avatar.deal__avatar__cardinator {
     width: 100%;
-    height: 180px;
+    height: 114px;
 }
 
 div#modal3 {
@@ -926,6 +931,7 @@ button.remove-button {
 .my-message span {
     text-align: left;
     width: 100%;
+    color: var(--fff) !IMPORTANT;
 }
 
 .wd100,
@@ -937,6 +943,7 @@ button.remove-button {
 .chat-layout {
     display: flex;
     align-content: flex-start;
+    /* flex-direction: column; */
 }
 
 .profile__avatar:hover .hover__create,
@@ -958,16 +965,16 @@ button.remove-button {
 .introjs-prevbutton {
     display: none !important;
 }.brif__body ul li::before {
-    content: "🗙";
-    /* color: #ff7575; */
+    content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢";
+    /* color: #ff7575;  content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢";*/
 }
 .completed {
      
     color: var(--blue) !important;
 }
 .completed::before {
- content: "✔" !important;
- /* color: #BAFF75 !important; */
+ content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â" !important;
+ /* color: #BAFF75 !important; content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â" !important;*/
 }table.dataTable thead th, table.dataTable thead td {
     border: none;
 }
@@ -1024,9 +1031,9 @@ button.remove-button {
     --fff);
 }
 .user-list {
-    width: 250px;
-    border: 1px solid #ddd;
-    padding: 10px;
+    width: 350px;
+    padding: var(--p20);
+    max-height: 600px;
 }
 .user-list__avatar img {
     width: 40px;
@@ -1046,8 +1053,8 @@ button.remove-button {
     display: flex;
     min-height: 66px;
     background: var(--fff);
-    justify-content: flex-start;
-    margin: var(--m20) !important; 
+    justify-content: space-between;
+    margin: var(--m20) !important;
     border-radius: var(
     --radius);
     align-content: center;
@@ -1068,18 +1075,20 @@ button.remove-button {
 .chat-messages ul {
     list-style: none;
     margin: 0;
+    gap: 15px;
     padding: 0;
 }
 .my-message {
     text-align: right;
-    background-color: #e7f7ff;
+    background-color: var(--bluetext);
+    color: var(--fff);
     padding: 5px;
     border-radius: 5px;
-    margin-bottom: 8px;
+    margin-bottom: revert-layer;
 }
 .other-message {
     text-align: left;
-    background-color: #f1f1f1;
+    background-color: var(--fff);
     padding: 5px;
     border-radius: 5px;
     margin-bottom: 8px;
@@ -1093,11 +1102,15 @@ button.remove-button {
 .chat-input {
     display: flex;
     gap: 10px;
+    /* margin-bottom: var(--m20); */
     position: relative;
+    align-items: center;
+    align-content: center;
 }
 .chat-input textarea {
     flex: 1;
     resize: none;
+    border: 1px solid var(--bluetext) !important;
 }
 .notifications-container {
     position: fixed;
@@ -1142,4 +1155,7 @@ button.remove-button {
 
 .button__variate2:hover {
     background-attachment: var(--fff);
+}.faq_question__deal ul li img {
+    width: 15px;
+    height: 15px;
 }

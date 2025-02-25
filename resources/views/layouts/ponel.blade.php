@@ -20,14 +20,13 @@
                 <img src="/storage/icon/deal.svg" alt=""> <span>Ваши сделки</span>
             </button>
         </li>
-        @if (Auth::user()->status == 'support' )
+      
         <li>
             <button onclick="location.href='{{ url('/chats') }}'"  >
                 <img src="/storage/icon/chat.svg" alt=""> <span>Ваши чаты</span>
             </button>
         </li>
-        @else
-        @endif
+     
     @else
         <li>
             <button onclick="location.href='{{ route('deal.user') }}'">

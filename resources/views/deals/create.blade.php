@@ -15,13 +15,22 @@
     </div>
 @endif
 
+<div class="button__points">
+    <button data-target="Заказ">Заказ</button>
+    <button data-target="Доп. информация">Доп. информация</button>
+    <button data-target="Работа над проектом">Работа над проектом</button>
+    <button data-target="Финал проекта">Финал проекта</button>
+    <button data-target="О сделке">О сделке</button>
+    <button data-target="Аватар сделки">Аватар сделки</button>
+</div>
+
 <form id="create-deal-form" action="{{ route('deals.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
 
-    <!-- БЛОК 1: ЗАКАЗ -->
+    <!-- БЛОК 1: Заказ -->
     <fieldset class="module">
-        <legend>ЗАКАЗ</legend>
+        <legend>Заказ</legend>
         <div class="form-group-deal">
             <label for="project_number">№ проекта (пример: Проект 6303): <span class="required">*</span></label>
             <input type="text" id="project_number" name="project_number" class="form-control maskproject">
@@ -69,7 +78,7 @@
             <input type="number" id="rooms_count_pricing" name="rooms_count_pricing" class="form-control">
         </div>
         <div class="form-group-deal">
-            <label for="execution_order_comment">Комментарий к заказу для отдела исполнения:</label>
+            <label for="execution_order_comment">Комментарий к Заказу для отдела исполнения:</label>
             <textarea id="execution_order_comment" name="execution_order_comment" class="form-control" rows="3" maxlength="1000"></textarea>
         </div>
         <div class="form-group-deal">
@@ -120,9 +129,9 @@
         </div>
     </fieldset>
 
-    <!-- БЛОК 2: ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ -->
+    <!-- БЛОК 2: Доп. информация -->
     <fieldset class="module">
-        <legend>ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</legend>
+        <legend>Доп. информация</legend>
         <div class="form-group-deal">
             <label for="priority">Приоритет: <span class="required">*</span></label>
             <select id="priority" name="priority" class="form-control" required>
@@ -166,9 +175,9 @@
         </div>
     </fieldset>
 
-    <!-- БЛОК 3: РАБОТА НАД ПРОЕКТОМ -->
+    <!-- БЛОК 3: Работа над проектом -->
     <fieldset class="module">
-        <legend>РАБОТА НАД ПРОЕКТОМ</legend>
+        <legend>Работа над проектом</legend>
         <div class="form-group-deal">
             <label for="measurement_comments">Комментарии по замерам:</label>
             <textarea id="measurement_comments" name="measurement_comments" class="form-control" rows="3" maxlength="1000"></textarea>
@@ -236,9 +245,9 @@
         </div>
     </fieldset>
 
-    <!-- БЛОК 4: ФИНАЛ ПРОЕКТА -->
+    <!-- БЛОК 4: Финал проекта -->
     <fieldset class="module">
-        <legend>ФИНАЛ ПРОЕКТА</legend>
+        <legend>Финал проекта</legend>
         <div class="form-group-deal">
             <label for="work_act">Акт выполненных работ (PDF):</label>
             <input type="file" id="work_act" name="work_act" accept="application/pdf">
@@ -285,7 +294,7 @@
     </fieldset>
 
     <fieldset class="module">
-        <legend>О СДЕЛКЕ</legend>
+        <legend>О сделке</legend>
         <div class="form-group-deal">
             <label for="contract_number">№ договора: <span class="required">*</span></label>
             <input type="text" id="contract_number" name="contract_number" class="form-control maskcontract" required>
@@ -301,10 +310,107 @@
     </fieldset>
 
     <fieldset class="module">
-        <legend>АВАТАР СДЕЛКИ</legend>
+        <legend>Аватар сделки</legend>
         <div class="form-group-deal">
-            <label for="avatar">Загрузите фото аватара сделки (обязательно, не более 5 МБ): <span class="required">*</span></label>
-            <input type="file" id="avatar" name="avatar" accept="image/*" required>
+            <div class="upload__files">
+                <h6>Загру (не более 25 МБ суммарно):</h6>
+                <div id="drop-zone">
+                    <p id="drop-zone-text">Перетащите файл сюда или нажмите, чтобы выбрать</p>
+                    <input id="fileInput" type="file" name="avatar" accept=".pdf,.xlsx,.xls,.doc,.docx,.jpg,.jpeg,.png,.heic,.heif">
+                </div>
+                <p class="error-message" style="color: red;"></p>
+                <small>Допустимые форматы: .pdf, .xlsx, .xls, .doc, .docx, .jpg, .jpeg, .png, .heic, .heif</small><br>
+                <small>Максимальный суммарный размер: 25 МБ</small>
+            </div>
+            <style>
+                .upload__files {
+                    margin: 20px 0;
+                    font-family: Arial, sans-serif;
+                }
+                /* Стилизация области перетаскивания */
+                #drop-zone {
+                    border: 2px dashed #ccc;
+                    border-radius: 6px;
+                    padding: 30px;
+                    text-align: center;
+                    cursor: pointer;
+                    position: relative;
+                    transition: background-color 0.3s ease;
+                }
+                #drop-zone.dragover {
+                    background-color: #f0f8ff;
+                    border-color: #007bff;
+                }
+                #drop-zone p {
+                    margin: 0;
+                    font-size: 16px;
+                    color: #666;
+                }
+                /* Скрываем нативное поле выбора файлов, но оставляем его доступным */
+                #fileInput {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+            </style>
+            
+            <script>
+                const dropZone = document.getElementById('drop-zone');
+                const fileInput = document.getElementById('fileInput');
+                const dropZoneText = document.getElementById('drop-zone-text');
+            
+                // Функция обновления текста в drop zone
+                function updateDropZoneText() {
+                    const files = fileInput.files;
+                    if (files && files.length > 0) {
+                        const names = [];
+                        for (let i = 0; i < files.length; i++) {
+                            names.push(files[i].name);
+                        }
+                        dropZoneText.textContent = names.join(', ');
+                    } else {
+                        dropZoneText.textContent = "Перетащите файлы сюда или нажмите, чтобы выбрать";
+                    }
+                }
+            
+                // Предотвращаем поведение по умолчанию для событий drag-and-drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+            
+                // Добавляем класс при перетаскивании
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.add('dragover');
+                    }, false);
+                });
+            
+                // Удаляем класс, когда файлы покидают область или сброшены
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.remove('dragover');
+                    }, false);
+                });
+            
+                // Обработка события сброса (drop)
+                dropZone.addEventListener('drop', function(e) {
+                    let files = e.dataTransfer.files;
+                    fileInput.files = files;
+                    updateDropZoneText();
+                });
+            
+                // При изменении поля выбора файлов обновляем текст
+                fileInput.addEventListener('change', function() {
+                    updateDropZoneText();
+                });
+            </script>
         </div>
         <div id="avatar-preview" class="avatar-preview"></div>
     </fieldset>
@@ -472,4 +578,77 @@ $("#package").on("input", function() {
         startDateField.setAttribute("readonly", true);
     }
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var modules = document.querySelectorAll("fieldset.module");
+        var buttons = document.querySelectorAll(".button__points button");
     
+        // Скрываем все секции и показываем первую при загрузке
+        modules.forEach(module => {
+            module.style.display = "none";
+            module.style.opacity = "0";
+            module.style.transition = "opacity 0.3s ease-in-out";
+        });
+    
+        if (modules.length > 0) {
+            modules[0].style.display = "flex";
+            setTimeout(() => modules[0].style.opacity = "1", 10);
+        }
+    
+        // Функция переключения секций
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                var targetText = this.getAttribute("data-target").trim();
+    
+                // Убираем активный стиль со всех кнопок
+                buttons.forEach(btn => btn.classList.remove("buttonSealaActive"));
+                this.classList.add("buttonSealaActive"); // Добавляем стиль к нажатой кнопке
+    
+                // Скрываем все секции с плавным исчезновением
+                modules.forEach(module => {
+                    module.style.opacity = "0";
+                    setTimeout(() => {
+                        module.style.display = "none";
+                    }, 300); // Ждем, пока opacity дойдет до 0
+                });
+    
+                // Показываем нужную секцию с плавным появлением
+                setTimeout(() => {
+                    modules.forEach(module => {
+                        var legend = module.querySelector("legend");
+                        if (legend && legend.textContent.trim() === targetText) {
+                            module.style.display = "flex";
+                            setTimeout(() => module.style.opacity = "1", 10);
+                        }
+                    });
+                }, 300);
+            });
+        });
+    });
+    </script>
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var formChanged = false;
+                var form = document.getElementById("create-deal-form");
+            
+                // Отслеживаем изменения в форме
+                form.addEventListener("input", function () {
+                    formChanged = true;
+                });
+            
+                // Предупреждение при попытке закрытия вкладки или перезагрузки страницы
+                window.addEventListener("beforeunload", function (event) {
+                    if (formChanged) {
+                        event.preventDefault();
+                        event.returnValue = "Вы уверены, что хотите покинуть страницу? Все несохраненные данные будут потеряны.";
+                    }
+                });
+            
+                // Убираем предупреждение при отправке формы (если пользователь сохраняет данные)
+                form.addEventListener("submit", function () {
+                    formChanged = false;
+                });
+            });
+            </script>
+            
