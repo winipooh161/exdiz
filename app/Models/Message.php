@@ -14,11 +14,13 @@ class Message extends Model
         'is_read',
         'read_at',
         'message_type',
-        'attachments'
+        'attachments',
+        'is_pinned',
     ];
 
     protected $casts = [
         'attachments' => 'array',
+        'is_pinned'   => 'boolean',
     ];
 
     public function sender()

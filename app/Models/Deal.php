@@ -166,6 +166,13 @@ class Deal extends Model
             ->count();
     }
 
+public function dealFeeds()
+{
+    return $this->hasMany(DealFeed::class);
+}
+
+
+
     public function view(User $user, Deal $deal)
     {
         return $deal->users->contains($user->id);

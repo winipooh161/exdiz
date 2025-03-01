@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrifsController;
-use App\Http\Controllers\TrainingController;
+
+
+use App\Http\Controllers\DealFeedController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CommercialController;
@@ -12,6 +15,7 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SmetsController;
 use App\Http\Controllers\DealsController;
 use App\Http\Controllers\ChatController;
+
 use App\Http\Controllers\AdminController;
 use Chatify\ChatifyMessenger;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +76,7 @@ Route::middleware('auth')->group(function () {
         session()->regenerateToken();
         return response()->json(['token' => csrf_token()]);
     })->name('csrf.refresh');
-
+    Route::get('/deal/{deal}/chat', [DealsController::class, 'showDealChat'])->name('deal.chat');
     // Сделка для пользователя
     Route::get('/deal-user', [DealsController::class, 'dealUser'])->name('deal.user');
 });
@@ -107,26 +111,41 @@ Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
 
 
 
+Route::post('/deal/{deal}/feed', [DealFeedController::class, 'store'])
+     ->name('deal.feed.store');
+
+
 
 // Маршруты для создания групповых чатов – доступны для координаторов и администраторов
 Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
     Route::get('/chats/group/create', [ChatController::class, 'createGroupChatForm'])->name('chats.group.create');
     Route::post('/chats/group/create', [ChatController::class, 'storeGroupChat'])->name('chats.group.store');
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/deals/user', [DealsController::class, 'dealUser'])->name('deal.user');
+    Route::get('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
+    Route::post('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
+});
 
 // Общие маршруты для чатов (личные и групповые)
 Route::middleware(['auth'])->group(function () {
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
-    Route::prefix('/chats/{type}/{id}')->group(function () {
+
+    Route::prefix('/chats/{chatType}/{chatId}')->group(function () {
         Route::get('/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
         Route::post('/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
-        Route::post('/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.getNewMessages');
-        Route::post('/mark-read', [ChatController::class, 'markMessagesAsRead'])->name('chats.markRead');
+        Route::post('/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.newMessages'); // Новый маршрут для получения новых сообщений
+        Route::post('/mark-read', [ChatController::class, 'markMessagesAsRead'])->name('chats.markMessagesAsRead');
+        // Маршруты для удаления, закрепления и открепления сообщений:
+        Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage'])->name('chats.deleteMessage');
+        Route::post('/messages/{messageId}/pin', [ChatController::class, 'pinMessage'])->name('chats.pinMessage');
+        Route::post('/messages/{messageId}/unpin', [ChatController::class, 'unpinMessage'])->name('chats.unpinMessage');
     });
-    // Новый маршрут для поиска по чатам и сообщениям
+
     Route::post('/chats/search', [ChatController::class, 'search'])->name('chats.search');
     Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
 });
+
 
 
 Route::middleware(['auth', 'status:admin'])->group(function () {

@@ -17,11 +17,10 @@ class User extends Authenticatable
         'password',
         'phone',
         'status',
-        'avatar_url',
+        'avatar_url', // Добавляем это поле!
         'cod',
         'verification_code',
         'verification_code_expires_at',
-        // Дополнительные поля:
         'city',
         'contract_number',
         'comment',
@@ -30,6 +29,7 @@ class User extends Authenticatable
         'rating',
         'active_projects_count',
     ];
+    
 
     protected $hidden = [
         'password',
@@ -45,10 +45,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Deal::class, 'deal_user', 'user_id', 'deal_id');
     }
-    
+
     public function deal()
     {
         return $this->hasOne(Deal::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function getAvatarUrlAttribute()
+    {
+        return !empty($this->attributes['avatar_url']) 
+            ? asset('' . ltrim($this->attributes['avatar_url'], '')) 
+            : asset('storage/default-avatar.png');
     }
     
     public function isCoordinator()

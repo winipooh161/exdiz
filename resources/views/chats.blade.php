@@ -25,5 +25,3 @@
     };
 </script>
 
-<!-- Подключение основного JS-файла с атрибутом defer для асинхронной загрузки -->
-<script src="{{ asset('js/chat.js') }}" defer></script>

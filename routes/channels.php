@@ -28,3 +28,8 @@ Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 Broadcast::channel('user.{userId}', function ($user, $userId) {
     return (int) $user->id === (int) $userId;
 });
+
+// Канал для уведомлений
+Broadcast::channel('chat.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});

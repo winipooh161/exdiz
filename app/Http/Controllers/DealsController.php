@@ -19,17 +19,26 @@ class DealsController extends Controller
         // При необходимости добавьте middleware для аутентификации
     }
 
-    // Отображение списка сделок для координатора/администратора
+    /**
+     * Отображение списка сделок.
+     * В выборку включаются только те сделки, к которым привязан текущий пользователь.
+     */
     public function dealCardinator(Request $request)
     {
+        
         $title_site = "Сделки Кардинатора";
         $user = Auth::user();
-    
+        $deals = Deal::with([
+            'dealFeeds.user' // Загружаем пользователя, чтобы получить его аватар
+        ])->get();
         $search = $request->input('search');
         $status = $request->input('status');
         $viewType = $request->input('view_type', 'blocks');
     
-        $query = Deal::with('users');
+        // Фильтруем сделки: выбираем только те, у которых через связь users присутствует текущий пользователь
+        $query = Deal::with('users')->whereHas('users', function($q) use ($user) {
+            $q->where('user_id', $user->id);
+        });
     
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -45,7 +54,12 @@ class DealsController extends Controller
         }
     
         if ($status) {
-            $query->where('status', $status);
+            // Если выбран фильтр "завершенные", объединяем сделки с обоими статусами
+            if ($status === 'завершенные') {
+                $query->whereIn('status', ['Проект завершен', 'Завершенный']);
+            } else {
+                $query->where('status', $status);
+            }
         }
     
         $deals = $query->get()->map(function ($deal) {
@@ -58,49 +72,59 @@ class DealsController extends Controller
         return view('cardinators', compact('title_site', 'user', 'deals', 'status', 'viewType', 'search'));
     }
     
-    // Отображение информации о сделке для клиента
+    /**
+     * Отображение информации о сделках для клиента.
+     * Сделки выбираются по связи: только те, к которым привязан пользователь.
+     */
     public function dealUser()
     {
         $user = Auth::user();
-    
+
+        // Если пользователь – партнер, перенаправляем на другой маршрут
         if ($user->status === 'partner') {
             return redirect()->route('deal.cardinator');
         }
-    
+
         $title_site = "Информация о сделке";
-        // Загружаем первую сделку клиента (если их несколько, можно изменить логику)
-        $userDeal = Deal::with('coordinator', 'users', 'briefs')
-            ->where('user_id', $user->id)
-            ->first();
-    
-        // Для представления используем переменную $userDeals (массив, даже если сделка одна)
-        $userDeals = $userDeal ? collect([$userDeal]) : collect();
-    
-        // Если сделка найдена, ищем для неё групповой чат
-        $groupChat = null;
-        if ($userDeal) {
-            $groupChat = Chat::where('deal_id', $userDeal->id)
+        $userDeals = Deal::with('coordinator', 'users', 'briefs')
+            ->whereHas('users', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->get();
 
+        // Для каждой сделки проверяем и создаём групповой чат, если его ещё нет
+        foreach ($userDeals as $deal) {
+            $groupChat = Chat::where('deal_id', $deal->id)
+                ->where('type', 'group')
+                ->first();
 
+            if (!$groupChat) {
+                // Собираем ID всех пользователей, привязанных к сделке
+                $responsibleIds = $deal->users->pluck('id')->toArray();
 
+                // Если создатель сделки ещё не входит, добавляем его
+                if (!in_array($deal->user_id, $responsibleIds)) {
+                    $responsibleIds[] = $deal->user_id;
+                }
 
-
-
-
-
-
-
-
-
-            
-                        ->where('type', 'group')
-                        ->first();
+                // Создаём групповой чат для сделки
+                $groupChat = Chat::create([
+                    'name'    => "Групповой чат сделки: {$deal->name}",
+                    'type'    => 'group',
+                    'deal_id' => $deal->id,
+                ]);
+                // Прикрепляем участников к чату
+                $groupChat->users()->attach($responsibleIds);
+            }
+            // Добавляем объект чата в модель сделки для удобства отображения в шаблоне
+            $deal->groupChat = $groupChat;
         }
-    
-        return view('user', compact('title_site', 'user', 'userDeals', 'groupChat'));
+
+        return view('user', compact('title_site', 'user', 'userDeals'));
     }
     
-    // Форма создания сделки – доступна для координатора, администратора и партнёра
+    /**
+     * Форма создания сделки – доступна для координатора, администратора и партнёра.
+     */
     public function createDeal()
     {
         $user = Auth::user();
@@ -138,7 +162,9 @@ class DealsController extends Controller
         ));
     }
 
-    // Сохранение сделки с автоматическим созданием группового чата для ответственных
+    /**
+     * Сохранение сделки с автоматическим созданием группового чата для ответственных.
+     */
     public function storeDeal(Request $request)
     {
         $user = Auth::user();
@@ -196,7 +222,7 @@ class DealsController extends Controller
                 'coordinator_rating_client'  => 'nullable|numeric',
                 'coordinator_rating_partner' => 'nullable|numeric',
                 'coordinator_comment'        => 'nullable|string',
-                'chat_screenshot'        => 'nullable|image|mimes:jpeg,jpg,png|max:5120',
+                'chat_screenshot'        => 'nullable|image|mimes:jpeg,jpg,image/png|max:5120',
                 'archicad_file'          => 'nullable|file|mimes:pln,dwg|max:307200',
                 'contract_number'   => 'required|string|max:100',
                 'contract_attachment' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5120',
@@ -293,7 +319,7 @@ class DealsController extends Controller
                 }
             }
 
-            // Автоматически создаем групповой чат для сделки с участием всех ответственных и создателя
+            // Создаем групповой чат для сделки
             $allResponsibleIds = $responsibles;
             if (!in_array(auth()->id(), $allResponsibleIds)) {
                 $allResponsibleIds[] = auth()->id();
@@ -310,31 +336,26 @@ class DealsController extends Controller
     }
 
     /**
-     * Автоматически создает групповой чат для сделки.
-     * В групповой чат добавляются все ответственные и создатель сделки.
+     * Создание группового чата для сделки.
      */
     private function createGroupChatForDeal($deal, $userIds)
     {
-        // Создаем групповой чат с привязкой к сделке
         $chat = Chat::create([
             'name'    => "Групповой чат сделки: {$deal->name}",
             'type'    => 'group',
             'deal_id' => $deal->id,
         ]);
     
-        // Если создателя сделки нет в списке, добавляем его
         if (!in_array($deal->user_id, $userIds)) {
             $userIds[] = $deal->user_id;
         }
-        // Добавляем всех участников в групповой чат
         $chat->users()->attach($userIds);
     }
     
-    
-    // Редактирование сделки (метод опущен для краткости)
+    // Редактирование сделки (метод можно реализовать по аналогии)
     public function updateDeal(Request $request, $id)
     {
-        // ...
+        // Реализуйте обновление сделки с логированием изменений
     }
 
     /**
@@ -384,7 +405,7 @@ class DealsController extends Controller
     }
 
     /**
-     * Метод для общего просмотра логов (по всем сделкам).
+     * Вывод логов изменений по всем сделкам.
      */
     public function changeLogs(Request $request)
     {
@@ -398,6 +419,9 @@ class DealsController extends Controller
         return view('deal_change_logs', compact('logs', 'title_site'));
     }
 
+    /**
+     * Удаление просроченных сделок.
+     */
     public function removeExpiredDeals()
     {
         Deal::where('registration_token_expiry', '<', now())->each(function($deal) {
@@ -406,6 +430,9 @@ class DealsController extends Controller
         return redirect()->route('deal.cardinator')->with('success', 'Просроченные сделки удалены.');
     }
 
+    /**
+     * Отправка SMS-уведомления с регистрационной ссылкой.
+     */
     private function sendSmsNotification($deal, $registrationToken)
     {
         if (!$registrationToken) {
@@ -427,6 +454,9 @@ class DealsController extends Controller
         }
     }
 
+    /**
+     * Обработка загрузки файлов.
+     */
     private function handleFileUpload(Request $request, $deal, $field, $targetField = null)
     {
         if ($request->hasFile($field) && $request->file($field)->isValid()) {
@@ -438,4 +468,11 @@ class DealsController extends Controller
         }
         return [];
     }
+    public function showDealChat($dealId)
+{
+    // Загружаем сделку вместе с групповой беседой (если она существует)
+    $deal = \App\Models\Deal::with('groupChat')->findOrFail($dealId);
+    return view('deal_chat', compact('deal'));
+}
+
 }

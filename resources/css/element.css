@@ -714,7 +714,7 @@ ul.chat-list li a p {
 
 .deal__avatar.deal__avatar__cardinator {
     width: 100%;
-    height: 114px;
+    height: 150px;
 }
 
 div#modal3 {
@@ -965,16 +965,16 @@ button.remove-button {
 .introjs-prevbutton {
     display: none !important;
 }.brif__body ul li::before {
-    content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢";
-    /* color: #ff7575;  content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢";*/
+    content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";
+    /* color: #ff7575;  content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";*/
 }
 .completed {
      
     color: var(--blue) !important;
 }
 .completed::before {
- content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â" !important;
- /* color: #BAFF75 !important; content: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â" !important;*/
+ content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â" !important;
+ /* color: #BAFF75 !important; content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â" !important;*/
 }table.dataTable thead th, table.dataTable thead td {
     border: none;
 }
@@ -1026,6 +1026,7 @@ button.remove-button {
     gap: 20px;
     padding: var(--p20);
     max-width: 100%;
+    height: 100%;
     border-radius: var(--radius);
     background: var(
     --fff);
@@ -1075,7 +1076,7 @@ button.remove-button {
 .chat-messages ul {
     list-style: none;
     margin: 0;
-    gap: 15px;
+    gap: 50px;
     padding: 0;
 }
 .my-message {
@@ -1085,6 +1086,7 @@ button.remove-button {
     padding: 5px;
     border-radius: 5px;
     margin-bottom: revert-layer;
+    position: relative;
 }
 .other-message {
     text-align: left;

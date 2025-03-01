@@ -1,4 +1,3 @@
-
 <div class="deals-list">
     <h1>Ваши сделки</h1>
     @if ($userDeals->isNotEmpty())
@@ -42,7 +41,7 @@
                             @if($groupChat)
                                 <div class="deal-chat">
                                     <h2>Групповой чат сделки</h2>
-                                    {{-- Подключаем шаблон чата и передаём объект группового чата --}}
+                                    {{-- Подключаем шаблон чата, который отображает сразу окно chat-box --}}
                                     @include('chats.index', ['dealChat' => $groupChat])
                                 </div>
                             @else
@@ -81,4 +80,3 @@
         <p>У вас пока нет сделок.</p>
     @endif
 </div>
-
