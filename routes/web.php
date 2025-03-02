@@ -125,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/deals/user', [DealsController::class, 'dealUser'])->name('deal.user');
     Route::get('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
     Route::post('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
+    Route::post('/chats/{type}/{id}/new-messages', [ChatController::class, 'getNewMessages']);
 });
 
 // Общие маршруты для чатов (личные и групповые)
@@ -134,9 +135,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/chats/{chatType}/{chatId}')->group(function () {
         Route::get('/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
         Route::post('/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
-        Route::post('/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.newMessages'); // Новый маршрут для получения новых сообщений
+        Route::post('/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.newMessages');
         Route::post('/mark-read', [ChatController::class, 'markMessagesAsRead'])->name('chats.markMessagesAsRead');
-        // Маршруты для удаления, закрепления и открепления сообщений:
         Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage'])->name('chats.deleteMessage');
         Route::post('/messages/{messageId}/pin', [ChatController::class, 'pinMessage'])->name('chats.pinMessage');
         Route::post('/messages/{messageId}/unpin', [ChatController::class, 'unpinMessage'])->name('chats.unpinMessage');

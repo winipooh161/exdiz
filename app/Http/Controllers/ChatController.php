@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Chat;
+use App\Models\MessagePinLog; // Добавляем импорт класса
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use App\Events\MessageSent;
 use App\Events\MessagesRead;
 use App\Http\Resources\MessageResource;
+use Illuminate\Support\Str; // Добавляем импорт класса
 
 class ChatController extends Controller
 {
@@ -143,12 +145,26 @@ class ChatController extends Controller
 
                 $messages = Message::with('sender')
                     ->where(function ($query) use ($recipient, $currentUserId) {
-                        $query->where('sender_id', $currentUserId)
+                        $query->where(function ($q) use ($recipient, $currentUserId) {
+                            $q->where('sender_id', $currentUserId)
                               ->where('receiver_id', $recipient->id);
-                    })
-                    ->orWhere(function ($query) use ($recipient, $currentUserId) {
-                        $query->where('sender_id', $recipient->id)
+                        })
+                        ->orWhere(function ($q) use ($recipient, $currentUserId) {
+                            $q->where('sender_id', $recipient->id)
                               ->where('receiver_id', $currentUserId);
+                        })
+                        ->orWhere(function ($q) use ($recipient, $currentUserId) {
+                            // Добавляем системные уведомления для этого чата
+                            $q->where('message_type', 'notification')
+                              ->where(function ($sq) use ($recipient, $currentUserId) {
+                                  $sq->where('sender_id', $currentUserId)
+                                     ->where('receiver_id', $recipient->id)
+                                     ->orWhere(function ($sq2) use ($recipient, $currentUserId) {
+                                         $sq2->where('sender_id', $recipient->id)
+                                             ->where('receiver_id', $currentUserId);
+                                     });
+                              });
+                        });
                     })
                     ->orderBy('created_at', 'desc')
                     ->limit(50)
@@ -238,7 +254,7 @@ class ChatController extends Controller
                 $messageType = 'file';
             }
         } catch (\Exception $e) {
-            Log::error('Ошибка при загрузке файлов: ' . $e->getMessage(), [
+            Log::error('Ошибка при загрузке файлов: ' . $е->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Ошибка загрузки файла.'], 500);
@@ -297,7 +313,7 @@ class ChatController extends Controller
                 'last_message_id' => 'nullable|integer',
             ]);
         } catch (\Exception $e) {
-            Log::error('Ошибка валидации getNewMessages: ' . $e->getMessage(), [
+            Log::error('Ошибка валидации getNewMessages: ' . $е->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Ошибка валидации.'], 422);
@@ -342,7 +358,7 @@ class ChatController extends Controller
 
         return response()->json([
             'current_user_id' => $currentUserId,
-            'messages'        => $newMessages,
+            'messages'        => MessageResource::collection($newMessages),
         ], 200);
     }
 
@@ -376,7 +392,7 @@ class ChatController extends Controller
                 return response()->json(['error' => 'Неверный тип чата.'], 400);
             }
         } catch (\Exception $e) {
-            Log::error('Ошибка при пометке сообщений как прочитанных: ' . $e->getMessage(), [
+            Log::error('Ошибка при пометке сообщений как прочитанных: ' . $е->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Внутренняя ошибка сервера.'], 500);
@@ -393,8 +409,15 @@ class ChatController extends Controller
     {
         $currentUserId = Auth::id();
         $message = Message::findOrFail($messageId);
+        $user = Auth::user();
 
-        if ($message->sender_id != $currentUserId && !in_array(Auth::user()->status, ['admin', 'coordinator'])) {
+        // Запрещаем удаление системных уведомлений
+        if ($message->message_type === 'notification' || $message->is_system) {
+            return response()->json(['error' => 'Системные уведомления нельзя удалить.'], 403);
+        }
+
+        // Разрешаем удаление только автору сообщения или координатору
+        if ($message->sender_id != $currentUserId && !in_array($user->status, ['coordinator', 'admin'])) {
             return response()->json(['error' => 'Доступ запрещён.'], 403);
         }
 
@@ -402,61 +425,131 @@ class ChatController extends Controller
             $message->delete();
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
-            Log::error('Ошибка при удалении сообщения: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Ошибка при удалении сообщения: ' . $e->getMessage());
             return response()->json(['error' => 'Ошибка удаления сообщения.'], 500);
         }
     }
 
     /**
-     * Закрепляет сообщение, если текущий пользователь является его отправителем 
-     * или имеет права администратора/координатора.
+     * Закрепляет сообщение.
      */
     public function pinMessage(Request $request, $chatType, $chatId, $messageId)
     {
         $currentUserId = Auth::id();
         $message = Message::findOrFail($messageId);
 
-        if ($message->sender_id != $currentUserId && !in_array(Auth::user()->status, ['admin', 'coordinator'])) {
-            return response()->json(['error' => 'Доступ запрещён.'], 403);
+        // Запрещаем закрепление системных уведомлений
+        if ($message->message_type === 'notification' || $message->is_system) {
+            return response()->json(['error' => 'Системные уведомления нельзя закрепить.'], 403);
         }
-
+        
         try {
             $message->is_pinned = true;
             $message->save();
-            return response()->json(['success' => true, 'message' => new MessageResource($message)], 200);
-        } catch (\Exception $e) {
-            Log::error('Ошибка при закреплении сообщения: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+    
+            // Создаем текст уведомления с превью сообщения
+            $messagePreview = Str::limit($message->message, 50);
+            $notificationText = '<div class="notification-message">
+                <strong>' . Auth::user()->name . '</strong> закрепил сообщение: 
+                "<a href="#message-' . $messageId . '" data-message-id="' . $messageId . '">' 
+                . htmlspecialchars($messagePreview) . '</a>"
+            </div>';
+    
+            // Создаем уведомление как новое сообщение
+            $notification = Message::create([
+                'sender_id' => $currentUserId,
+                'chat_id' => $chatType === 'group' ? $chatId : null,
+                'receiver_id' => $chatType === 'personal' ? $chatId : null,
+                'message' => $notificationText,
+                'message_type' => 'notification',
+                'is_system' => true
             ]);
+    
+            // Отправляем уведомление через веб-сокет
+            broadcast(new MessageSent($notification))->toOthers();
+    
+            return response()->json([
+                'success' => true,
+                'message' => new MessageResource($message)
+            ], 200);
+    
+        } catch (\Exception $e) {
+            Log::error('Ошибка при закреплении сообщения: ' . $e->getMessage());
             return response()->json(['error' => 'Ошибка закрепления сообщения.'], 500);
         }
     }
-
+    
     /**
-     * Открепляет сообщение, если текущий пользователь является его отправителем 
-     * или имеет права администратора/координатора.
+     * Открепляет сообщение.
      */
     public function unpinMessage(Request $request, $chatType, $chatId, $messageId)
     {
         $currentUserId = Auth::id();
         $message = Message::findOrFail($messageId);
-
-        if ($message->sender_id != $currentUserId && !in_array(Auth::user()->status, ['admin', 'coordinator'])) {
-            return response()->json(['error' => 'Доступ запрещён.'], 403);
-        }
-
+    
         try {
             $message->is_pinned = false;
             $message->save();
-            return response()->json(['success' => true, 'message' => new MessageResource($message)], 200);
-        } catch (\Exception $e) {
-            Log::error('Ошибка при откреплении сообщения: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
+    
+            // Создаем текст уведомления с превью сообщения
+            $messagePreview = Str::limit($message->message, 50);
+            $notificationText = '<div class="notification-message">
+                <strong>' . Auth::user()->name . '</strong> открепил сообщение: 
+                "<a href="#message-' . $messageId . '" data-message-id="' . $messageId . '">' 
+                . htmlspecialchars($messagePreview) . '</a>"
+            </div>';
+    
+            // Создаем уведомление как новое сообщение
+            $notification = Message::create([
+                'sender_id' => $currentUserId,
+                'chat_id' => $chatType === 'group' ? $chatId : null,
+                'receiver_id' => $chatType === 'personal' ? $chatId : null,
+                'message' => $notificationText,
+                'message_type' => 'notification',
+                'is_system' => true
             ]);
+    
+            // Отправляем уведомление через веб-сокет
+            broadcast(new MessageSent($notification))->toOthers();
+    
+            return response()->json([
+                'success' => true,
+                'message' => new MessageResource($message)
+            ], 200);
+    
+        } catch (\Exception $e) {
+            Log::error('Ошибка при откреплении сообщения: ' . $е->getMessage());
             return response()->json(['error' => 'Ошибка открепления сообщения.'], 500);
         }
+    }
+
+    protected function getChatPinLogs($chatId)
+    {
+        return MessagePinLog::whereHas('message', function($query) use ($chatId) {
+                $query->where(function($q) use ($chatId) {
+                    $q->where('chat_id', $chatId)  // Для групповых чатов
+                      ->orWhere(function($sq) use ($chatId) { // Для личных чатов
+                          $sq->where(function($inner) use ($chatId) {
+                              $inner->where('sender_id', auth()->id())
+                                    ->where('receiver_id', $chatId);
+                          })->orWhere(function($inner) use ($chatId) {
+                              $inner->where('sender_id', $chatId)
+                                    ->where('receiver_id', auth()->id());
+                          });
+                      });
+                });
+            })
+            ->with(['user:id,name', 'message:id,message'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($log) {
+                return [
+                    'user' => $log->user->name,
+                    'action' => $log->action,
+                    'message' => Str::limit($log->message->message, 30),
+                    'time' => $log->created_at->format('d.m.Y H:i')
+                ];
+            });
     }
 
     /**
@@ -575,7 +668,7 @@ class ChatController extends Controller
                 ]);
             }
         } catch (\Exception $e) {
-            Log::error('Ошибка при формировании списка чатов: ' . $e->getMessage(), [
+            Log::error('Ошибка при формировании списка чатов: ' . $е->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return collect();

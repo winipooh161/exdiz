@@ -15,7 +15,7 @@
     <!-- Функция инициализации эмодзи-пикера -->
     <script>
         function initializeEmojiPicker(textarea) {
-            let caretPos = textarea.selectionStart;
+            let caretPos = textarea.selectionStart; 
             textarea.addEventListener('click', () => { caretPos = textarea.selectionStart; });
             textarea.addEventListener('keyup', () => { caretPos = textarea.selectionStart; });
             textarea.addEventListener('select', () => { caretPos = textarea.selectionStart; });
@@ -138,7 +138,7 @@
                 return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
             }
             function escapeHtml(text) {
-                const map = { '&': '&amp;', '<': '&lt;', '&gt;': '&gt;', '"': '&quot;', "'": '&#039;' };
+                const map = { '&': '&amp;', '<': '&lt;', '&gt;', '"': '&quot;', "'": '&#039;' };
                 return text.replace(/[&<>"']/g, m => map[m]);
             }
             function scrollToBottom() {
@@ -147,55 +147,67 @@
             // Рендер сообщений с добавлением класса "pinned" для закрепленных
             function renderMessages(messages, currentUserId) {
                 let html = '';
-                (messages || []).forEach(msg => {
+                messages.forEach(msg => {
                     if (!loadedMessageIds.has(msg.id)) {
-                        const isMy = (msg.sender_id === currentUserId);
-                        const liClass = isMy ? 'my-message' : 'other-message';
-                        const pinnedClass = msg.is_pinned ? 'pinned' : '';
-                        let contentHtml = '';
-                        if (msg.message && msg.message.trim() !== '') {
-                            contentHtml += `<div>${escapeHtml(msg.message)}</div>`;
-                        }
-                        if (msg.attachments && msg.attachments.length > 0) {
-                            msg.attachments.forEach(attachment => {
-                                if (attachment.mime && attachment.mime.startsWith('image/')) {
-                                    contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
-                                } else {
-                                    contentHtml += `<div><a style="display:flex" href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
-                                }
-                            });
-                        } else if (msg.file_path) {
-                            const lowerPath = msg.file_path.toLowerCase();
-                            if (lowerPath.endsWith('.png') || lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg') || lowerPath.endsWith('.gif')) {
-                                contentHtml += `<div><img src="${msg.file_path}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
-                            } else {
-                                const docName = msg.original_file_name ? msg.original_file_name : msg.file_path.split('/').pop();
-                                contentHtml += `<div><a style="display:flex" href="${msg.file_path}" target="_blank">${escapeHtml(docName)}</a></div>`;
+                        if (msg.message_type === 'notification' || msg.is_system) {
+                            // Системные уведомления отображаются без возможности взаимодействия
+                            html += `
+                                <li class="system-notification" data-id="${msg.id}">
+                                    ${msg.message}
+                                    <span class="message-time">${formatTime(msg.created_at)}</span>
+                                </li>
+                            `;
+                        } else {
+                            const isMy = (msg.sender_id === currentUserId);
+                            const liClass = isMy ? 'my-message' : 'other-message';
+                            const pinnedClass = msg.is_pinned ? 'pinned' : '';
+                            
+                            let contentHtml = '';
+                            if (msg.message && msg.message.trim() !== '') {
+                                contentHtml += `<div>${escapeHtml(msg.message)}</div>`;
                             }
-                        }
-                        if(contentHtml.trim() === ''){
-                            contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
-                        }
-                        let actionsHtml = '';
-                        if (isMy) {
-                            actionsHtml = `
-                                <div class="message-controls">
-                                    <button class="delete-message" data-id="${msg.id}"><img src="{{ asset('storage/icon/deleteMesg.svg') }}"></button>
-                                    ${msg.is_pinned 
-                                        ? `<button class="unpin-message" data-id="${msg.id}"><img src="${unpinImgUrl}" alt="Открепить"></button>`
-                                        : `<button class="pin-message" data-id="${msg.id}"><img src="${pinImgUrl}" alt="Закрепить"></button>`
+                            if (msg.attachments && msg.attachments.length > 0) {
+                                msg.attachments.forEach(attachment => {
+                                    if (attachment.mime && attachment.mime.startsWith('image/')) {
+                                        contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
+                                    } else {
+                                        contentHtml += `<div><a style="display:flex" href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
                                     }
-                                </div>
+                                });
+                            } else if (msg.file_path) {
+                                const lowerPath = msg.file_path.toLowerCase();
+                                if (lowerPath.endsWith('.png') || lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg') || lowerPath.endsWith('.gif')) {
+                                    contentHtml += `<div><img src="${msg.file_path}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
+                                } else {
+                                    const docName = msg.original_file_name ? msg.original_file_name : msg.file_path.split('/').pop();
+                                    contentHtml += `<div><a style="display:flex" href="${msg.file_path}" target="_blank">${escapeHtml(docName)}</a></div>`;
+                                }
+                            }
+                            if(contentHtml.trim() === ''){
+                                contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
+                            }
+                            let actionsHtml = '';
+                            if (isMy) {
+                                actionsHtml = `
+                                    <div class="message-controls">
+                                        <button class="delete-message" data-id="${msg.id}"><img src="{{ asset('storage/icon/deleteMesg.svg') }}"></button>
+                                        ${msg.is_pinned 
+                                            ? `<button class="unpin-message" data-id="${msg.id}"><img src="${unpinImgUrl}" alt="Открепить"></button>`
+                                            : `<button class="pin-message" data-id="${msg.id}"><img src="${pinImgUrl}" alt="Закрепить"></button>`
+                                        }
+                                    </div>
+                                `;
+                            }
+                            
+                            html += `
+                                <li class="${liClass} ${pinnedClass}" data-id="${msg.id}">
+                                    <div><strong>${isMy ? 'Вы' : escapeHtml(msg.sender_name || 'Неизвестно')}</strong></div>
+                                    ${contentHtml}
+                                    ${actionsHtml}
+                                    <span class="message-time">${formatTime(msg.created_at)}</span>
+                                </li>
                             `;
                         }
-                        html += `
-                            <li class="${liClass} ${pinnedClass}" data-id="${msg.id}">
-                                <div><strong>${isMy ? 'Вы' : escapeHtml(msg.sender_name || 'Неизвестно')}</strong></div>
-                                ${contentHtml}
-                                ${actionsHtml}
-                                <span class="message-time">${formatTime(msg.created_at)}</span>
-                            </li>
-                        `;
                         loadedMessageIds.add(msg.id);
                     }
                 });
@@ -427,41 +439,55 @@
 
             function renderMessages(messages, currentUserId) {
                 let html = '';
-                (messages || []).forEach(msg => {
+                messages.forEach(msg => {
                     if (!loadedMessageIds.has(msg.id)) {
-                        const isMy = (msg.sender_id === currentUserId);
-                        const liClass = isMy ? 'my-message' : 'other-message';
-                        let contentHtml = '';
-                        if (msg.message && msg.message.trim() !== '') {
-                            contentHtml += `<div>${escapeHtml(msg.message)}</div>`;
-                        }
-                        if (msg.attachments && msg.attachments.length > 0) {
-                            msg.attachments.forEach(attachment => {
-                                if (attachment.mime && attachment.mime.startsWith('image/')) {
-                                    contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
+                        if (msg.message_type === 'notification' || msg.is_system) {
+                            // Системные уведомления отображаются без возможности взаимодействия
+                            html += `
+                                <li class="system-notification" data-id="${msg.id}">
+                                    ${msg.message}
+                                    <span class="message-time">${formatTime(msg.created_at)}</span>
+                                </li>
+                            `;
+                        } else {
+                            const isMy = (msg.sender_id === currentUserId);
+                            const liClass = isMy ? 'my-message' : 'other-message';
+                            let contentHtml = '';
+                            if (msg.message && msg.message.trim() !== '') {
+                                if (msg.message_type === 'notification') {
+                                    contentHtml += msg.message; // Вставляем HTML для уведомлений
                                 } else {
-                                    contentHtml += `<div><a style="display:flex" href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
+                                    contentHtml += `<div>${escapeHtml(msg.message)}</div>`;
                                 }
-                            });
-                        } else if (msg.file_path) {
-                            const lowerPath = msg.file_path.toLowerCase();
-                            if (lowerPath.endsWith('.png') || lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg') || lowerPath.endsWith('.gif')) {
-                                contentHtml += `<div><img src="${msg.file_path}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
-                            } else {
-                                const docName = msg.original_file_name ? msg.original_file_name : msg.file_path.split('/').pop();
-                                contentHtml += `<div><a style="display:flex" href="${msg.file_path}" target="_blank">${escapeHtml(docName)}</a></div>`;
                             }
+                            if (msg.attachments && msg.attachments.length > 0) {
+                                msg.attachments.forEach(attachment => {
+                                    if (attachment.mime && attachment.mime.startsWith('image/')) {
+                                        contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
+                                    } else {
+                                        contentHtml += `<div><a style="display:flex" href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
+                                    }
+                                });
+                            } else if (msg.file_path) {
+                                const lowerPath = msg.file_path.toLowerCase();
+                                if (lowerPath.endsWith('.png') || lowerPath.endsWith('.jpg') || lowerPath.endsWith('.jpeg') || lowerPath.endsWith('.gif')) {
+                                    contentHtml += `<div><img src="${msg.file_path}" alt="Image" style="max-width:100%; max-height:100%; border-radius:4px;"></div>`;
+                                } else {
+                                    const docName = msg.original_file_name ? msg.original_file_name : msg.file_path.split('/').pop();
+                                    contentHtml += `<div><a style="display:flex" href="${msg.file_path}" target="_blank">${escapeHtml(docName)}</a></div>`;
+                                }
+                            }
+                            if(contentHtml.trim() === ''){
+                                contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
+                            }
+                            html += `
+                                <li class="${liClass}" data-id="${msg.id}">
+                                    <div><strong>${isMy ? 'Вы' : escapeHtml(msg.sender_name || 'Неизвестно')}</strong></div>
+                                    ${contentHtml}
+                                    <span class="message-time">${formatTime(msg.created_at)}</span>
+                                </li>
+                            `;
                         }
-                        if(contentHtml.trim() === ''){
-                            contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
-                        }
-                        html += `
-                            <li class="${liClass}" data-id="${msg.id}">
-                                <div><strong>${isMy ? 'Вы' : escapeHtml(msg.sender_name || 'Неизвестно')}</strong></div>
-                                ${contentHtml}
-                                <span class="message-time">${formatTime(msg.created_at)}</span>
-                            </li>
-                        `;
                         loadedMessageIds.add(msg.id);
                     }
                 });
@@ -692,50 +718,66 @@
                 let html = '';
                 messages.forEach(message => {
                     if (!loadedMessageIds.has(message.id)) {
-                        const isMyMessage = (message.sender_id === currentUserId);
-                        const liClass = isMyMessage ? 'my-message' : 'other-message';
-                        const pinnedClass = message.is_pinned ? 'pinned' : '';
-                        let readStatus = '';
-                        if (isMyMessage && message.is_read) {
-                            readStatus = '<span class="read-status">✓✓</span>';
-                        }
-                        let contentHtml = '';
-                        if (message.message && message.message.trim() !== '') {
-                            contentHtml += `<div>${escapeHtml(message.message)}</div>`;
-                        }
-                        if (message.attachments && message.attachments.length > 0) {
-                            message.attachments.forEach(attachment => {
-                                if (attachment.mime && attachment.mime.startsWith('image/')) {
-                                    contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; border-radius:4px;"></div>`;
+                        if (message.message_type === 'notification' || message.is_system) {
+                            // Системные уведомления отображаются без возможности взаимодействия
+                            html += `
+                                <li class="system-notification" data-id="${message.id}">
+                                    ${message.message}
+                                    <span class="message-time">${formatTime(message.created_at)}</span>
+                                </li>
+                            `;
+                        } else {
+                            const isMyMessage = (message.sender_id === currentUserId);
+                            const liClass = message.message_type === 'notification' 
+                                ? 'notification-message' 
+                                : (isMyMessage ? 'my-message' : 'other-message');
+                            const pinnedClass = message.is_pinned ? 'pinned' : '';
+                            let readStatus = '';
+                            if (isMyMessage && message.is_read) {
+                                readStatus = '<span class="read-status">✓✓</span>';
+                            }
+                            let contentHtml = '';
+                            if (message.message && message.message.trim() !== '') {
+                                if (message.message_type === 'notification') {
+                                    contentHtml += message.message; // Вставляем HTML для уведомлений
                                 } else {
-                                    contentHtml += `<div><a href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
+                                    contentHtml += `<div>${escapeHtml(message.message)}</div>`;
                                 }
-                            });
-                        }
-                        if(contentHtml.trim() === ''){
-                            contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
-                        }
-                        let actionsHtml = '';
-                        if (isMyMessage) {
-                            actionsHtml = `
-                                <div class="message-controls">
-                                    <button class="delete-message" data-id="${message.id}"><img src="{{ asset('storage/icon/deleteMesg.svg') }}"></button>
-                                    ${message.is_pinned 
-                                        ? `<button class="unpin-message" data-id="${message.id}"><img src="${unpinImgUrl}" alt="Открепить"></button>`
-                                        : `<button class="pin-message" data-id="${message.id}"><img src="${pinImgUrl}" alt="Закрепить"></button>`
+                            }
+                            if (message.attachments && message.attachments.length > 0) {
+                                message.attachments.forEach(attachment => {
+                                    if (attachment.mime && attachment.mime.startsWith('image/')) {
+                                        contentHtml += `<div><img src="${attachment.url}" alt="Image" style="max-width:100%; border-radius:4px;"></div>`;
+                                    } else {
+                                        contentHtml += `<div><a href="${attachment.url}" target="_blank">${escapeHtml(attachment.original_file_name)}</a></div>`;
                                     }
-                                </div>
+                                });
+                            }
+                            if(contentHtml.trim() === ''){
+                                contentHtml = `<div style="color:#888;">[Пустое сообщение]</div>`;
+                            }
+                            let actionsHtml = '';
+                            if (isMyMessage) {
+                                actionsHtml = `
+                                    <div class="message-controls">
+                                        <button class="delete-message" data-id="${message.id}"><img src="{{ asset('storage/icon/deleteMesg.svg') }}"></button>
+                                        ${message.is_pinned 
+                                            ? `<button class="unpin-message" data-id="${message.id}"><img src="${unpinImgUrl}" alt="Открепить"></button>`
+                                            : `<button class="pin-message" data-id="${message.id}"><img src="${pinImgUrl}" alt="Закрепить"></button>`
+                                        }
+                                    </div>
+                                `;
+                            }
+                            html += `
+                                <li class="${liClass} ${pinnedClass}" data-id="${message.id}">
+                                    <div><strong>${isMyMessage ? 'Вы' : escapeHtml(message.sender_name || 'Неизвестно')}</strong></div>
+                                    ${contentHtml}
+                                    ${actionsHtml}
+                                    <span class="message-time">${formatTime(message.created_at)}</span>
+                                    ${readStatus}
+                                </li>
                             `;
                         }
-                        html += `
-                            <li class="${liClass} ${pinnedClass}" data-id="${message.id}">
-                                <div><strong>${isMyMessage ? 'Вы' : escapeHtml(message.sender_name || 'Неизвестно')}</strong></div>
-                                ${contentHtml}
-                                ${actionsHtml}
-                                <span class="message-time">${formatTime(message.created_at)}</span>
-                                ${readStatus}
-                            </li>
-                        `;
                         loadedMessageIds.add(message.id);
                     }
                 });
@@ -1011,7 +1053,57 @@
                     .catch(e => console.error('Ошибка при получении новых сообщений:', e));
                 }
             }, 1000); // Проверка новых сообщений каждую секунду
+
+            // Добавляем обработчик для прокрутки к сообщению при клике на ссылку
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.notification-message a[data-message-id]')) {
+                    e.preventDefault();
+                    const messageId = e.target.dataset.messageId;
+                    const targetMessage = document.querySelector(`li[data-id="${messageId}"]`);
+                    if (targetMessage) {
+                        targetMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetMessage.style.backgroundColor = '#007ab6'; // Изменено с #fff3cd
+                        setTimeout(() => {
+                            targetMessage.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                }
+            });
         </script>
     @endif
+
+    <script src="{{ asset('js/chat.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(isset($supportChat) && $supportChat)
+                const supportChat = new ChatManager({
+                    currentChatId: "55",
+                    currentChatType: "personal",
+                    autoLoad: true
+                });
+            @elseif(isset($dealChat))
+                const groupChat = new ChatManager({
+                    currentChatId: "{{ $dealChat->id }}",
+                    currentChatType: "group",
+                    autoLoad: true
+                });
+            @else
+                const regularChat = new ChatManager();
+                // Инициализация списка чатов
+                const chatList = document.getElementById('chat-list');
+                if (chatList) {
+                    const firstChat = chatList.querySelector('li');
+                    if (firstChat) {
+                        const chatId = firstChat.getAttribute('data-chat-id');
+                        const chatType = firstChat.getAttribute('data-chat-type');
+                        regularChat.currentChatId = chatId;
+                        regularChat.currentChatType = chatType;
+                        regularChat.loadMessages();
+                    }
+                }
+            @endif
+        });
+    </script>
 </body>
 

@@ -4057,7 +4057,7 @@ li.other-message strong {
     position: absolute;
     right: 0;
     display: flex;
-    bottom: -35px;
+    bottom: -23px;
 }
 
 .message-controls button {
@@ -4190,17 +4190,4 @@ form#feed-form button {
     height: 40px;
 }.my-message a {
     color: var(--fff);
-}    .faq_block__deal.faq_block-blur.brifs__button__create-faq_block__deal {
-    height: 100%;
-    min-height: 250px;
-    background: var(--blockbody);
-    border-radius: var(--radius);
-}
-
-.brifs__button__create.flex {
-    display: flex;
-    gap: var(--g10);
-    place-content: center flex-end;
-    align-items: center;
-    justify-content: center;
-}
+} 

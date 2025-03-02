@@ -965,16 +965,16 @@ button.remove-button {
 .introjs-prevbutton {
     display: none !important;
 }.brif__body ul li::before {
-    content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";
-    /* color: #ff7575;  content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢";*/
+    content: "-";
+    /* color: #ff7575;  content: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢";*/
 }
 .completed {
      
     color: var(--blue) !important;
 }
 .completed::before {
- content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â" !important;
- /* color: #BAFF75 !important; content: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â" !important;*/
+ content: "+" !important;
+ /* color: #BAFF75 !important; content: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â" !important;*/
 }table.dataTable thead th, table.dataTable thead td {
     border: none;
 }
@@ -1008,7 +1008,7 @@ button.remove-button {
     left: 0;
     background: #fff;
     border: 1px solid #ddd;
-    width: 200px;
+    min-width: 280px;
     flex-wrap: wrap;
     gap: 5px;
     padding: 5px;
@@ -1055,7 +1055,7 @@ button.remove-button {
     min-height: 66px;
     background: var(--fff);
     justify-content: space-between;
-    margin: var(--m20) !important;
+    margin: var(--m20) var(--m20) 0 var(--m20) !important;
     border-radius: var(
     --radius);
     align-content: center;
@@ -1076,7 +1076,7 @@ button.remove-button {
 .chat-messages ul {
     list-style: none;
     margin: 0;
-    gap: 50px;
+    gap: 30px;
     padding: 0;
 }
 .my-message {
@@ -1160,4 +1160,97 @@ button.remove-button {
 }.faq_question__deal ul li img {
     width: 15px;
     height: 15px;
+}
+
+.pin-logs {
+    background: #f5f5f5;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.pin-log-entry {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    color: #666;
+}
+
+.pin-log-user {
+    font-weight: bold;
+    color: #333;
+}
+
+.pin-log-message {
+    font-style: italic;
+}
+
+.pin-log-time {
+    color: #999;
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+.pin-controls {
+    display: inline-flex;
+    margin-left: 5px;
+}
+
+.pinned-notification {
+    display: block;
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.pinned-notification:hover {
+    background-color: #e0f0ff;
+    text-decoration: underline;
+}
+
+.notification-message {
+    background-color: #f0f7ff;
+    border-left: 3px solid #3490dc;
+    margin: 5px 0;
+    padding: 8px 12px;
+}
+
+.notification-message a {
+    color: #3490dc;
+    text-decoration: none;
+}
+
+.notification-message a:hover {
+    text-decoration: underline;
+}
+
+.system-notification {
+    background-color: #f0f7ff;
+    /* border-left: 3px solid #3490dc; */
+    margin: 0;
+    padding: 0 0 0 12!important;
+    position: relative;
+    list-style: none;
+}
+
+.system-notification a {
+    color: #3490dc;
+    text-decoration: none;
+}
+
+.system-notification a:hover {
+    text-decoration: underline;
+}
+
+.system-notification .message-time {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    color: #666;
+    font-size: 0.8em;
 }
