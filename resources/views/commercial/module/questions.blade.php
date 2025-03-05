@@ -295,25 +295,4 @@
         });
     });
 </script>
-<script>
-    // Функция для обновления CSRF токена в метатеге и скрытых полях формы
-    function updateCsrfToken() {
-        fetch('{{ route('csrf.refresh') }}')
-            .then(response => response.json())
-            .then(data => {
-                // Обновляем метатег (если он используется для ajax‑запросов)
-                let metaToken = document.querySelector('meta[name="csrf-token"]');
-                if(metaToken) {
-                    metaToken.setAttribute('content', data.token);
-                }
-                // Обновляем все скрытые поля CSRF-токена в формах
-                document.querySelectorAll('input[name="_token"]').forEach(function(input) {
-                    input.value = data.token;
-                });
-            })
-            .catch(error => console.error('Ошибка обновления CSRF:', error));
-    }
-    
-    // Вызываем функцию каждую секунду (1000 мс)
-    setInterval(updateCsrfToken, 1000);
-</script>
+

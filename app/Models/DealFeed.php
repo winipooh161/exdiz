@@ -17,16 +17,7 @@ class DealFeed extends Model
     }
 
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
-public function feeds()
     {
-        return $this->hasMany(DealFeed::class);
-    }public function dealFeeds()
-    {
-        return $this->hasMany(DealFeed::class, 'deal_id');
+        return $this->belongsTo(User::class);
     }
-    
-    
 }

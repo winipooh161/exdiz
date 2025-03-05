@@ -113,7 +113,7 @@
 @endforeach
 
 <!-- Документы -->
-<h2 style="margin-top: 30px;">Документы</h2>
+<h2 >Документы</h2>
 <table class="table table-bordered" style="">
     <thead>
         <tr style="">

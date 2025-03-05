@@ -70,21 +70,55 @@
                                             class="btn btn-info btn-sm">Логи</a>
                                     @endif
                                     <!-- Кнопка редактирования с передачей всех переменных сделки -->
-                                    <button type="button" class="edit-deal-btn" data-id="{{ $deal->id }}"
-                                        data-project_number="{{ $deal->project_number }}"
-                                        data-status="{{ $deal->status }}"
-                                        data-price_service_option="{{ $deal->price_service }}"
-                                        data-rooms_count="{{ $deal->rooms_count_pricing }}"
-                                        data-execution_order_comment="{{ $deal->execution_order_comment }}"
-                                        data-package="{{ $deal->package }}" data-name="{{ $deal->name }}"
+                                    <button type="button" class="edit-deal-btn" 
+                                        data-id="{{ $deal->id }}"
+                                        data-name="{{ $deal->name }}"
                                         data-client_phone="{{ $deal->client_phone }}"
+                                        data-status="{{ $deal->status }}"
+                                        data-priority="{{ $deal->priority }}"
+                                        data-package="{{ $deal->package }}"
+                                        data-project_number="{{ $deal->project_number }}"
+                                        data-price_service="{{ $deal->price_service }}"
+                                        data-rooms_count_pricing="{{ $deal->rooms_count_pricing }}"
+                                        data-execution_order_comment="{{ $deal->execution_order_comment }}"
+                                        data-office_partner_id="{{ $deal->office_partner_id }}"
+                                        data-coordinator_id="{{ $deal->coordinator_id }}"
+                                        data-total_sum="{{ $deal->total_sum }}"
+                                        data-measuring_cost="{{ $deal->measuring_cost }}"
+                                        data-project_budget="{{ $deal->project_budget }}"
+                                        data-client_info="{{ $deal->client_info }}"
+                                        data-payment_date="{{ $deal->payment_date }}"
+                                        data-execution_comment="{{ $deal->execution_comment }}"
+                                        data-comment="{{ $deal->comment }}"
+                                        data-office_equipment="{{ $deal->office_equipment }}"
+                                        data-measurement_comments="{{ $deal->measurement_comments }}"
+                                        data-start_date="{{ $deal->start_date }}"
+                                        data-project_duration="{{ $deal->project_duration }}"
+                                        data-project_end_date="{{ $deal->project_end_date }}"
+                                        data-architect_id="{{ $deal->architect_id }}"
+                                        data-designer_id="{{ $deal->designer_id }}"
+                                        data-visualizer_id="{{ $deal->visualizer_id }}"
+                                        data-visualization_link="{{ $deal->visualization_link }}"
+                                        data-client_project_rating="{{ $deal->client_project_rating }}"
+                                        data-architect_rating_client="{{ $deal->architect_rating_client }}"
+                                        data-architect_rating_partner="{{ $deal->architect_rating_partner }}"
+                                        data-architect_rating_coordinator="{{ $deal->architect_rating_coordinator }}"
+                                        data-designer_rating_client="{{ $deal->designer_rating_client }}"
+                                        data-designer_rating_partner="{{ $deal->designer_rating_partner }}"
+                                        data-designer_rating_coordinator="{{ $deal->designer_rating_coordinator }}"
+                                        data-visualizer_rating_client="{{ $deal->visualizer_rating_client }}"
+                                        data-visualizer_rating_partner="{{ $deal->visualizer_rating_partner }}"
+                                        data-visualizer_rating_coordinator="{{ $deal->visualizer_rating_coordinator }}"
+                                        data-coordinator_rating_client="{{ $deal->coordinator_rating_client }}"
+                                        data-coordinator_rating_partner="{{ $deal->coordinator_rating_partner }}"
+                                        data-coordinator_comment="{{ $deal->coordinator_comment }}"
+                                        data-contract_number="{{ $deal->contract_number }}"
+                                        data-deal_note="{{ $deal->deal_note }}"
+                                        data-client_timezone="{{ $deal->client_timezone }}"
                                         data-client_city="{{ $deal->client_city }}"
                                         data-client_email="{{ $deal->client_email }}"
-                                        data-client_timezone="{{ $deal->client_timezone }}"
-                                        data-office_partner_id="{{ $deal->office_partner_id }}"
                                         data-completion_responsible="{{ $deal->completion_responsible }}"
-                                        data-coordinator_name="{{ $deal->coordinator->name ?? '' }}"
-                                        data-registration_token_url="{{ $deal->registration_token_url }}">
+                                    >
                                         <img src="/storage/icon/create.svg" alt="Редактировать">
                                     </button>
                                 </td>
@@ -99,8 +133,8 @@
                     @if ($deals->isEmpty())
                         <div class="faq_block__deal faq_block-blur">
                             @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
-                                <div class="brifs__button__create flex">
-                                    <button onclick="window.location.href='{{ route('deals.create') }}'">
+                                <div class="brifs__button__create flex"onclick="window.location.href='{{ route('deals.create') }}'">
+                                    <button >
                                         <img src="/storage/icon/add.svg" alt="Создать сделку">
                                     </button>
                                 </div>
@@ -109,11 +143,11 @@
                     @else
                         <div class="faq_block__deal faq_block-blur brifs__button__create-faq_block__deal">
                             @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
-                                <div class="brifs__button__create flex">
+                              
                                     <button onclick="window.location.href='{{ route('deals.create') }}'">
                                         <img src="/storage/icon/add.svg" alt="Создать сделку">
                                     </button>
-                                </div>
+                             
                             @endif
                         </div>
                         @foreach ($deals as $deal)
@@ -154,21 +188,53 @@
                                             <li>
                                                 <button type="button" class="edit-deal-btn"
                                                     data-id="{{ $deal->id }}"
-                                                    data-project_number="{{ $deal->project_number }}"
-                                                    data-status="{{ $deal->status }}"
-                                                    data-price_service_option="{{ $deal->price_service }}"
-                                                    data-rooms_count="{{ $deal->rooms_count_pricing }}"
-                                                    data-execution_order_comment="{{ $deal->execution_order_comment }}"
-                                                    data-package="{{ $deal->package }}"
                                                     data-name="{{ $deal->name }}"
                                                     data-client_phone="{{ $deal->client_phone }}"
+                                                    data-status="{{ $deal->status }}"
+                                                    data-priority="{{ $deal->priority }}"
+                                                    data-package="{{ $deal->package }}"
+                                                    data-project_number="{{ $deal->project_number }}"
+                                                    data-price_service="{{ $deal->price_service }}"
+                                                    data-rooms_count_pricing="{{ $deal->rooms_count_pricing }}"
+                                                    data-execution_order_comment="{{ $deal->execution_order_comment }}"
+                                                    data-office_partner_id="{{ $deal->office_partner_id }}"
+                                                    data-coordinator_id="{{ $deal->coordinator_id }}"
+                                                    data-total_sum="{{ $deal->total_sum }}"
+                                                    data-measuring_cost="{{ $deal->measuring_cost }}"
+                                                    data-project_budget="{{ $deal->project_budget }}"
+                                                    data-client_info="{{ $deal->client_info }}"
+                                                    data-payment_date="{{ $deal->payment_date }}"
+                                                    data-execution_comment="{{ $deal->execution_comment }}"
+                                                    data-comment="{{ $deal->comment }}"
+                                                    data-office_equipment="{{ $deal->office_equipment }}"
+                                                    data-measurement_comments="{{ $deal->measurement_comments }}"
+                                                    data-start_date="{{ $deal->start_date }}"
+                                                    data-project_duration="{{ $deal->project_duration }}"
+                                                    data-project_end_date="{{ $deal->project_end_date }}"
+                                                    data-architect_id="{{ $deal->architect_id }}"
+                                                    data-designer_id="{{ $deal->designer_id }}"
+                                                    data-visualizer_id="{{ $deal->visualizer_id }}"
+                                                    data-visualization_link="{{ $deal->visualization_link }}"
+                                                    data-client_project_rating="{{ $deal->client_project_rating }}"
+                                                    data-architect_rating_client="{{ $deal->architect_rating_client }}"
+                                                    data-architect_rating_partner="{{ $deal->architect_rating_partner }}"
+                                                    data-architect_rating_coordinator="{{ $deal->architect_rating_coordinator }}"
+                                                    data-designer_rating_client="{{ $deal->designer_rating_client }}"
+                                                    data-designer_rating_partner="{{ $deal->designer_rating_partner }}"
+                                                    data-designer_rating_coordinator="{{ $deal->designer_rating_coordinator }}"
+                                                    data-visualizer_rating_client="{{ $deal->visualizer_rating_client }}"
+                                                    data-visualizer_rating_partner="{{ $deal->visualizer_rating_partner }}"
+                                                    data-visualizer_rating_coordinator="{{ $deal->visualizer_rating_coordinator }}"
+                                                    data-coordinator_rating_client="{{ $deal->coordinator_rating_client }}"
+                                                    data-coordinator_rating_partner="{{ $deal->coordinator_rating_partner }}"
+                                                    data-coordinator_comment="{{ $deal->coordinator_comment }}"
+                                                    data-contract_number="{{ $deal->contract_number }}"
+                                                    data-deal_note="{{ $deal->deal_note }}"
+                                                    data-client_timezone="{{ $deal->client_timezone }}"
                                                     data-client_city="{{ $deal->client_city }}"
                                                     data-client_email="{{ $deal->client_email }}"
-                                                    data-client_timezone="{{ $deal->client_timezone }}"
-                                                    data-office_partner_id="{{ $deal->office_partner_id }}"
                                                     data-completion_responsible="{{ $deal->completion_responsible }}"
-                                                    data-coordinator_name="{{ $deal->coordinator->name ?? '' }}"
-                                                    data-registration_token_url="{{ $deal->registration_token_url }}">
+                                                >
                                                     <img src="/storage/icon/create__blue.svg" alt=""> <span>
                                                         Изменить</span>
                                                 </button>
@@ -210,7 +276,7 @@
                     </li>
                 @endif
                 <li>
-a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $groupChat->id) : '#' }}">
+                   <a href="{{ $groupChat ? url('/chats?active_chat=' . $groupChat->id) : '#' }}">
                         <img src="/storage/icon/chat.svg" alt="Чат">
                     </a>
                 </li>
@@ -305,8 +371,7 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <legend>Заказ</legend>
                     <div class="form-group-deal">
                         <label>№ проекта:
-                            <input type="text" name="project_number" id="projectNumberField" value=""
-                                class="maskproject">
+                            <input type="text" name="project_number" id="projectNumberField" value="{{ $deal->project_number }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -331,28 +396,30 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     </div>
                     <div class="form-group-deal">
                         <label>Количество комнат по прайсу:
-                            <input type="number" name="rooms_count_pricing" id="roomsCountField" value="">
+                            <input type="number" name="rooms_count_pricing" id="roomsCountField" value="{{ $deal->rooms_count_pricing }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Комментарий к Заказу:
-                            <textarea name="execution_order_comment" id="executionOrderCommentField" maxlength="1000"></textarea>
+                            <textarea name="execution_order_comment" id="executionOrderCommentField" maxlength="1000">{{ $deal->execution_order_comment }}</textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Пакет:
-                            <input type="text" name="package" id="packageField" value="">
+                            <input type="text" name="package" id="packageField" value="{{ $deal->package }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>ФИО клиента:
-                            <input type="text" name="name" id="nameField" value="">
+                            <input type="text" name="name" id="nameField" value="{{ $deal->name }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
-                        <label>Телефон:
-                            <input type="text" name="client_phone" id="phoneField" value=""
-                                class="maskphone">
+                        <label>Телефон клиента: <span class="required">*</span>
+                            <input type="text" name="client_phone" id="phoneField" 
+                                value="{{ $deal->client_phone }}" 
+                                class="form-control"
+                                required>
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -361,23 +428,20 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                         </label>
                     </div>
                     <div class="form-group-deal">
-                        <label>Email:
-                            <input type="email" name="client_email" id="emailField" value="">
-                        </label>
-                    </div>
-                    <div class="form-group-deal">
-                        <label>Часовой пояс:
-                            <select name="client_timezone" id="client_timezone" class="form-control" required>
-                                <option value="">-- Выберите город --</option>
-                            </select>
+                        <label>Email клиента:
+                            <input type="email" name="client_email" id="emailField" 
+                                value="{{ $deal->client_email }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Офис/Партнер:
-                            <select name="office_partner_id" id="officePartnerField">
+                            <select name="office_partner_id" id="officePartnerField" class="select2-field">
                                 <option value="">-- Не выбрано --</option>
                                 @foreach (\App\Models\User::where('status', 'partner')->get() as $partner)
-                                    <option value="{{ $partner->id }}">{{ $partner->name }}</option>
+                                    <option value="{{ $partner->id }}" 
+                                        {{ $deal->office_partner_id == $partner->id ? 'selected' : '' }}>
+                                        {{ $partner->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </label>
@@ -385,13 +449,32 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <div class="form-group-deal">
                         <label>Кто делает комплектацию:
                             <input type="text" name="completion_responsible" id="completionResponsibleField"
-                                value="">
+                                value="{{ $deal->completion_responsible }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Координатор:
-                            <input type="text" name="coordinator_name" id="coordinatorField" value=""
-                                readonly>
+                            <select name="coordinator_id" id="coordinatorField" class="select2-field">
+                                <option value="">-- Не выбрано --</option>
+                                @foreach (\App\Models\User::where('status', 'coordinator')->get() as $coordinator)
+                                    <option value="{{ $coordinator->id }}" 
+                                        {{ $deal->coordinator_id == $coordinator->id ? 'selected' : '' }}>
+                                        {{ $coordinator->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-group-deal">
+                        <label>Ответственные:
+                            <select name="responsibles[]" id="responsiblesField" class="select2-field" multiple>
+                                @foreach (\App\Models\User::whereIn('status', ['designer', 'coordinator'])->get() as $responsible)
+                                    <option value="{{ $responsible->id }}" 
+                                        {{ in_array($responsible->id, $deal->users->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                        {{ $responsible->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </label>
                     </div>
                 </fieldset>
@@ -401,28 +484,31 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <legend>Работа над проектом</legend>
                     <div class="form-group-deal">
                         <label>Комментарии по замерам:
-                            <textarea name="measurement_comments" id="measurementCommentsField" maxlength="1000"></textarea>
+                            <textarea name="measurement_comments" id="measurementCommentsField" maxlength="1000">{{ $deal->measurement_comments }}</textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Замеры (файл):
                             <input type="file" name="measurements_file" id="measurementsFileField"
                                 accept=".pdf,.dwg,image/*">
+                            @if($deal->measurements_file)
+                                <a href="{{ asset('storage/' . $deal->measurements_file) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата старта:
-                            <input type="date" name="start_date" id="startDateField" value="">
+                            <input type="date" name="start_date" id="startDateField" value="{{ $deal->start_date }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Общий срок проекта (в днях):
-                            <input type="number" name="project_duration" id="projectDurationField" value="">
+                            <input type="number" name="project_duration" id="projectDurationField" value="{{ $deal->project_duration }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата завершения:
-                            <input type="date" name="project_end_date" id="projectEndDateField" value="">
+                            <input type="date" name="project_end_date" id="projectEndDateField" value="{{ $deal->project_end_date }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -430,7 +516,7 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                             <select name="architect_id" id="architectField">
                                 <option value="">-- Не выбрано --</option>
                                 @foreach (\App\Models\User::where('status', 'architect')->get() as $architect)
-                                    <option value="{{ $architect->id }}">{{ $architect->name }}</option>
+                                    <option value="{{ $architect->id }}" {{ $deal->architect_id == $architect->id ? 'selected' : '' }}>{{ $architect->name }}</option>
                                 @endforeach
                             </select>
                         </label>
@@ -439,6 +525,9 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                         <label>Планировка финал (PDF):
                             <input type="file" name="final_floorplan" id="finalFloorplanField"
                                 accept="application/pdf">
+                            @if($deal->final_floorplan)
+                                <a href="{{ asset('storage/' . $deal->final_floorplan) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -446,7 +535,7 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                             <select name="designer_id" id="designerField">
                                 <option value="">-- Не выбрано --</option>
                                 @foreach (\App\Models\User::where('status', 'designer')->get() as $designer)
-                                    <option value="{{ $designer->id }}">{{ $designer->name }}</option>
+                                    <option value="{{ $designer->id }}" {{ $deal->designer_id == $designer->id ? 'selected' : '' }}>{{ $designer->name }}</option>
                                 @endforeach
                             </select>
                         </label>
@@ -455,6 +544,9 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                         <label>Коллаж финал (PDF):
                             <input type="file" name="final_collage" id="finalCollageField"
                                 accept="application/pdf">
+                            @if($deal->final_collage)
+                                <a href="{{ asset('storage/' . $deal->final_collage) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -462,7 +554,7 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                             <select name="visualizer_id" id="visualizerField">
                                 <option value="">-- Не выбрано --</option>
                                 @foreach (\App\Models\User::where('status', 'visualizer')->get() as $visualizer)
-                                    <option value="{{ $visualizer->id }}">{{ $visualizer->name }}</option>
+                                    <option value="{{ $visualizer->id }}" {{ $deal->visualizer_id == $visualizer->id ? 'selected' : '' }}>{{ $visualizer->name }}</option>
                                 @endforeach
                             </select>
                         </label>
@@ -470,13 +562,16 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <div class="form-group-deal">
                         <label>Ссылка на визуализацию:
                             <input type="url" name="visualization_link" id="visualizationLinkField"
-                                value="">
+                                value="{{ $deal->visualization_link }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Финал проекта (PDF):
                             <input type="file" name="final_project_file" id="finalProjectFileField"
                                 accept="application/pdf">
+                            @if($deal->final_project_file)
+                                <a href="{{ asset('storage/' . $deal->final_project_file) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                 </fieldset>
@@ -487,30 +582,33 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <div class="form-group-deal">
                         <label>Акт выполненных работ (PDF):
                             <input type="file" name="work_act" id="workActField" accept="application/pdf">
+                            @if($deal->work_act)
+                                <a href="{{ asset('storage/' . $deal->work_act) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка за проект (от клиента):
                             <input type="number" name="client_project_rating" id="clientProjectRatingField"
-                                value="" min="0" max="10" step="0.5">
+                                value="{{ $deal->client_project_rating }}" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Клиент):
                             <input type="number" name="architect_rating_client" id="architectRatingClientField"
-                                value="" min="0" max="10" step="0.5">
+                                value="{{ $deal->architect_rating_client }}" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Партнер):
                             <input type="number" name="architect_rating_partner" id="architectRatingPartnerField"
-                                value="" min="0" max="10" step="0.5">
+                                value="{{ $deal->architect_rating_partner }}" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Координатор):
                             <input type="number" name="architect_rating_coordinator"
-                                id="architectRatingCoordinatorField" value="" min="0" max="10"
+                                id="architectRatingCoordinatorField" value="{{ $deal->architect_rating_coordinator }}" min="0" max="10"
                                 step="0.5">
                         </label>
                     </div>
@@ -518,16 +616,22 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                         <label>Скрин чата с оценкой и актом (JPEG):
                             <input type="file" name="chat_screenshot" id="chatScreenshotField"
                                 accept="image/jpeg,image/jpg,image/png">
+                            @if($deal->chat_screenshot)
+                                <a href="{{ asset('storage/' . $deal->chat_screenshot) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Комментарий координатора:
-                            <textarea name="coordinator_comment" id="coordinatorCommentField" maxlength="1000"></textarea>
+                            <textarea name="coordinator_comment" id="coordinatorCommentField" maxlength="1000">{{ $deal->coordinator_comment }}</textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Исходный файл архикад (pln, dwg):
                             <input type="file" name="archicad_file" id="archicadFileField" accept=".pln,.dwg">
+                            @if($deal->archicad_file)
+                                <a href="{{ asset('storage/' . $deal->archicad_file) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                 </fieldset>
@@ -537,23 +641,22 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <legend>О сделке</legend>
                     <div class="form-group-deal">
                         <label>№ договора:
-                            <input type="text" name="contract_number" id="contractNumberField" value=""
-                                class="maskcontract">
+                            <input type="text" name="contract_number" id="contractNumberField" value="{{ $deal->contract_number }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата создания сделки:
-                            <input type="date" name="created_date" id="createdDateField" value="">
+                            <input type="date" name="created_date" id="createdDateField" value="{{ $deal->created_date }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата оплаты:
-                            <input type="date" name="payment_date" id="paymentDateField" value="">
+                            <input type="date" name="payment_date" id="paymentDateField" value="{{ $deal->payment_date }}">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Сумма Заказа:
-                            <input type="number" name="total_sum" id="totalSumField" value=""
+                            <input type="number" name="total_sum" id="totalSumField" value="{{ $deal->total_sum }}"
                                 step="0.01">
                         </label>
                     </div>
@@ -561,11 +664,14 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                         <label>Приложение договора:
                             <input type="file" name="contract_attachment" id="contractAttachmentField"
                                 accept="application/pdf,image/jpeg,image/jpg,image/png">
+                            @if($deal->contract_attachment)
+                                <a href="{{ asset('storage/' . $deal->contract_attachment) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Примечание:
-                            <textarea name="deal_note" id="dealNoteField"></textarea>
+                            <textarea name="deal_note" id="dealNoteField">{{ $deal->deal_note }}</textarea>
                         </label>
                     </div>
                 </fieldset>
@@ -576,6 +682,9 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
                     <div class="form-group-deal">
                         <label>Аватар сделки:
                             <input type="file" name="avatar" id="avatarField" accept="image/*">
+                            @if($deal->avatar_path)
+                                <a href="{{ asset('storage/' . $deal->avatar_path) }}" target="_blank">Просмотр файла</a>
+                            @endif
                         </label>
                     </div>
                     <div id="avatar-preview" class="avatar-preview">
@@ -739,35 +848,104 @@ a                    <a href="{{ $groupChat ? url('/chats?active_chat=' . $group
         }).fail(function(err) {
             console.error("Ошибка загрузки городов", err);
         });
-        $("input.maskphone").on("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-        });
-        $("input.maskproject").on("input", function() {
-            this.value = "Проект " + this.value.replace(/\D/g, '').substring(0, 4);
-        });
-        $("input.maskcontract").on("input", function() {
-            this.value = "CN-" + this.value.replace(/\D/g, '').substring(0, 4);
-        });
-        $("#package").on("input", function() {
-            this.value = this.value.replace(/\D/g, '').substring(0, 1);
-        });
-        $("#project_duration").on("input", function() {
-            var duration = parseInt(this.value.replace(/\D/g, ''));
-            var start = $("#start_date").val();
-            if (start && duration) {
-                var end = new Date(new Date(start).getTime() + duration * 86400000),
-                    dd = ("0" + end.getDate()).slice(-2),
-                    mm = ("0" + (end.getMonth() + 1)).slice(-2),
-                    yyyy = end.getFullYear();
-                $("#project_end_date").val(yyyy + "-" + mm + "-" + dd);
-            } else {
-                $("#project_end_date").val('');
-            }
-        });
-        var today = new Date().toISOString().substr(0, 10);
-        $("#start_date").val(today).prop("readonly", true);
     });
 </script>
-<style>
+<script>
+    $(document).ready(function() {
+        $('#responsiblesField').select2({
+            placeholder: "Выберите ответственных",
+            allowClear: true
+        });
+    });
+</script>
+<script>
+$(document).ready(function() {
+    // Инициализация Select2
+    $('.select2-field').select2({
+        width: '100%',
+        placeholder: "Выберите значение",
+        allowClear: true
+    });
 
+    // Обработка открытия модального окна редактирования
+    $('.edit-deal-btn').on('click', function() {
+        var data = $(this).data();
+        
+        // Обновляем поля формы
+        $.each(data, function(key, value) {
+            var $field = $('#' + key + 'Field');
+            if($field.length) {
+                if($field.hasClass('select2-field')) {
+                    $field.val(value).trigger('change');
+                } else if($field.is(':checkbox')) {
+                    $field.prop('checked', value == 1);
+                } else {
+                    $field.val(value);
+                }
+            }
+        });
+
+        // Обновляем множественный выбор ответственных
+        if(data.responsibles) {
+            var responsibles = data.responsibles.split(',');
+            $('#responsiblesField').val(responsibles).trigger('change');
+        }
+
+        // Открываем модальное окно
+        $('#editModal').show();
+    });
+
+    // Закрытие модального окна
+    $('#closeModalBtn').on('click', function() {
+        $('#editModal').hide();
+    });
+
+    // Закрытие модального окна при клике вне его
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#editModal')) {
+            $('#editModal').hide();
+        }
+    });
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Обработка открытия модального окна редактирования
+    $('.edit-deal-btn').on('click', function() {
+        var data = $(this).data();
+        
+        // Обновляем поля формы
+        $.each(data, function(key, value) {
+            var $field = $('#' + key + 'Field');
+            if($field.length) {
+                if($field.hasClass('select2-field')) {
+                    $field.val(value).trigger('change');
+                } else if($field.is(':checkbox')) {
+                    $field.prop('checked', value == 1);
+                } else {
+                    $field.val(value);
+                }
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-selection--multiple {
+    min-height: 38px !important;
+}
+
+.select2-selection__choice {
+    padding: 2px 5px !important;
+    margin: 2px !important;
+    background-color: #e4e4e4 !important;
+    border: none !important;
+    border-radius: 3px !important;
+}
 </style>
+

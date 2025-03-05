@@ -4,10 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrifsController;
-
-
 use App\Http\Controllers\DealFeedController;
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CommercialController;
@@ -15,7 +12,6 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SmetsController;
 use App\Http\Controllers\DealsController;
 use App\Http\Controllers\ChatController;
-
 use App\Http\Controllers\AdminController;
 use Chatify\ChatifyMessenger;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +42,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/support/chat/{id}/reply', [SupportController::class, 'reply'])->name('support.chat.reply');
     });
 
+    // Добавляем маршрут для отправки сообщений в поддержку
+    Route::post('/support/send-message/{id}', [SupportController::class, 'sendMessage'])
+        ->name('support.sendMessage');
+
     // Профиль
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/view/{id}', [ProfileController::class, 'viewProfile'])->name('profile.view');
@@ -72,10 +72,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/commercial', [BrifsController::class, 'commercial_store'])->name('commercial.store');
     Route::get('/commercial/{id}', [BrifsController::class, 'commercial_show'])->name('commercial.show');
 
-    Route::get('/refresh-csrf', function () {
-        session()->regenerateToken();
-        return response()->json(['token' => csrf_token()]);
-    })->name('csrf.refresh');
     Route::get('/deal/{deal}/chat', [DealsController::class, 'showDealChat'])->name('deal.chat');
     // Сделка для пользователя
     Route::get('/deal-user', [DealsController::class, 'dealUser'])->name('deal.user');
@@ -102,6 +98,8 @@ Route::middleware(['auth', 'status:coordinator,admin,partner'])->group(function 
     Route::get('/deals/create', [DealsController::class, 'createDeal'])->name('deals.create');
     Route::post('/deal/store', [DealsController::class, 'storeDeal'])->name('deals.store');
     Route::put('/deal/update/{id}', [DealsController::class, 'updateDeal'])->name('deal.update');
+    Route::get('/deals/{deal}/edit', [DealsController::class, 'editDeal'])->name('deal.edit');
+    Route::put('/deals/{deal}', [DealsController::class, 'updateDeal'])->name('deal.update');
 });
 
 Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
@@ -109,10 +107,15 @@ Route::middleware(['auth', 'status:coordinator,admin'])->group(function () {
     Route::get('/deal/{deal}/change-logs', [DealsController::class, 'changeLogsForDeal'])->name('deal.change_logs.deal');
 });
 
-
-
 Route::post('/deal/{deal}/feed', [DealFeedController::class, 'store'])
      ->name('deal.feed.store');
+
+Route::get('/deals/{deal}/logs', [DealsController::class, 'changeLogsForDeal'])->name('deal.logs');
+Route::get('/deals/logs', [DealsController::class, 'changeLogs'])->name('deal.logs.all');
+
+Route::get('/refresh-csrf', function() {
+    return response()->json(['token' => csrf_token()]);
+})->name('refresh-csrf');
 
 
 
@@ -126,7 +129,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
     Route::post('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
     Route::post('/chats/{type}/{id}/new-messages', [ChatController::class, 'getNewMessages']);
+    Route::post('/support/chat/{id}/new-messages', [SupportController::class, 'getNewMessages'])->name('support.chat.newMessages');
+    Route::post('/support/chat/{id}/mark-read', [SupportController::class, 'markMessagesAsRead'])->name('support.chat.markMessagesAsRead');
+    Route::get('/support', [SupportController::class, 'index'])->name('support');
+    Route::post('/firebase/update-token', [App\Http\Controllers\FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
+    Route::post('/firebase/send-notification', [ProfileController::class, 'sendFirebaseNotification'])->name('firebase.sendNotification');
+    Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
 });
+
 
 // Общие маршруты для чатов (личные и групповые)
 Route::middleware(['auth'])->group(function () {

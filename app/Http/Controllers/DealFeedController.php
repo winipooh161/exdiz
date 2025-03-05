@@ -31,6 +31,4 @@ class DealFeedController extends Controller
             'date' => $feed->created_at->format('d.m.Y H:i'),
         ]);
     }
-    
-    
 }

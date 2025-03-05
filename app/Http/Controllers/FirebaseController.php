@@ -33,4 +33,23 @@ class FirebaseController extends Controller
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
+
+    public function updateToken(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            $user->firebase_token = $request->token;
+            $user->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Ошибка при обновлении Firebase токена:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
 }

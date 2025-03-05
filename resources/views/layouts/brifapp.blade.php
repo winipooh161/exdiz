@@ -49,7 +49,7 @@
      <meta name="msapplication-config" content="./browserconfig.xml">
 
      
-    @vite([ 'resources/css/style.css', 'resources/css/font.css', 'resources/css/element.css','resources/js/chat.js', 'resources/js/bootstrap.js','resources/css/animation.css', 'resources/css/mobile.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/login.js'])
+    @vite([ 'resources/css/style.css', 'resources/css/font.css', 'resources/css/element.css', 'resources/js/bootstrap.js','resources/css/animation.css', 'resources/css/mobile.css', 'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/login.js', 'resources/js/chat.js', 'resources/js/ChatManager.js', 'resources/js/webPush.js'])
 <body>
    
     @if(session('success'))
@@ -270,6 +270,18 @@ window.addEventListener('load', loadFormState);
     });
 });
 
+</script>
+<script>
+    function refreshCsrfToken() {
+        fetch('{{ route('refresh-csrf') }}')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
+                document.querySelectorAll('input[name="_token"]').forEach(input => input.value = data.token);
+            });
+    }
+
+    setInterval(refreshCsrfToken, 60000); // Обновление каждые 10 минут
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class ProfileController extends Controller
@@ -340,5 +341,24 @@ class ProfileController extends Controller
             'success' => true,
             'message' => 'Данные успешно обновлены!'
         ]);
+    }
+
+    public function updateFirebaseToken(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            $user->firebase_token = $request->token;
+            $user->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Ошибка при обновлении Firebase токена:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 }

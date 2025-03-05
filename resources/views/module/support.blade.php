@@ -1,12 +1,43 @@
-
 <div class="support wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s">
     <h1 class="flex">Техническая поддержка</h1>
+    
+    <!-- Добавляем блок для отображения ошибок -->
+    <div id="error-messages" class="alert alert-danger" style="display: none;"></div>
+    
     <div class="support__content">
         <div class="support__tickets">
-            {{-- При обращении по адресу /support условие в chats/index.blade.php выберет режим чата с поддержкой --}}
-            @include('chats.index')
+            @include('chats.index', ['supportChat' => true])
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ChatManagerInstance = new ChatManager({
+                currentChatId: 55,
+                currentChatType: 'personal', // Важно: используем тип personal вместо support
+                autoLoad: true,
+                onError: (error) => {
+                    const errorBlock = document.getElementById('error-messages');
+                    errorBlock.textContent = error;
+                    errorBlock.style.display = 'block';
+                    setTimeout(() => {
+                        errorBlock.style.display = 'none';
+                    }, 5000);
+                }
+            });
+
+            // Добавляем обработчик для проверки статуса отправки
+            document.getElementById('send-message')?.addEventListener('click', async () => {
+                const messageInput = document.getElementById('chat-message');
+                if (!messageInput?.value?.trim()) {
+                    document.getElementById('error-messages').textContent = 'Сообщение не может быть пустым';
+                    document.getElementById('error-messages').style.display = 'block';
+                    return;
+                }
+            });
+        });
+    </script>
+
     <h1>Часто задаваемые вопросы</h1>
     <div class="faq__body support-faq__body">
         <div class="faq_block">
@@ -88,26 +119,5 @@
             faqItem.classList.toggle('active');
         }
     </script>
-
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="create__tiket">
-                <h2>Создать новый тикет</h2>
-                <form action="{{ route('support.create') }}" method="POST">
-                    @csrf
-                    <label for="title">
-                        <p>Заголовок тикета:</p>
-                        <input type="text" name="title" id="title" placeholder="Введите заголовок" required>
-                    </label>
-                    <label for="description">
-                        <p>Описание:</p>
-                        <textarea name="description" id="description" placeholder="Введите описание вашего тикета" required></textarea>
-                    </label>
-                    <button type="submit">Создать тикет</button>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 

@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 input,
 textarea,
 select {
@@ -25,8 +32,7 @@ button {
     
     font-weight: 600;
     max-width: 350px;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
-    -webkit-transition: .5s;
+  
     -o-transition: .5s;
     transition: .5s;
     color: var(--fff);
@@ -45,8 +51,7 @@ button {
 
 a {
     color: #01acff;
-    cursor: url(http://127.0.0.1:5173/@fs/C:/OSPanel/domains/dlk/resources/icon/cursor_point.png), auto !important;
-    text-decoration: none;
+   
 }
 
 .wrap {
@@ -100,7 +105,8 @@ a {
     color: white;
     border-radius: 5px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px;
     font-family: Arial, sans-serif;
     font-size: 16px;
     cursor: pointer;
@@ -157,6 +163,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -212,6 +220,8 @@ body {
 }
 
 .deal__chat__user__interfice {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -237,6 +247,8 @@ body {
 
 .deal__chat__user__interfice form {
     width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -259,6 +271,8 @@ body {
 .chat-messages {
     border: 1px solid rgb(204, 204, 204);
     border-radius: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
     height: 100%;
@@ -284,6 +298,8 @@ body {
 .chat-message {
     border: 1px solid rgb(204, 204, 204);
     height: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     max-width: 70%;
     min-width: 19%;
@@ -325,10 +341,16 @@ body {
     place-content: flex-end;
     -webkit-box-align: end;
     -ms-flex-align: end;
-    flex-direction: column;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-content: flex-start;
-    align-items: flex-start;
+    -ms-flex-line-pack: start;
+        align-content: flex-start;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
     margin: 0 0 0 auto;
     background: #dbeeff;
 }
@@ -361,6 +383,8 @@ form#chat-form textarea {
 
 form#chat-form {
     margin-top: var(--g20);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: var(--g10);
     position: relative;
@@ -379,6 +403,8 @@ ul.coordinator-chat-list li {
 }
 
 ul.coordinator-chat-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: var(--g10);
     -webkit-box-orient: vertical;
@@ -393,6 +419,8 @@ ul.coordinator-chat-list li a {
     overflow: hidden;
     border-radius: var(--radius);
     color: var(--black);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
@@ -401,6 +429,8 @@ ul.coordinator-chat-list li a {
 }
 
 div#dynamic-chat-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
     border: 1px solid rgb(255, 255, 255);
@@ -429,6 +459,8 @@ div#dynamic-chat-container {
     position: absolute;
     top: 0;
     width: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-radius: 50%;
     height: 15px;
@@ -456,6 +488,8 @@ div#dynamic-chat-container {
 }
 
 .header__nubmer {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -481,6 +515,8 @@ div#dynamic-chat-container {
 }
 
 div#chat-messages-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
     max-height: 100%;
@@ -527,6 +563,8 @@ div#chat-messages-container {
 ul.chat-list {
     width: 100%;
     gap: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -535,6 +573,8 @@ ul.chat-list {
 }
 
 ul.chat-list li a {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
     gap: var(--g10);
@@ -566,6 +606,8 @@ ul.chat-list li a {
     height: 100%;
     font-weight: 700;
     font-size: 18px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -578,6 +620,8 @@ ul.chat-list li a p {
 }
 
 .custom-file-upload {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -617,6 +661,8 @@ ul.chat-list li a p {
 }
 
 .chat-form__button {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 10%;
     gap: var(--g10);
@@ -633,6 +679,8 @@ ul.chat-list li a p {
 }
 
 .chat-message .image-collage {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -668,28 +716,38 @@ ul.chat-list li a p {
 
 .faq_question__deal.flex ul {
     width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
     gap: var(--g20);
     place-content: center;
-    justify-content: space-around;
-    align-content: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -ms-flex-line-pack: center;
+        align-content: center;
 }
 
 .faq_question__deal.flex ul .icon {
-    /* width: 100%; */
-    display: flex;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
     height: 100%;
     padding: 0;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     font-weight: 400;
     font-size: 12px;
     line-height: 15.3px;
     letter-spacing: 0%;
-    align-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
 }
 
 .faq_question__deal.flex ul li .icon img {
@@ -698,6 +756,8 @@ ul.chat-list li a p {
 }
 
 .faq_question__deal ul li a {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-radius: 10px;
     width: 100%;
@@ -707,9 +767,14 @@ ul.chat-list li a p {
     --fff) !important;
     padding: 0;
     background: none;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
 }
 
 .deal__avatar.deal__avatar__cardinator {
@@ -744,6 +809,8 @@ div#modal3 .modal-content .brifs__button__create.flex {
 
 .faq_block.faq_block-blur {
     min-height: 120px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     border-radius: var(--radius);
     -webkit-box-align: center;
@@ -758,6 +825,8 @@ div#modal3 .modal-content .brifs__button__create.flex {
 }
 
 .modules__adm ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: var(--g10);
 }
@@ -827,6 +896,8 @@ div#modal3 .modal-content .brifs__button__create.flex {
 
 .file-preview-container {
     margin-top: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -848,6 +919,8 @@ div#modal3 .modal-content .brifs__button__create.flex {
 }
 
 div#file-preview-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -865,6 +938,8 @@ div#file-preview-container img {
 }
 
 .chat-form__input {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: var(--p10);
     width: 100%;
@@ -941,15 +1016,13 @@ button.remove-button {
 
 .flex,
 .chat-layout {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-content: flex-start;
-    /* flex-direction: column; */
-}
+    -ms-flex-line-pack: start;
+        align-content: flex-start;
+    }
 
-.profile__avatar:hover .hover__create,
-100% {
-    opacity: 1;
-}
 
 .success-message.show,
 .error-message.show {
@@ -966,16 +1039,14 @@ button.remove-button {
     display: none !important;
 }.brif__body ul li::before {
     content: "-";
-    /* color: #ff7575;  content: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢";*/
-}
+    }
 .completed {
      
     color: var(--blue) !important;
 }
 .completed::before {
  content: "+" !important;
- /* color: #BAFF75 !important; content: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â" !important;*/
-}table.dataTable thead th, table.dataTable thead td {
+ }table.dataTable thead th, table.dataTable thead td {
     border: none;
 }
 .brifs .brifs__button__create button {
@@ -1009,7 +1080,8 @@ button.remove-button {
     background: #fff;
     border: 1px solid #ddd;
     min-width: 280px;
-    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     gap: 5px;
     padding: 5px;
 }
@@ -1022,6 +1094,8 @@ button.remove-button {
 
 
 .chat-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: 20px;
     padding: var(--p20);
@@ -1042,7 +1116,9 @@ button.remove-button {
     border-radius: 50%;
 }
 .chat-box {
-    flex: 1;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     
     padding: 0px;
     position: relative;
@@ -1050,16 +1126,22 @@ button.remove-button {
 }
 .chat-header {
     font-weight: bold;
-    /* margin-bottom: 10px; */
-    display: flex;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
     min-height: 66px;
     background: var(--fff);
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     margin: var(--m20) var(--m20) 0 var(--m20) !important;
     border-radius: var(
     --radius);
-    align-content: center;
-    align-items: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     font-family: Onest;
     font-weight: 400;
     font-size: 18px;
@@ -1102,15 +1184,21 @@ button.remove-button {
     margin-top: 4px;
 }
 .chat-input {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: 10px;
-    /* margin-bottom: var(--m20); */
-    position: relative;
-    align-items: center;
-    align-content: center;
+        position: relative;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
 }
 .chat-input textarea {
-    flex: 1;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     resize: none;
     border: 1px solid var(--bluetext) !important;
 }
@@ -1127,12 +1215,22 @@ button.remove-button {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    animation: fadein 0.5s, fadeout 0.5s 4.5s;
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+            animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 @keyframes fadein {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 @keyframes fadeout {
     from { opacity: 1; }
@@ -1194,6 +1292,8 @@ button.remove-button {
 }
 
 .pin-controls {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
     margin-left: 5px;
 }
@@ -1231,8 +1331,7 @@ button.remove-button {
 
 .system-notification {
     background-color: #f0f7ff;
-    /* border-left: 3px solid #3490dc; */
-    margin: 0;
+        margin: 0;
     padding: 0 0 0 12!important;
     position: relative;
     list-style: none;

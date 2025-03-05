@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title_site }}</title>
+    <title>{{ $title_site }}</title>    <link rel="stylesheet" href="{{ asset('/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/introjs.min.css') }}">
-    @vite([ 'resources/css/style.css', 'resources/css/font.css', 'resources/css/element.css', 'resources/css/animation.css', 'resources/css/mobile.css', 'resources/js/app.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js'])
-    <link rel="stylesheet" href="{{ asset('/css/animate.css') }}">
+    @vite([ 'resources/css/font.css', 'resources/css/animation.css',  'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/chat.js', 'resources/js/ChatManager.js','resources/css/style.css',  'resources/css/element.css','resources/css/mobile.css', 'resources/js/webPush.js'])
+
 
 
 
@@ -71,6 +71,18 @@
             live: true // default  
         })
         wow.init();
+    </script>
+    <script>
+        function refreshCsrfToken() {
+            fetch('{{ route('refresh-csrf') }}')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
+                    document.querySelectorAll('input[name="_token"]').forEach(input => input.value = data.token);
+                });
+        }
+    
+        setInterval(refreshCsrfToken, 60000); // Обновление каждые 10 минут
     </script>
       @include('layouts/style')
 </head>

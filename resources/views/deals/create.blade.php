@@ -1,4 +1,3 @@
-
 <h1>{{ $title_site }}</h1>
 
 @if(session('error'))
@@ -33,7 +32,7 @@
         <legend>Заказ</legend>
         <div class="form-group-deal">
             <label for="project_number">№ проекта (пример: Проект 6303): <span class="required">*</span></label>
-            <input type="text" id="project_number" name="project_number" class="form-control maskproject">
+            <input type="text" id="project_number" name="project_number" class="form-control">
         </div>
         <div class="form-group-deal">
             <label for="status">Статус: <span class="required">*</span></label>
@@ -95,8 +94,7 @@
         </div>
         <div class="form-group-deal">
             <label for="client_phone">Телефон: <span class="required">*</span></label>
-            <input type="text" id="client_phone" name="client_phone" class="form-control maskphone" required
-                   pattern="^\+7\s\(\d{3}\)\s\d{3}\-\d{2}\-\d{2}$" placeholder="Введите телефон">
+            <input type="text" id="client_phone" name="client_phone" class="form-control" required>
         </div>
         <div class="form-group-deal">
             <label for="client_timezone">Город/часовой пояс:</label>
@@ -186,20 +184,18 @@
             <label for="measurements_file">Замеры (файл):</label>
             <input type="file" id="measurements_file" name="measurements_file" accept=".pdf,image/*,dwg">
         </div>
-<!-- Поля для даты начала и даты завершения -->
-<div class="form-group-deal">
-    <label for="start_date">Дата начала проекта:</label>
-    <input type="date" id="start_date" name="start_date" class="form-control">
-  </div>
-  <div class="form-group-deal">
-    <label for="project_duration">Общий срок проекта (в днях):</label>
-    <input type="text" id="project_duration" name="project_duration" class="form-control">
-  </div>
-  <div class="form-group-deal">
-    <label for="project_end_date">Дата завершения проекта:</label>
-    <input type="date" id="project_end_date" name="project_end_date" class="form-control">
-  </div>
-  
+        <div class="form-group-deal">
+            <label for="start_date">Дата начала проекта:</label>
+            <input type="date" id="start_date" name="start_date" class="form-control">
+        </div>
+        <div class="form-group-deal">
+            <label for="project_duration">Общий срок проекта (в днях):</label>
+            <input type="text" id="project_duration" name="project_duration" class="form-control">
+        </div>
+        <div class="form-group-deal">
+            <label for="project_end_date">Дата завершения проекта:</label>
+            <input type="date" id="project_end_date" name="project_end_date" class="form-control">
+        </div>
         <div class="form-group-deal">
             <label for="architect_id">Архитектор:</label>
             <select id="architect_id" name="architect_id" class="form-control">
@@ -297,7 +293,7 @@
         <legend>О сделке</legend>
         <div class="form-group-deal">
             <label for="contract_number">№ договора: <span class="required">*</span></label>
-            <input type="text" id="contract_number" name="contract_number" class="form-control maskcontract" required>
+            <input type="text" id="contract_number" name="contract_number" class="form-control" required>
         </div>
         <div class="form-group-deal">
             <label for="contract_attachment">Приложение (PDF или JPEG):</label>
@@ -465,44 +461,6 @@ $(document).ready(function() {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    var inputs = document.querySelectorAll("input.maskphone");
-    for (var i = 0; i < inputs.length; i++) {
-        var input = inputs[i];
-        input.addEventListener("input", mask);
-        input.addEventListener("focus", mask);
-        input.addEventListener("blur", mask);
-    }
-    function mask(event) {
-        var blank = "+_ (___) ___-__-__";
-        var i = 0;
-        var val = this.value.replace(/\D/g, "").replace(/^8/, "7").replace(/^9/, "79");
-        this.value = blank.replace(/./g, function (char) {
-            if (/[_\d]/.test(char) && i < val.length) return val.charAt(i++);
-            return i >= val.length ? "" : char;
-        });
-        if (event.type == "blur") {
-            if (this.value.length == 2) this.value = "";
-        } else {
-            setCursorPosition(this, this.value.length);
-        }
-    }
-    function setCursorPosition(elem, pos) {
-        elem.focus();
-        if (elem.setSelectionRange) {
-            elem.setSelectionRange(pos, pos);
-            return;
-        }
-        if (elem.createTextRange) {
-            var range = elem.createTextRange();
-            range.collapse(true);
-            range.moveEnd("character", pos);
-            range.moveStart("character", pos);
-            range.select();
-            return;
-        }
-    }
-});
 // Маска для поля "№ проекта"
 $("input.maskproject").on("input", function() {
     var value = this.value;
@@ -536,48 +494,45 @@ $("#package").on("input", function() {
     this.value = val;
 });
 
+// Прикрепляем слушатель события для поля "Общий срок проекта"
+var durationField = document.getElementById("project_duration");
+if(durationField) {
+    durationField.addEventListener("input", function() {
+        // Разрешаем только цифры
+        this.value = this.value.replace(/\D/g, "");
+        // Если значение пустое – очищаем поле даты завершения
+        if(this.value === "") {
+            document.getElementById("project_end_date").value = "";
+        } else {
+            var durationDays = parseInt(this.value);
+            var startDateField = document.getElementById("start_date");
+            if(!isNaN(durationDays) && startDateField && startDateField.value) {
+                // Создаём дату начала из значения поля (оно должно быть в формате YYYY-MM-DD)
+                var startDate = new Date(startDateField.value);
+                // Рассчитываем дату завершения: добавляем количество дней к дате начала
+                var endDate = new Date(startDate.getTime() + durationDays * 86400000);
+                // Форматируем дату в формат YYYY-MM-DD
+                var dd = endDate.getDate();
+                var mm = endDate.getMonth() + 1;
+                var yyyy = endDate.getFullYear();
+                if(dd < 10) { dd = '0' + dd; }
+                if(mm < 10) { mm = '0' + mm; }
+                document.getElementById("project_end_date").value = yyyy + '-' + mm + '-' + dd;
+            }
+        }
+    });
+}
 
+// Устанавливаем сегодняшнюю дату в поле "Дата начала проекта" и делаем его readonly,
+// чтобы пользователь не мог его изменить (значение всегда в формате YYYY-MM-DD)
+var startDateField = document.getElementById("start_date");
+if(startDateField) {
+    var today = new Date().toISOString().substr(0, 10);
+    startDateField.value = today;
+    startDateField.setAttribute("readonly", true);
+}
 </script>
 
-<script>
-    // Прикрепляем слушатель события для поля "Общий срок проекта"
-    var durationField = document.getElementById("project_duration");
-    if(durationField) {
-        durationField.addEventListener("input", function() {
-            // Разрешаем только цифры
-            this.value = this.value.replace(/\D/g, "");
-            // Если значение пустое – очищаем поле даты завершения
-            if(this.value === "") {
-                document.getElementById("project_end_date").value = "";
-            } else {
-                var durationDays = parseInt(this.value);
-                var startDateField = document.getElementById("start_date");
-                if(!isNaN(durationDays) && startDateField && startDateField.value) {
-                    // Создаём дату начала из значения поля (оно должно быть в формате YYYY-MM-DD)
-                    var startDate = new Date(startDateField.value);
-                    // Рассчитываем дату завершения: добавляем количество дней к дате начала
-                    var endDate = new Date(startDate.getTime() + durationDays * 86400000);
-                    // Форматируем дату в формат YYYY-MM-DD
-                    var dd = endDate.getDate();
-                    var mm = endDate.getMonth() + 1;
-                    var yyyy = endDate.getFullYear();
-                    if(dd < 10) { dd = '0' + dd; }
-                    if(mm < 10) { mm = '0' + mm; }
-                    document.getElementById("project_end_date").value = yyyy + '-' + mm + '-' + dd;
-                }
-            }
-        });
-    }
-    
-    // Устанавливаем сегодняшнюю дату в поле "Дата начала проекта" и делаем его readonly,
-    // чтобы пользователь не мог его изменить (значение всегда в формате YYYY-MM-DD)
-    var startDateField = document.getElementById("start_date");
-    if(startDateField) {
-        var today = new Date().toISOString().substr(0, 10);
-        startDateField.value = today;
-        startDateField.setAttribute("readonly", true);
-    }
-    </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var modules = document.querySelectorAll("fieldset.module");
@@ -651,4 +606,3 @@ $("#package").on("input", function() {
                 });
             });
             </script>
-            

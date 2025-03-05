@@ -14,6 +14,7 @@ use App\Events\MessageSent;
 use App\Events\MessagesRead;
 use App\Http\Resources\MessageResource;
 use Illuminate\Support\Str; // Добавляем импорт класса
+use Illuminate\Support\Facades\Http; // Добавляем импорт класса
 
 class ChatController extends Controller
 {
@@ -223,6 +224,7 @@ class ChatController extends Controller
         try {
             $validated = $request->validate([
                 'message' => 'nullable|string|max:1000',
+                'files.*' => 'nullable|file|max:10240', // Максимальный размер файла 10MB
             ]);
         } catch (\Exception $e) {
             Log::error('Ошибка валидации отправки сообщения: ' . $e->getMessage(), [
@@ -236,11 +238,8 @@ class ChatController extends Controller
         $messageType = 'text';
 
         try {
-            if ($request->hasFile('file')) {
-                $files = $request->file('file');
-                if (!is_array($files)) {
-                    $files = [$files];
-                }
+            if ($request->hasFile('files')) {
+                $files = $request->file('files');
                 foreach ($files as $file) {
                     $fileName = time().'_'.$file->getClientOriginalName();
                     $filePathStored = $file->storeAs('uploads', $fileName, 'public');
@@ -254,7 +253,7 @@ class ChatController extends Controller
                 $messageType = 'file';
             }
         } catch (\Exception $e) {
-            Log::error('Ошибка при загрузке файлов: ' . $е->getMessage(), [
+            Log::error('Ошибка при загрузке файлов: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Ошибка загрузки файла.'], 500);
@@ -285,6 +284,32 @@ class ChatController extends Controller
                     'attachments'  => $attachments,
                 ]);
             }
+
+            // Отправка уведомления через Firebase
+            $firebaseToken = $receiver->firebase_token; // Предполагается, что у пользователя есть токен Firebase
+            if ($firebaseToken) {
+                $notification = [
+                    'title' => 'Новое сообщение',
+                    'body' => $message->message,
+                    'icon' => '/path/to/icon.png',
+                ];
+
+                $extraNotificationData = ["message" => $notification, "moredata" => "dd"];
+
+                $fcmNotification = [
+                    'to' => $firebaseToken,
+                    'notification' => $notification,
+                    'data' => $extraNotificationData
+                ];
+
+                $headers = [
+                    'Authorization: key=' . env('209164982906'),
+                    'Content-Type: application/json'
+                ];
+
+                Http::withHeaders($headers)->post('https://fcm.googleapis.com/fcm/send', $fcmNotification);
+            }
+
             DB::commit();
 
             broadcast(new MessageSent($message))->toOthers();
@@ -392,7 +417,7 @@ class ChatController extends Controller
                 return response()->json(['error' => 'Неверный тип чата.'], 400);
             }
         } catch (\Exception $e) {
-            Log::error('Ошибка при пометке сообщений как прочитанных: ' . $е->getMessage(), [
+            Log::error('Ошибка при пометке сообщений как прочитанных: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Внутренняя ошибка сервера.'], 500);
@@ -686,5 +711,70 @@ class ChatController extends Controller
         $title_site = "Чаты | Личный кабинет Экспресс-дизайн";
         $users = User::whereIn('status', ['coordinator', 'admin', 'partner', 'designer'])->get();
         return view('create_group', compact('users', 'title_site'));
+    }
+
+    public function getUnreadCounts()
+    {
+        $userId = Auth::id();
+        $unreadCounts = [];
+
+        try {
+            // Личные чаты
+            $personalChats = User::where('id', '<>', $userId)
+                ->with(['chats' => function($query) {
+                    $query->where('type', 'personal');
+                }])
+                ->get();
+
+            foreach ($personalChats as $chatUser) {
+                $unreadCount = Message::where('sender_id', $chatUser->id)
+                    ->where('receiver_id', $userId)
+                    ->where('is_read', false)
+                    ->count();
+
+                if ($unreadCount > 0) {
+                    $unreadCounts[] = [
+                        'id' => $chatUser->id,
+                        'type' => 'personal',
+                        'name' => $chatUser->name,
+                        'unread_count' => $unreadCount,
+                    ];
+                }
+            }
+
+            // Групповые чаты
+            $groupChats = Chat::where('type', 'group')
+                ->whereHas('users', function($query) use ($userId) {
+                    $query->where('users.id', $userId);
+                })
+                ->with(['messages' => function($query) {
+                    $query->orderBy('created_at', 'desc')->limit(50);
+                }])
+                ->get();
+
+            foreach ($groupChats as $chat) {
+                $pivot = $chat->users->find($userId)->pivot;
+                $lastReadAt = $pivot->last_read_at ?? null;
+                $unreadCount = $lastReadAt
+                    ? $chat->messages->where('created_at', '>', $lastReadAt)->count()
+                    : $chat->messages->count();
+
+                if ($unreadCount > 0) {
+                    $unreadCounts[] = [
+                        'id' => $chat->id,
+                        'type' => 'group',
+                        'name' => $chat->name,
+                        'unread_count' => $unreadCount,
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Ошибка при получении количества непрочитанных сообщений: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Ошибка получения данных.'], 500);
+        }
+
+        return response()->json(['unread_counts' => $unreadCounts], 200);
     }
 }

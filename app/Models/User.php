@@ -85,4 +85,9 @@ class User extends Authenticatable
                     ->withPivot('role')
                     ->wherePivot('role', 'responsible');
     }
+
+    public function tokens()
+    {
+        return $this->hasMany(UserToken::class);
+    }
 }

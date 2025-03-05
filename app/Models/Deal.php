@@ -166,12 +166,15 @@ class Deal extends Model
             ->count();
     }
 
-public function dealFeeds()
-{
-    return $this->hasMany(DealFeed::class);
-}
+    public function dealFeeds()
+    {
+        return $this->hasMany(DealFeed::class);
+    }
 
-
+    public function changeLogs()
+    {
+        return $this->hasMany(DealChangeLog::class);
+    }
 
     public function view(User $user, Deal $deal)
     {
