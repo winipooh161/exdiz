@@ -11,8 +11,7 @@ export default defineConfig({
             input: [
                 'resources/js/bootstrap.js',
                 'resources/js/ChatManager.js', 
-                'resources/js/emojiPicker.js',
-                'resources/js/firebase.js',
+                'resources/js/webPush.js',
                 'resources/js/chat.js', 
                 'resources/css/style.css',
                 'resources/css/font.css',

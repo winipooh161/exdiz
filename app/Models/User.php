@@ -28,7 +28,6 @@ class User extends Authenticatable
         'experience',
         'rating',
         'active_projects_count',
-        'firebase_token',
     ];
     
 

@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title_site }}</title>    <link rel="stylesheet" href="{{ asset('/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/introjs.min.css') }}">
-    @vite([ 'resources/css/font.css', 'resources/css/animation.css',  'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/chat.js', 'resources/js/ChatManager.js','resources/css/style.css',  'resources/css/element.css','resources/css/mobile.css', 'resources/js/emojiPicker.js', 'resources/js/firebase.js'])
+    @vite([ 'resources/css/font.css', 'resources/css/animation.css',  'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/chat.js', 'resources/js/ChatManager.js','resources/css/style.css',  'resources/css/element.css','resources/css/mobile.css', 'resources/js/webPush.js'])
 
 
 

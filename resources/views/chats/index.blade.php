@@ -14,7 +14,6 @@
     </script>
 
 
-
     @if(isset($supportChat) && $supportChat)
         <!-- Чат технической поддержки -->
         <div class="chat-container support-chat">
