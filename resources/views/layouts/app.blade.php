@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title_site }}</title>    <link rel="stylesheet" href="{{ asset('/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/introjs.min.css') }}">
-    @vite([ 'resources/css/font.css', 'resources/css/animation.css',  'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/chat.js', 'resources/js/ChatManager.js','resources/css/style.css',  'resources/css/element.css','resources/css/mobile.css', 'resources/js/webPush.js'])
+    @vite([ 'resources/css/font.css', 'resources/css/animation.css',  'resources/js/bootstrap.js', 'resources/js/modal.js', 'resources/js/success.js', 'resources/js/mask.js', 'resources/js/chat.js', 'resources/js/ChatManager.js','resources/css/style.css',  'resources/css/element.css','resources/css/mobile.css', 'resources/js/emojiPicker.js', 'resources/js/firebase.js'])
 
 
 
@@ -116,6 +116,45 @@
 
 
 <script>
+    
+document.addEventListener("DOMContentLoaded", function () {
+    var inputs = document.querySelectorAll("input.maskphone");
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        input.addEventListener("input", mask);
+        input.addEventListener("focus", mask);
+        input.addEventListener("blur", mask);
+    }
+    function mask(event) {
+        var blank = "+_ (___) ___-__-__";
+        var i = 0;
+        var val = this.value.replace(/\D/g, "").replace(/^8/, "7").replace(/^9/, "79");
+        this.value = blank.replace(/./g, function (char) {
+            if (/[_\d]/.test(char) && i < val.length) return val.charAt(i++);
+            return i >= val.length ? "" : char;
+        });
+        if (event.type == "blur") {
+            if (this.value.length == 2) this.value = "";
+        } else {
+            setCursorPosition(this, this.value.length);
+        }
+    }
+    function setCursorPosition(elem, pos) {
+        elem.focus();
+        if (elem.setSelectionRange) {
+            elem.setSelectionRange(pos, pos);
+            return;
+        }
+        if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd("character", pos);
+            range.moveStart("character", pos);
+            range.select();
+            return;
+        }
+    }
+});
     document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('toggle-panel');
     const panel = document.querySelector('.main__ponel');

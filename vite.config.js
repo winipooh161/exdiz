@@ -11,7 +11,8 @@ export default defineConfig({
             input: [
                 'resources/js/bootstrap.js',
                 'resources/js/ChatManager.js', 
-                'resources/js/webPush.js',
+                'resources/js/emojiPicker.js',
+                'resources/js/firebase.js',
                 'resources/js/chat.js', 
                 'resources/css/style.css',
                 'resources/css/font.css',
@@ -40,6 +41,12 @@ export default defineConfig({
     server: {
         hmr: {
             overlay: false
+        },
+        cors: {
+            origin: 'https://dlk',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true
         }
     }
 });

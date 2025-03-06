@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage } from "firebase/messaging";
+import { initializeEmojiPicker } from "./emojiPicker";
 
 document.addEventListener('DOMContentLoaded', () => {
     const currentUserId = window.Laravel.user.id;
@@ -16,53 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Notification.permission === 'granted') {
             new Notification(title, { body });
         }
-    }
-
-    function initializeEmojiPicker(textarea) {
-        const container = textarea.parentElement;
-        const emojiButton = document.createElement('button');
-        const emojiPicker = document.createElement('div');
-        emojiButton.textContent = "😉";
-        emojiButton.type = "button";
-        emojiButton.classList.add('emoji-button');
-        emojiPicker.classList.add('emoji-picker');
-        emojiPicker.style.position = 'absolute';
-        emojiPicker.style.bottom = '50px';
-        emojiPicker.style.left = '10px';
-        const emojis = [
-            "😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","😍","😘","😜","😎","😭","😡",
-            "😇","😈","🙃","🤔","😥","😓","🤩","🥳","🤯","🤬","🤡","👻","💀","👽","🤖","🎃",
-            "🐱","🐶","🐭","🐹","🐰","🦊","🐻","🐼","🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦",
-            "🌹","🌻","🌺","🌷","🌼","🍎","🍓","🍒","🍇","🍉","🍋","🍊","🍌","🥝","🍍","🥭"
-        ];
-        let emojiHTML = '';
-        emojis.forEach(emoji => { emojiHTML += `<span class="emoji-item">${emoji}</span>`; });
-        emojiPicker.innerHTML = emojiHTML;
-        emojiPicker.addEventListener('click', (e) => {
-            if (e.target.classList.contains('emoji-item')) {
-                const emoji = e.target.textContent;
-                const cursorPos = textarea.selectionStart;
-                const textBefore = textarea.value.substring(0, cursorPos);
-                const textAfter = textarea.value.substring(cursorPos);
-                textarea.value = textBefore + emoji + textAfter;
-                const newPos = cursorPos + emoji.length;
-                textarea.selectionStart = newPos;
-                textarea.selectionEnd = newPos;
-                textarea.focus();
-            }
-        });
-        container.appendChild(emojiButton);
-        container.appendChild(emojiPicker);
-        emojiPicker.style.display = "none";
-        emojiButton.addEventListener('click', (event) => {
-            event.stopPropagation();
-            emojiPicker.style.display = (emojiPicker.style.display === "none") ? "flex" : "none";
-        });
-        document.addEventListener('click', (event) => {
-            if (!emojiPicker.contains(event.target) && !emojiButton.contains(event.target)) {
-                emojiPicker.style.display = "none";
-            }
-        });
     }
 
     function showChatList() {
@@ -327,6 +281,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(e => console.error('Ошибка при пометке сообщений как прочитанных:', e));
     }
 
+    function updateUnreadCount(chatId, chatType, increment = true) {
+        const chatElement = document.querySelector(`[data-chat-id="${chatId}"][data-chat-type="${chatType}"]`);
+        if (chatElement) {
+            const unreadCountElement = chatElement.querySelector('.unread-count');
+            let unreadCount = parseInt(unreadCountElement.textContent) || 0;
+            unreadCount = increment ? unreadCount + 1 : Math.max(unreadCount - 1, 0);
+            unreadCountElement.textContent = unreadCount;
+            unreadCountElement.style.display = unreadCount > 0 ? 'inline' : 'none';
+        }
+    }
+
+    function updateChatList(chatId, chatType, message) {
+        const chatElement = document.querySelector(`[data-chat-id="${chatId}"][data-chat-type="${chatType}"]`);
+        if (chatElement) {
+            const chatList = document.getElementById('chat-list');
+            chatList.prepend(chatElement);
+            const chatNameElement = chatElement.querySelector('h5');
+            chatNameElement.textContent = message.sender_name + ': ' + message.message.substring(0, 50) + '...';
+            updateUnreadCount(chatId, chatType);
+        }
+    }
+
     function subscribeToChat(chatId, chatType) {
         // Удаление Pusher и Echo
         // if(window.Echo) {
@@ -336,6 +312,19 @@ document.addEventListener('DOMContentLoaded', () => {
         //             markMessagesAsRead(chatId, chatType);
         //         });
         // }
+
+        if (window.Echo) {
+            window.Echo.private(`user.${currentUserId}`)
+                .listen('.message.sent', (e) => {
+                    if (e.message.chat_id == chatId && e.message.chat_type == chatType) {
+                        renderMessages([e.message], e.message.sender_id);
+                        markMessagesAsRead(chatId, chatType);
+                    } else {
+                        updateUnreadCount(e.message.chat_id, e.message.chat_type);
+                        updateChatList(e.message.chat_id, e.message.chat_type, e.message);
+                    }
+                });
+        }
     }
 
     function checkForNewMessages() {
@@ -355,8 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.unread_counts) {
                 data.unread_counts.forEach(chat => {
-                    if (chat.unread_count > 0) {
-                        notifyUser('Новое сообщение', `У вас ${chat.unread_count} новых сообщений в чате ${chat.name}`);
+                    const chatElement = document.querySelector(`[data-chat-id="${chat.id}"][data-chat-type="${chat.type}"]`);
+                    if (chatElement) {
+                        const chatList = document.getElementById('chat-list');
+                        chatList.prepend(chatElement);
+                        const unreadCountElement = chatElement.querySelector('.unread-count');
+                        unreadCountElement.textContent = chat.unread_count;
+                        unreadCountElement.style.display = chat.unread_count > 0 ? 'inline' : 'none';
                     }
                 });
             }
@@ -364,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(e => console.error('Ошибка при проверке новых сообщений:', e));
     }
 
-    setInterval(checkForNewMessages, 5000); // Проверка новых сообщений каждые 5 секунд
+    setInterval(checkForNewMessages, 500); // Проверка новых сообщений каждые 5 секунд
 
     const chatList = document.getElementById('chat-list');
     if (chatList) {
@@ -438,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (messageId) {
                                 setTimeout(() => {
                                     // Здесь можно реализовать выделение сообщения
-                                }, 1000);
+                                }, 500);
                             }
                         });
                     });
@@ -527,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyUser('Ошибка', 'Не удалось получить новые сообщения. Проверьте соединение с интернетом.');
             });
         }
-    }, 1000); // Проверка новых сообщений каждую секунду
+    }, 500); // Проверка новых сообщений каждую секунду
 
     // Добавляем обработчик для прокрутки к сообщению при клике на ссылку
     document.addEventListener('click', function(e) {
@@ -540,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetMessage.style.backgroundColor = '#007ab6'; // Изменено с #fff3cd
                 setTimeout(() => {
                     targetMessage.style.backgroundColor = '';
-                }, 2000);
+                }, 500);
             }
         }
     });

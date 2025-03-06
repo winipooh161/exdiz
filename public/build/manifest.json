@@ -1,4 +1,7 @@
 {
+  "_index.esm2017-9b56508e.js": {
+    "file": "assets/index.esm2017-9b56508e.js"
+  },
   "public/css/animate.css": {
     "file": "assets/animate-64af4c2d.css",
     "isEntry": true,
@@ -15,12 +18,12 @@
     "src": "public/js/wow.js"
   },
   "resources/css/animation.css": {
-    "file": "assets/animation-9762fc3f.css",
+    "file": "assets/animation-dc58b987.css",
     "isEntry": true,
     "src": "resources/css/animation.css"
   },
   "resources/css/element.css": {
-    "file": "assets/element-70a4cf11.css",
+    "file": "assets/element-bb1ec806.css",
     "isEntry": true,
     "src": "resources/css/element.css"
   },
@@ -30,12 +33,12 @@
     "src": "resources/css/font.css"
   },
   "resources/css/mobile.css": {
-    "file": "assets/mobile-4fe7b201.css",
+    "file": "assets/mobile-e2770ef5.css",
     "isEntry": true,
     "src": "resources/css/mobile.css"
   },
   "resources/css/style.css": {
-    "file": "assets/style-34786b21.css",
+    "file": "assets/style-2920a135.css",
     "isEntry": true,
     "src": "resources/css/style.css"
   },
@@ -105,14 +108,30 @@
     "src": "resources/js/ChatManager.js"
   },
   "resources/js/bootstrap.js": {
-    "file": "assets/bootstrap-e92bc4c5.js",
+    "file": "assets/bootstrap-f9199310.js",
     "isEntry": true,
     "src": "resources/js/bootstrap.js"
   },
   "resources/js/chat.js": {
-    "file": "assets/chat-488a7025.js",
+    "file": "assets/chat-84fe6371.js",
+    "imports": [
+      "_index.esm2017-9b56508e.js"
+    ],
     "isEntry": true,
     "src": "resources/js/chat.js"
+  },
+  "resources/js/emojiPicker.js": {
+    "file": "assets/emojiPicker-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/js/emojiPicker.js"
+  },
+  "resources/js/firebase.js": {
+    "file": "assets/firebase-a0b9305b.js",
+    "imports": [
+      "_index.esm2017-9b56508e.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/firebase.js"
   },
   "resources/js/login.js": {
     "file": "assets/login-4ed993c7.js",
@@ -133,10 +152,5 @@
     "file": "assets/success-429ede1f.js",
     "isEntry": true,
     "src": "resources/js/success.js"
-  },
-  "resources/js/webPush.js": {
-    "file": "assets/webPush-4ed993c7.js",
-    "isEntry": true,
-    "src": "resources/js/webPush.js"
   }
 }

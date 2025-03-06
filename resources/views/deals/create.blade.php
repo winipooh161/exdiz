@@ -94,7 +94,7 @@
         </div>
         <div class="form-group-deal">
             <label for="client_phone">Телефон: <span class="required">*</span></label>
-            <input type="text" id="client_phone" name="client_phone" class="form-control" required>
+            <input type="text" id="client_phone" name="client_phone" class="maskphone form-control" required>
         </div>
         <div class="form-group-deal">
             <label for="client_timezone">Город/часовой пояс:</label>
@@ -166,10 +166,6 @@
         <div class="form-group-deal">
             <label for="comment">Общий комментарий:</label>
             <textarea id="comment" name="comment" class="form-control" rows="3" maxlength="1000"></textarea>
-        </div>
-        <div class="form-group-deal">
-            <label for="office_equipment">Оборудование офиса:</label>
-            <input type="checkbox" id="office_equipment" name="office_equipment" value="1">
         </div>
     </fieldset>
 
@@ -309,7 +305,7 @@
         <legend>Аватар сделки</legend>
         <div class="form-group-deal">
             <div class="upload__files">
-                <h6>Загру (не более 25 МБ суммарно):</h6>
+                <h6>Загрузите (не более 25 МБ суммарно):</h6>
                 <div id="drop-zone">
                     <p id="drop-zone-text">Перетащите файл сюда или нажмите, чтобы выбрать</p>
                     <input id="fileInput" type="file" name="avatar" accept=".pdf,.xlsx,.xls,.doc,.docx,.jpg,.jpeg,.png,.heic,.heif">
@@ -407,11 +403,16 @@
                     updateDropZoneText();
                 });
             </script>
+            <div class="button--create">
+                <button type="submit" class="btn btn-primary">Создать сделку</button>
+            </div>
         </div>
         <div id="avatar-preview" class="avatar-preview"></div>
+        
+       
     </fieldset>
     
-    <button type="submit" class="btn btn-primary">Создать сделку</button>
+  
 </form>
 <!-- Подключение необходимых библиотек (jQuery и Select2) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">

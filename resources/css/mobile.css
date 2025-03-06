@@ -96,6 +96,27 @@
 }
 
 @media only screen and (max-width: 980px) {
+    .chat-input button.emoji-button {
+        left: 60px;
+        height: 50px !important;
+    }
+    .chat-input textarea {
+        padding: 10px 10px 10px 95px;
+    }
+    #toggle-pinned {
+        top: 75px;
+    }
+    button#toggle-pinned {
+        margin: 0 !important;
+        padding: 0;
+        background: var(--fff) !important;
+    }
+    .chat-header {
+        margin: 0 !important;
+    }
+    .chat-input {
+        padding: 0;
+    }
     .chat-container {
         -ms-flex-wrap: wrap;
             flex-wrap: wrap;
@@ -115,7 +136,7 @@
         padding: 0;
     }
     form.back__fon__common {
-        padding: 0 0 200px 0;
+        padding: 0 0 100px 0;
         background: var(--fff);
     }
     .button__create__brifs {
@@ -136,8 +157,8 @@
         display: flex;
     }
     .chat-input button {
-        padding: 0 10px;
-        width: 15%;
+        padding: 0 0px;
+        width: 5%;
         }
  
     .chat__block_back {
@@ -151,7 +172,7 @@
   
     .chat-header {
         border-radius: 0;
-        padding: 15px 15px 15px 35px;
+        padding: 15px 15px 15px 45px;
         }
     .chat-box {
                         width: 100%;
@@ -297,6 +318,30 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .feed-post {
+        padding: 0 0 10px 0;
+    }
+    fieldset.module__deal {
+        padding: 15px;
+    }
+    form#feed-form button {
+        top: 6px;
+    }
+    .form-buttons {
+    margin-top: 0;
+    gap: var(--g10);
+    display: flex;
+    padding: var(
+    --p10);
+    justify-content: space-around;
+    }
+    .modal__deal .modal-content form {
+        padding: 0;
+    }
+    .form-group-deal {
+     
+        width: 100%;
+    }
     table {
         padding: var(--p10);
     }
@@ -348,21 +393,22 @@
     .chat-container {
         display: -webkit-box;
         display: -ms-flexbox;
-        display: flex
-;
+        display: flex;
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        padding: 0;
         padding-bottom: 70px;
     }
     .chat-messages {
-        max-height: 100%;
-        min-height: 700px;
+        max-height: 800px;
+        min-height: 500px;
+        height: 100%;
         overflow-y: auto;
         margin-bottom: 10px;
         border: 1px solid #eee;
-        padding: 10px;
+        padding: 0;
     }
     .mb.mobile__ponel ul li button {
       
@@ -849,7 +895,7 @@
         display: none;
         z-index: 2;
         position: absolute;
-        width: 100%;
+        width: 80%;
         height: 100%;
         background: white;
     }
@@ -863,6 +909,7 @@
     }
     .user-list.active {
         display: block;
+        padding: var(--p10);
     }
     .back-button {
         display: block;

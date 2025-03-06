@@ -37,3 +37,7 @@ Broadcast::channel('chat.{userId}', function ($user, $userId) {
 Broadcast::channel('chat.{chatType}.{chatId}', function (User $user, $chatType, $chatId) {
     return $user->id !== null;
 });
+
+Broadcast::channel('user.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});

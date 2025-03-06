@@ -20,7 +20,7 @@ class MessageSent implements ShouldBroadcast
     public $message;
 
     /**
-     * Создание нового события.
+     * Create a new event instance.
      *
      * @return void
      */
@@ -30,13 +30,13 @@ class MessageSent implements ShouldBroadcast
     }
 
     /**
-     * Получение канала на который будет транслироваться событие.
+     * Get the channels the event should broadcast on.
      *
-     * @return Channel|PrivateChannel
+     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.' . $this->message->receiver_id);
+        return new PrivateChannel('user.' . $this->message->receiver_id);
     }
 
     /**
@@ -53,6 +53,7 @@ class MessageSent implements ShouldBroadcast
     {
         return [
             'message' => new \App\Http\Resources\MessageResource($this->message),
+            'chat_type' => $this->message->chat_id ? 'group' : 'personal',
         ];
     }
 }
