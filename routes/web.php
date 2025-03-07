@@ -16,6 +16,9 @@ use App\Http\Controllers\AdminController;
 use Chatify\ChatifyMessenger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use App\Events\MessageSent;
+use App\Events\MessagesRead;
+use App\Http\Controllers\FirebaseController; // Добавляем импорт класса
 
 // Главная страница
 Route::get('/', function () {
@@ -132,11 +135,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chats/{type}/{id}/new-messages', [ChatController::class, 'getNewMessages']);
     Route::post('/support/chat/{id}/new-messages', [SupportController::class, 'getNewMessages'])->name('support.chat.newMessages');
     Route::post('/support/chat/{id}/mark-read', [SupportController::class, 'markMessagesAsRead'])->name('support.chat.markMessagesAsRead');
+
     Route::post('/firebase/update-token', [App\Http\Controllers\FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
+
+    Route::post('/firebase/update-token', [FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
+
     Route::post('/firebase/send-notification', [ProfileController::class, 'sendFirebaseNotification'])->name('firebase.sendNotification');
     Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
     Route::get('/support', [SupportController::class, 'index'])->name('support');
     Route::get('/support/chat/messages', [SupportController::class, 'getSupportChatMessages'])->name('support.chat.messages');
+
+    Route::post('/chats/{chatType}/{chatId}/mark-read', [ChatController::class, 'markMessagesAsRead'])->name('chats.markMessagesAsRead');
+
 });
 
 
