@@ -313,7 +313,7 @@ class ChatController extends Controller
 
             DB::commit();
 
-            broadcast(new MessageSent($message))->toOthers();
+            broadcast(new MessageSent($message))->toOthers(); // Добавляем событие для отправки сообщения в реальном времени
             $message->sender_name = optional($message->sender)->name ?? 'Unknown';
 
             return response()->json(['message' => new MessageResource($message)], 201);
@@ -402,7 +402,7 @@ class ChatController extends Controller
                     ->where('receiver_id', $currentUserId)
                     ->where('is_read', false)
                     ->update(['is_read' => true, 'read_at' => now()]);
-                event(new MessagesRead($id, $currentUserId, $type));
+                event(new MessagesRead($id, $currentUserId, $type)); // Добавляем событие для отметки сообщений как прочитанных в реальном времени
             } elseif ($type === 'group') {
                 $chat = Chat::where('type', 'group')->findOrFail($id);
                 if (!$chat->users->contains($currentUserId)) {
@@ -413,7 +413,7 @@ class ChatController extends Controller
                     ->where('is_read', false)
                     ->update(['is_read' => true, 'read_at' => now()]);
                 $chat->users()->updateExistingPivot($currentUserId, ['last_read_at' => now()]);
-                event(new MessagesRead($id, $currentUserId, $type));
+                event(new MessagesRead($id, $currentUserId, $type)); // Добавляем событие для отметки сообщений как прочитанных в реальном времени
             } else {
                 return response()->json(['error' => 'Неверный тип чата.'], 400);
             }

@@ -349,29 +349,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function subscribeToChat(chatId, chatType) {
-        // Удаление Pusher и Echo
-        // if(window.Echo) {
-        //     window.Echo.private(`chat.${chatType}.${chatId}`)
-        //         .listen('MessageSent', (e) => {
-        //             renderMessages([e.message], e.message.sender_id);
-        //             markMessagesAsRead(chatId, chatType);
-        //         });
-        // }
+    // Инициализация Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6N1n8dW95YGMMuTsZMRnJY1En7lK2s2M",
+        authDomain: "dlk-diz.firebaseapp.com",
+        projectId: "dlk-diz",
+        storageBucket: "dlk-diz.firebasestorage.app",
+        messagingSenderId: "209164982906",
+        appId: "1:209164982906:web:0836fbb02e7effd80679c3"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    // Обработка входящих сообщений
+    onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: payload.notification.icon
+        });
+    });
+
+    function subscribeToChat(chatId, chatType) {
         if (window.Echo) {
-            window.Echo.private(`user.${currentUserId}`)
-                .listen('.message.sent', (e) => {
-                    if (e.message.chat_id == chatId && e.message.chat_type == chatType) {
-                        renderMessages([e.message], e.message.sender_id);
-                        markMessagesAsRead(chatId, chatType);
-                    } else {
-                        updateUnreadCount(e.message.chat_id, e.message.chat_type);
-                        updateChatList(e.message.chat_id, e.message.chat_type, e.message);
+            window.Echo.private(`chat.${chatType}.${chatId}`)
+                .listen('MessageSent', (e) => {
+                    renderMessages([e.message], e.message.sender_id);
+                    markMessagesAsRead(chatId, chatType);
+                });
+
+            window.Echo.private(`chat.${chatType}.${chatId}`)
+                .listen('MessagesRead', (e) => {
+                    if (e.userId !== currentUserId) {
+                        document.querySelectorAll(`li[data-id="${e.messageId}"] .read-status`).forEach(el => {
+                            el.style.display = 'inline';
+                        });
                     }
                 });
         }
     }
+
+    function subscribeToNotifications() {
+        if (window.Echo) {
+            window.Echo.private(`notifications.${currentUserId}`)
+                .listen('MessageSent', (e) => {
+                    new Notification(`Новое сообщение от ${e.message.sender_name}`, {
+                        body: e.message.message,
+                        icon: '/path/to/icon.png'
+                    });
+                });
+        }
+    }
+
+    subscribeToNotifications();
 
     function checkForNewMessages() {
         fetch('/chats/unread-counts', {
@@ -593,26 +624,4 @@ document.addEventListener('DOMContentLoaded', () => {
             filterMessages();
         });
     }
-
-    // Инициализация Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyB6N1n8dW95YGMMuTsZMRnJY1En7lK2s2M",
-        authDomain: "dlk-diz.firebaseapp.com",
-        projectId: "dlk-diz",
-        storageBucket: "dlk-diz.firebasestorage.app",
-        messagingSenderId: "209164982906",
-        appId: "1:209164982906:web:0836fbb02e7effd80679c3"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    // Обработка входящих сообщений
-    onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
-        new Notification(payload.notification.title, {
-            body: payload.notification.body,
-            icon: payload.notification.icon
-        });
-    });
 });
