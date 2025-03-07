@@ -138,8 +138,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/firebase/update-token', [App\Http\Controllers\FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
 
-    Route::post('/firebase/update-token', [FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
-
     Route::post('/firebase/send-notification', [ProfileController::class, 'sendFirebaseNotification'])->name('firebase.sendNotification');
     Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
     Route::get('/support', [SupportController::class, 'index'])->name('support');
