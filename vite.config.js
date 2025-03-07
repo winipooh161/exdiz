@@ -40,6 +40,12 @@ export default defineConfig({
     server: {
         hmr: {
             overlay: false
+        },
+        cors: {
+            origin: 'https://dlk',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true
         }
     }
 });

@@ -10,31 +10,73 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ChatManagerInstance = new ChatManager({
-                currentChatId: 55,
-                currentChatType: 'personal', // Важно: используем тип personal вместо support
-                autoLoad: true,
-                onError: (error) => {
-                    const errorBlock = document.getElementById('error-messages');
-                    errorBlock.textContent = error;
-                    errorBlock.style.display = 'block';
-                    setTimeout(() => {
-                        errorBlock.style.display = 'none';
-                    }, 5000);
-                }
-            });
+    <script type="module">
 
-            // Добавляем обработчик для проверки статуса отправки
-            document.getElementById('send-message')?.addEventListener('click', async () => {
-                const messageInput = document.getElementById('chat-message');
-                if (!messageInput?.value?.trim()) {
-                    document.getElementById('error-messages').textContent = 'Сообщение не может быть пустым';
-                    document.getElementById('error-messages').style.display = 'block';
-                    return;
-                }
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendMessageButton = document.getElementById('send-message');
+            const chatMessageInput = document.getElementById('chat-message');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const supportUserId = 55;
+
+            function sendMessage() {
+                const message = chatMessageInput.value.trim();
+                if (!message) return;
+
+                fetch(`/support/send-message/${supportUserId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        chatMessageInput.value = '';
+                        // Обновляем сообщения в чате
+                        loadMessages(supportUserId, 'support');
+                    } else {
+                        alert(data.error || 'Ошибка отправки сообщения');
+                    }
+                })
+                .catch(error => console.error('Ошибка при отправке сообщения:', error));
+            }
+
+            function loadMessages(chatId, chatType) {
+                fetch(`/support/chat/messages`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Обновляем сообщения в чате
+                        const chatMessagesContainer = document.getElementById('chat-messages');
+                        const chatMessagesList = chatMessagesContainer.querySelector('ul');
+                        chatMessagesList.innerHTML = '';
+                        data.messages.forEach(message => {
+                            const li = document.createElement('li');
+                            li.textContent = message.message;
+                            chatMessagesList.appendChild(li);
+                        });
+                    })
+                    .catch(error => console.error('Ошибка загрузки сообщений:', error));
+            }
+
+            if (sendMessageButton) {
+                sendMessageButton.addEventListener('click', sendMessage);
+            }
+
+            if (chatMessageInput) {
+                chatMessageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+            }
         });
     </script>
 
@@ -78,7 +120,7 @@
             <div class="faq_item">
                 <div class="faq_question" onclick="toggleFaq(this)">
                     <span>Как использовать групповый чат для сделки?</span>
-                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 24" width="24" height="24">
                         <path d="M7 10l5 5 5-5z"></path>
                     </svg>
                 </div>

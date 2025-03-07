@@ -128,13 +128,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/deals/user', [DealsController::class, 'dealUser'])->name('deal.user');
     Route::get('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'chatMessages'])->name('chats.messages');
     Route::post('/chats/{chatType}/{chatId}/messages', [ChatController::class, 'sendMessage'])->name('chats.sendMessage');
+    Route::post('/chats/{type}/{id}/messages', [ChatController::class, 'sendMessage']);
     Route::post('/chats/{type}/{id}/new-messages', [ChatController::class, 'getNewMessages']);
     Route::post('/support/chat/{id}/new-messages', [SupportController::class, 'getNewMessages'])->name('support.chat.newMessages');
     Route::post('/support/chat/{id}/mark-read', [SupportController::class, 'markMessagesAsRead'])->name('support.chat.markMessagesAsRead');
-    Route::get('/support', [SupportController::class, 'index'])->name('support');
     Route::post('/firebase/update-token', [App\Http\Controllers\FirebaseController::class, 'updateToken'])->name('firebase.updateToken');
     Route::post('/firebase/send-notification', [ProfileController::class, 'sendFirebaseNotification'])->name('firebase.sendNotification');
     Route::get('/chats/unread-counts', [ChatController::class, 'getUnreadCounts'])->name('chats.unreadCounts');
+    Route::get('/support', [SupportController::class, 'index'])->name('support');
+    Route::get('/support/chat/messages', [SupportController::class, 'getSupportChatMessages'])->name('support.chat.messages');
 });
 
 

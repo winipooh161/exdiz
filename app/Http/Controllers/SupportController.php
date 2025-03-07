@@ -129,4 +129,72 @@ class SupportController extends Controller
             ], 500);
         }
     }
+
+    public function getSupportChatMessages()
+    {
+        $supportUserId = 55;
+        $currentUserId = Auth::id();
+
+        try {
+            $messages = Message::with('sender')
+                ->where(function ($query) use ($supportUserId, $currentUserId) {
+                    $query->where('sender_id', $currentUserId)
+                          ->where('receiver_id', $supportUserId);
+                })
+                ->orWhere(function ($query) use ($supportUserId, $currentUserId) {
+                    $query->where('sender_id', $supportUserId)
+                          ->where('receiver_id', $currentUserId);
+                })
+                ->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get()
+                ->reverse();
+
+            $messages->each(function ($message) {
+                $message->sender_name = optional($message->sender)->name ?? 'Unknown';
+            });
+
+            $formattedMessages = MessageResource::collection($messages);
+            return response()->json([
+                'messages' => $formattedMessages,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Ошибка при загрузке сообщений: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Ошибка загрузки сообщений.'], 500);
+        }
+    }
+
+    public function chat()
+    {
+        $user = Auth::user();
+        $title_site = "Чат поддержки | Личный кабинет Экспресс-дизайн";
+
+        // Жестко задаем ID пользователя поддержки
+        $supportUserId = 55;
+
+        // Проверяем существование пользователя поддержки
+        $supportUser = User::find($supportUserId);
+
+        if (!$supportUser) {
+            Log::warning('Support user (ID: 55) not found');
+            return redirect()->back()->with('error', 'Служба поддержки временно недоступна');
+        }
+
+        // Создаем или получаем существующий чат между текущим пользователем и поддержкой
+        $chatMessages = Message::where(function ($query) use ($user, $supportUserId) {
+            $query->where('sender_id', $user->id)
+                  ->where('receiver_id', $supportUserId)
+                  ->orWhere('sender_id', $supportUserId)
+                  ->where('receiver_id', $user->id);
+        })->exists();
+
+        return view('chats.index', [
+            'supportChat' => true,
+            'supportUserId' => $supportUserId,
+            'title_site' => $title_site,
+            'chatExists' => $chatMessages
+        ]);
+    }
 }

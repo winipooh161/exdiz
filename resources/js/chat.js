@@ -327,6 +327,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(e => console.error('Ошибка при пометке сообщений как прочитанных:', e));
     }
 
+    function updateUnreadCount(chatId, chatType, increment = true) {
+        const chatElement = document.querySelector(`[data-chat-id="${chatId}"][data-chat-type="${chatType}"]`);
+        if (chatElement) {
+            const unreadCountElement = chatElement.querySelector('.unread-count');
+            let unreadCount = parseInt(unreadCountElement.textContent) || 0;
+            unreadCount = increment ? unreadCount + 1 : Math.max(unreadCount - 1, 0);
+            unreadCountElement.textContent = unreadCount;
+            unreadCountElement.style.display = unreadCount > 0 ? 'inline' : 'none';
+        }
+    }
+
+    function updateChatList(chatId, chatType, message) {
+        const chatElement = document.querySelector(`[data-chat-id="${chatId}"][data-chat-type="${chatType}"]`);
+        if (chatElement) {
+            const chatList = document.getElementById('chat-list');
+            chatList.prepend(chatElement);
+            const chatNameElement = chatElement.querySelector('h5');
+            chatNameElement.textContent = message.sender_name + ': ' + message.message.substring(0, 50) + '...';
+            updateUnreadCount(chatId, chatType);
+        }
+    }
+
     function subscribeToChat(chatId, chatType) {
         // Удаление Pusher и Echo
         // if(window.Echo) {
@@ -336,6 +358,19 @@ document.addEventListener('DOMContentLoaded', () => {
         //             markMessagesAsRead(chatId, chatType);
         //         });
         // }
+
+        if (window.Echo) {
+            window.Echo.private(`user.${currentUserId}`)
+                .listen('.message.sent', (e) => {
+                    if (e.message.chat_id == chatId && e.message.chat_type == chatType) {
+                        renderMessages([e.message], e.message.sender_id);
+                        markMessagesAsRead(chatId, chatType);
+                    } else {
+                        updateUnreadCount(e.message.chat_id, e.message.chat_type);
+                        updateChatList(e.message.chat_id, e.message.chat_type, e.message);
+                    }
+                });
+        }
     }
 
     function checkForNewMessages() {
@@ -355,8 +390,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.unread_counts) {
                 data.unread_counts.forEach(chat => {
-                    if (chat.unread_count > 0) {
-                        notifyUser('Новое сообщение', `У вас ${chat.unread_count} новых сообщений в чате ${chat.name}`);
+                    const chatElement = document.querySelector(`[data-chat-id="${chat.id}"][data-chat-type="${chat.type}"]`);
+                    if (chatElement) {
+                        const chatList = document.getElementById('chat-list');
+                        chatList.prepend(chatElement);
+                        const unreadCountElement = chatElement.querySelector('.unread-count');
+                        unreadCountElement.textContent = chat.unread_count;
+                        unreadCountElement.style.display = chat.unread_count > 0 ? 'inline' : 'none';
                     }
                 });
             }

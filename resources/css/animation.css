@@ -177,6 +177,7 @@ button.active_Btn img {
 }
     button:hover {
     background: linear-gradient(51deg, #01ACFF 100%, #0381BE 0%) !important;
+    color: var(--fff) !important;
 }
     button.active_Btn {
     }

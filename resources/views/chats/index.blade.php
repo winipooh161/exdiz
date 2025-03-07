@@ -12,10 +12,7 @@
         window.unpinImgUrl = "{{ asset('storage/icon/unpin.svg') }}";
         window.deleteImgUrl = "{{ asset('storage/icon/deleteMesg.svg') }}";
     </script>
-    <script>
-       
 
-    </script>
 
     @if(isset($supportChat) && $supportChat)
         <!-- Чат технической поддержки -->
@@ -27,7 +24,11 @@
             </div>  
             <div class="chat-box">
                 <div class="chat-header">
-                    <span class="back-button" onclick="showChatList()">← Назад</span>
+                    <div class="burger-menu">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                     Техническая поддержка
                     <!-- Кнопка фильтра закреплённых сообщений -->
                     <button id="toggle-pinned" class="toggle-pinned" style="margin-left:10px;">Показать только закрепленные</button>
@@ -51,7 +52,11 @@
     <div class="chat-container">
         <div class="chat-box">
             <div class="chat-header">
-                <span class="back-button" onclick="showChatList()">← Назад</span>
+                <div class="burger-menu">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
                 {{ $dealChat->name }}
             </div>
             <div class="chat-messages" id="chat-messages">
@@ -73,7 +78,7 @@
         <!-- Режим стандартного списка чатов -->
         <div class="chat-container">
             <div class="user-list" id="chat-list-container">
-                <h4>Все чаты</h4>  <span class="back-button" onclick="showChatList()">← Назад</span>
+                <h4>Все чаты</h4>
                 @if(auth()->user()->status == 'coordinator' || auth()->user()->status == 'admin')
                     <a href="{{ route('chats.group.create') }}" class="create__group">Создать групповой чат</a>
                 @endif
@@ -90,6 +95,8 @@
                                         {{ $chat['name'] }}
                                         @if ($chat['unread_count'] > 0)
                                             <span class="unread-count">{{ $chat['unread_count'] }}</span>
+                                        @else
+                                            <span class="unread-count" style="display: none;">0</span>
                                         @endif
                                     </h5>
                                 </div>
@@ -103,8 +110,12 @@
             </div>
             <div class="chat-box">
                 <div class="chat-header">
-                   <span class="back-button" onclick="showChatList()">← Назад</span>
-                   <span id="chat-header">Выберите чат для общения</span>
+                   <div class="burger-menu">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                   <span id="chat-header"></span>
                    <input type="text" id="search-chats" placeholder="Поиск по чатам и сообщениям..." />
                    <!-- Кнопка фильтра для стандартного режима -->
                    <button id="toggle-pinned" class="toggle-pinned" style="margin-left:10px;">Показать только закрепленные</button>
@@ -129,20 +140,23 @@
 
 </body>
 
-<style>
-    .image-collage {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-    .collage-item {
-        flex: 1 1 calc(33.333% - 10px);
-        max-width: calc(33.333% - 10px);
-    }
-    .collage-item img {
-        width: 100%;
-        height: auto;
-        border-radius: 4px;
-    }
-</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const burgerMenu = document.querySelector('.burger-menu');
+        const userList = document.querySelector('.user-list');
+        burgerMenu.addEventListener('click', function() {
+            userList.classList.toggle('active');
+        });
+        document.addEventListener('click', function(event) {
+            if (!userList.contains(event.target) && !burgerMenu.contains(event.target)) {
+                userList.classList.remove('active');
+            }
+        });
+    });
+</script>
+
+<head>
+    <meta name="user-id" content="{{ Auth::id() }}">
+</head>
 

@@ -90,7 +90,6 @@
                                         data-payment_date="{{ $deal->payment_date }}"
                                         data-execution_comment="{{ $deal->execution_comment }}"
                                         data-comment="{{ $deal->comment }}"
-                                        data-office_equipment="{{ $deal->office_equipment }}"
                                         data-measurement_comments="{{ $deal->measurement_comments }}"
                                         data-start_date="{{ $deal->start_date }}"
                                         data-project_duration="{{ $deal->project_duration }}"
@@ -131,7 +130,7 @@
                 <div class="faq__body__deal" id="all-deals-container">
                     <h4 class="flex">Все сделки</h4>
                     @if ($deals->isEmpty())
-                        <div class="faq_block__deal faq_block-blur">
+                        <div class="faq_block__deal faq_block-blur faq_block__deal-button">
                             @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
                                 <div class="brifs__button__create flex"onclick="window.location.href='{{ route('deals.create') }}'">
                                     <button >
@@ -141,7 +140,7 @@
                             @endif
                         </div>
                     @else
-                        <div class="faq_block__deal faq_block-blur brifs__button__create-faq_block__deal">
+                        <div class="faq_block__deal faq_block-blur brifs__button__create-faq_block__deal faq_block__deal-button">
                             @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
                               
                                     <button onclick="window.location.href='{{ route('deals.create') }}'">
@@ -206,7 +205,6 @@
                                                     data-payment_date="{{ $deal->payment_date }}"
                                                     data-execution_comment="{{ $deal->execution_comment }}"
                                                     data-comment="{{ $deal->comment }}"
-                                                    data-office_equipment="{{ $deal->office_equipment }}"
                                                     data-measurement_comments="{{ $deal->measurement_comments }}"
                                                     data-start_date="{{ $deal->start_date }}"
                                                     data-project_duration="{{ $deal->project_duration }}"
@@ -264,19 +262,19 @@
             <button data-target="Аватар сделки">Аватар сделки</button>
             <ul>
                 <li>
-                    <a href="{{ $deal->link ? url($deal->link) : '#' }}">
+                    <a href="#">
                         <img src="/storage/icon/link.svg" alt="Чат">
                     </a>
                 </li>
                 @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
                     <li>
-                        <a href="{{ route('deal.change_logs.deal', ['deal' => $deal->id]) }}" class="btn btn-info btn-sm">
+                        <a href="#" class="btn btn-info btn-sm">
                             <img src="/storage/icon/log.svg" alt="Чат">
                         </a>
                     </li>
                 @endif
                 <li>
-                   <a href="{{ $groupChat ? url('/chats?active_chat=' . $groupChat->id) : '#' }}">
+                   <a href="#">
                         <img src="/storage/icon/chat.svg" alt="Чат">
                     </a>
                 </li>
@@ -288,30 +286,32 @@
             <legend>Лента</legend>
             <!-- Список записей ленты -->
             <div class="feed-posts" id="feed-posts-container">
-              @foreach ($deal->dealFeeds as $feed)
-              <div class="feed-post">
-                  <div class="feed-post-avatar">
-                      <img src="{{ $feed->user->avatar_url ?? asset('storage/default-avatar.png') }}" 
-                           alt="{{ $feed->user->name }}">
+              @foreach ($deals as $deal)
+                @foreach ($deal->dealFeeds as $feed)
+                  <div class="feed-post">
+                      <div class="feed-post-avatar">
+                          <img src="{{ $feed->user->avatar_url ?? asset('storage/default-avatar.png') }}" 
+                               alt="{{ $feed->user->name }}">
+                      </div>
+                      <div class="feed-post-text">
+                          <div class="feed-author">{{ $feed->user->name }}</div>
+                          <div class="feed-content">{{ $feed->content }}</div>
+                          <div class="feed-date">{{ $feed->created_at->format('d.m.Y H:i') }}</div>
+                      </div>
                   </div>
-                  <div class="feed-post-text">
-                      <div class="feed-author">{{ $feed->user->name }}</div>
-                      <div class="feed-content">{{ $feed->content }}</div>
-                      <div class="feed-date">{{ $feed->created_at->format('d.m.Y H:i') }}</div>
-                  </div>
-              </div>
-          @endforeach
+                @endforeach
+              @endforeach
           
-          @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
-          <form id="feed-form">
-              @csrf
-              <div class="feed-form-post">
-                <textarea name="content" id="feed-content" placeholder="Добавьте запись в ленту" required maxlength="1990"></textarea>
-                <button type="submit">  <img src="{{ asset('/storage/icon/send_mesg.svg') }}" alt="Отправить" ></button>
-        
-              </div>
-                  </form>
-      @endif
+              @if (in_array(Auth::user()->status, ['coordinator', 'admin']))
+              <form id="feed-form">
+                  @csrf
+                  <div class="feed-form-post">
+                    <textarea name="content" id="feed-content" placeholder="Добавьте запись в ленту" required maxlength="1990"></textarea>
+                    <button type="submit">  <img src="{{ asset('/storage/icon/send_mesg.svg') }}" alt="Отправить" ></button>
+            
+                  </div>
+              </form>
+              @endif
             </div>
         </fieldset>
 
@@ -326,6 +326,7 @@
             return;
         }
 
+        @if(isset($deal))
         $.ajax({
             url: "{{ route('deal.feed.store', $deal->id) }}",
             type: "POST",
@@ -353,6 +354,7 @@
                 alert("Ошибка при добавлении записи: " + xhr.responseText);
             }
         });
+        @endif
     });
 });
 
@@ -371,7 +373,7 @@
                     <legend>Заказ</legend>
                     <div class="form-group-deal">
                         <label>№ проекта:
-                            <input type="text" name="project_number" id="projectNumberField" value="{{ $deal->project_number }}">
+                            <input type="text" name="project_number" id="projectNumberField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -396,28 +398,28 @@
                     </div>
                     <div class="form-group-deal">
                         <label>Количество комнат по прайсу:
-                            <input type="number" name="rooms_count_pricing" id="roomsCountField" value="{{ $deal->rooms_count_pricing }}">
+                            <input type="number" name="rooms_count_pricing" id="roomsCountField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Комментарий к Заказу:
-                            <textarea name="execution_order_comment" id="executionOrderCommentField" maxlength="1000">{{ $deal->execution_order_comment }}</textarea>
+                            <textarea name="execution_order_comment" id="executionOrderCommentField" maxlength="1000"></textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Пакет:
-                            <input type="text" name="package" id="packageField" value="{{ $deal->package }}">
+                            <input type="text" name="package" id="packageField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>ФИО клиента:
-                            <input type="text" name="name" id="nameField" value="{{ $deal->name }}">
+                            <input type="text" name="name" id="nameField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Телефон клиента: <span class="required">*</span>
                             <input type="text" name="client_phone" id="phoneField" 
-                                value="{{ $deal->client_phone }}" 
+                                value="" 
                                 class="form-control"
                                 required>
                         </label>
@@ -430,7 +432,7 @@
                     <div class="form-group-deal">
                         <label>Email клиента:
                             <input type="email" name="client_email" id="emailField" 
-                                value="{{ $deal->client_email }}">
+                                value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -449,7 +451,7 @@
                     <div class="form-group-deal">
                         <label>Кто делает комплектацию:
                             <input type="text" name="completion_responsible" id="completionResponsibleField"
-                                value="{{ $deal->completion_responsible }}">
+                                value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -484,7 +486,7 @@
                     <legend>Работа над проектом</legend>
                     <div class="form-group-deal">
                         <label>Комментарии по замерам:
-                            <textarea name="measurement_comments" id="measurementCommentsField" maxlength="1000">{{ $deal->measurement_comments }}</textarea>
+                            <textarea name="measurement_comments" id="measurementCommentsField" maxlength="1000"></textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -498,17 +500,17 @@
                     </div>
                     <div class="form-group-deal">
                         <label>Дата старта:
-                            <input type="date" name="start_date" id="startDateField" value="{{ $deal->start_date }}">
+                            <input type="date" name="start_date" id="startDateField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Общий срок проекта (в днях):
-                            <input type="number" name="project_duration" id="projectDurationField" value="{{ $deal->project_duration }}">
+                            <input type="number" name="project_duration" id="projectDurationField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата завершения:
-                            <input type="date" name="project_end_date" id="projectEndDateField" value="{{ $deal->project_end_date }}">
+                            <input type="date" name="project_end_date" id="projectEndDateField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -562,7 +564,7 @@
                     <div class="form-group-deal">
                         <label>Ссылка на визуализацию:
                             <input type="url" name="visualization_link" id="visualizationLinkField"
-                                value="{{ $deal->visualization_link }}">
+                                value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -590,25 +592,25 @@
                     <div class="form-group-deal">
                         <label>Оценка за проект (от клиента):
                             <input type="number" name="client_project_rating" id="clientProjectRatingField"
-                                value="{{ $deal->client_project_rating }}" min="0" max="10" step="0.5">
+                                value="" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Клиент):
                             <input type="number" name="architect_rating_client" id="architectRatingClientField"
-                                value="{{ $deal->architect_rating_client }}" min="0" max="10" step="0.5">
+                                value="" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Партнер):
                             <input type="number" name="architect_rating_partner" id="architectRatingPartnerField"
-                                value="{{ $deal->architect_rating_partner }}" min="0" max="10" step="0.5">
+                                value="" min="0" max="10" step="0.5">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Оценка архитектора (Координатор):
                             <input type="number" name="architect_rating_coordinator"
-                                id="architectRatingCoordinatorField" value="{{ $deal->architect_rating_coordinator }}" min="0" max="10"
+                                id="architectRatingCoordinatorField" value="" min="0" max="10"
                                 step="0.5">
                         </label>
                     </div>
@@ -623,7 +625,7 @@
                     </div>
                     <div class="form-group-deal">
                         <label>Комментарий координатора:
-                            <textarea name="coordinator_comment" id="coordinatorCommentField" maxlength="1000">{{ $deal->coordinator_comment }}</textarea>
+                            <textarea name="coordinator_comment" id="coordinatorCommentField" maxlength="1000"></textarea>
                         </label>
                     </div>
                     <div class="form-group-deal">
@@ -641,22 +643,22 @@
                     <legend>О сделке</legend>
                     <div class="form-group-deal">
                         <label>№ договора:
-                            <input type="text" name="contract_number" id="contractNumberField" value="{{ $deal->contract_number }}">
+                            <input type="text" name="contract_number" id="contractNumberField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата создания сделки:
-                            <input type="date" name="created_date" id="createdDateField" value="{{ $deal->created_date }}">
+                            <input type="date" name="created_date" id="createdDateField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Дата оплаты:
-                            <input type="date" name="payment_date" id="paymentDateField" value="{{ $deal->payment_date }}">
+                            <input type="date" name="payment_date" id="paymentDateField" value="">
                         </label>
                     </div>
                     <div class="form-group-deal">
                         <label>Сумма Заказа:
-                            <input type="number" name="total_sum" id="totalSumField" value="{{ $deal->total_sum }}"
+                            <input type="number" name="total_sum" id="totalSumField" value=""
                                 step="0.01">
                         </label>
                     </div>
@@ -671,7 +673,7 @@
                     </div>
                     <div class="form-group-deal">
                         <label>Примечание:
-                            <textarea name="deal_note" id="dealNoteField">{{ $deal->deal_note }}</textarea>
+                            <textarea name="deal_note" id="dealNoteField"></textarea>
                         </label>
                     </div>
                 </fieldset>

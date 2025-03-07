@@ -25,21 +25,17 @@ class DealsController extends Controller
      */
     public function dealCardinator(Request $request)
     {
-        
         $title_site = "Сделки Кардинатора";
         $user = Auth::user();
-        $deals = Deal::with([
-            'dealFeeds.user' // Загружаем пользователя, чтобы получить его аватар
-        ])->get();
         $search = $request->input('search');
         $status = $request->input('status');
         $viewType = $request->input('view_type', 'blocks');
-    
-        // Фильтруем сделки: выбираем только те, у которых через связь users присутствует текущий пользователь
-        $query = Deal::with('users')->whereHas('users', function($q) use ($user) {
+
+        // Фильтруем сделки
+        $query = Deal::with(['users', 'dealFeeds.user'])->whereHas('users', function($q) use ($user) {
             $q->where('user_id', $user->id);
         });
-    
+
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
@@ -52,23 +48,22 @@ class DealsController extends Controller
                   ->orWhere('total_sum', 'LIKE', "%{$search}%");
             });
         }
-    
+
         if ($status) {
-            // Если выбран фильтр "завершенные", объединяем сделки с обоими статусами
             if ($status === 'завершенные') {
                 $query->whereIn('status', ['Проект завершен', 'Завершенный']);
             } else {
                 $query->where('status', $status);
             }
         }
-    
+
         $deals = $query->get()->map(function ($deal) {
             $deal->registration_token_url = $deal->registration_token
                 ? route('register_by_deal', ['token' => $deal->registration_token])
                 : null;
             return $deal;
         });
-    
+
         return view('cardinators', compact('title_site', 'user', 'deals', 'status', 'viewType', 'search'));
     }
     
@@ -176,7 +171,7 @@ class DealsController extends Controller
         try {
             $validated = $request->validate([
                 'name'         => 'required|string|max:255',
-                'client_phone' => ['required', 'regex:/^\+7\s\(\д{3}\)\с\d{3}\-\д{2}\-\д{2}$/'],
+                'client_phone' => ['required'],
                 'status'       => 'required|in:Ждем ТЗ,Планировка,Коллажи,Визуализация,Рабочка/сбор ИП,Проект готов,Проект завершен,Проект на паузе,Возврат,В работе,Завершенный,На потом,Регистрация,Бриф прикриплен,Поддержка,Активный',
                 'priority'     => 'required|in:высокий,средний,низкий',
                 'package'      => 'required|string|max:255',
@@ -194,7 +189,6 @@ class DealsController extends Controller
                 'payment_date'   => 'nullable|date',
                 'execution_comment' => 'nullable|string',
                 'comment'        => 'nullable|string',
-                'office_equipment' => 'nullable|boolean',
                 'measurement_comments' => 'nullable|string|max:1000',
                 'measurements_file'    => 'nullable|file|mimes:pdf,jpg,jpeg,png,dwg|max:5120',
                 'start_date'           => 'nullable|date',
@@ -231,7 +225,6 @@ class DealsController extends Controller
                 'responsibles.*'    => 'exists:users,id',
             ]);
 
-            $office_equipment = $request->has('office_equipment') ? 1 : 0;
             $coordinatorId = $validated['coordinator_id'] ?? auth()->id();
 
             $deal = Deal::create([
@@ -254,7 +247,6 @@ class DealsController extends Controller
                 'payment_date' => $validated['payment_date'] ?? null,
                 'execution_comment' => $validated['execution_comment'] ?? null,
                 'comment' => $validated['comment'] ?? null,
-                'office_equipment' => $office_equipment,
                 'measurement_comments' => $validated['measurement_comments'] ?? null,
                 'start_date' => $validated['start_date'] ?? null,
                 'project_duration' => $validated['project_duration'] ?? null,
@@ -363,7 +355,7 @@ class DealsController extends Controller
            
             $validated = $request->validate([
                 'name' => 'nullable|string|max:255',
-                'client_phone' => 'nullable|string', 
+                'client_phone' => ['required'],
                 'status' => 'nullable|in:Ждем ТЗ,Планировка,Коллажи,Визуализация,Рабочка/сбор ИП,Проект готов,Проект завершен,Проект на паузе,Возврат,В работе,Завершенный,На потом,Регистрация,Бриф прикриплен,Поддержка,Активный',
                 'priority' => 'nullable|in:высокий,средний,низкий',
                 'package' => 'nullable|string|max:255',
@@ -381,7 +373,6 @@ class DealsController extends Controller
                 'payment_date' => 'nullable|date',
                 'execution_comment' => 'nullable|string',
                 'comment' => 'nullable|string',
-                'office_equipment' => 'nullable|boolean',
                 'measurement_comments' => 'nullable|string|max:1000',
                 'measurements_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,dwg|max:5120',
                 'start_date' => 'nullable|date',
